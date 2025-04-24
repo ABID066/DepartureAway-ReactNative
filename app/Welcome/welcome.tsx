@@ -9,7 +9,7 @@ const WelcomeScreen = () => {
   useEffect(() => {
     setTimeout(() => {
       router.push('/WalkThrough/walkthrough1');
-    }, 20000); // 2-second delay
+    }, 2000); // 2-second delay
   }, [router]);
 
   return (
@@ -18,73 +18,81 @@ const WelcomeScreen = () => {
         {/* Circular Images Collage */}
         <View className="w-full aspect-square relative mb-20">
           {/* Large center image (parasailing) */}
-          <View className="absolute left-1/4 right-1/4 top-1/3 bottom-1/6">
+          <View className="absolute inset-1 flex items-center justify-center">
             <Image 
-              source={require('@/assets/images/Ellipse.png')} 
-              className="w-full h-full rounded-full" 
+              source={require('@/assets/images/middle.png')} 
+              className=" rounded-full" 
             />
           </View>
           
-          {/* Top right image (city skyline) */}
-          <View className="absolute right-6 top-4 w-24 h-24">
+          
+          <View className="absolute right-12 -top-4 w-24 h-24">
             <Image 
               source={require('@/assets/images/Ellipse.png')} 
-              className="w-full h-full rounded-full" 
+              className=" rounded-full" 
             />
           </View>
           
-          {/* Top left image (snow/mountain) */}
-          <View className="absolute left-6 top-12 w-20 h-20">
+          
+          <View className="absolute left-10 -top-8 w-20 h-20">
             <Image 
               source={require('@/assets/images/snow-mountain.png')} 
-              className="w-full h-full rounded-full" 
+              className=" rounded-full" 
             />
           </View>
           
-          {/* Bottom left image (forest) */}
-          <View className="absolute left-10 bottom-16 w-16 h-16">
+          {/* Bottom left image (m) */}
+          <View className="absolute -left-8 bottom-16 w-16 h-16">
             <Image 
-              source={require('@/assets/images/Ellipse.png')} 
-              className="w-full h-full rounded-full" 
+              source={require('@/assets/images/mp.png')} 
+              className=" rounded-full" 
+            />
+          </View>
+
+          {/* Bottom right image (top of f view) */}
+          <View className="absolute right-0 top-40">
+            <Image 
+              source={require('@/assets/images/sc.png')} 
+              className=" rounded-full" 
             />
           </View>
           
-          {/* Bottom right image (mountain view) */}
-          <View className="absolute right-12 bottom-8 w-20 h-20">
+          {/* Bottom right image (f view) */}
+          <View className="absolute right-10 bottom-8 w-20 h-20">
             <Image 
-              source={require('@/assets/images/Ellipse.png')} 
-              className="w-full h-full rounded-full" 
+              source={require('@/assets/images/brImg.png')} 
+              className=" rounded-full" 
             />
           </View>
           
           {/* Small mountain view */}
           <View className="absolute left-1/4 bottom-4 w-12 h-12">
             <Image 
-              source={require('@/assets/images/Ellipse.png')} 
-              className="w-full h-full rounded-full" 
+              source={require('@/assets/images/small.png')} 
+              className=" rounded-full" 
             />
           </View>
           
           {/* Small city view */}
-          <View className="absolute left-8 top-1/3 w-12 h-12">
+          <View className="absolute -left-8 top-1/3 w-12 h-12">
             <Image 
-              source={require('@/assets/images/Ellipse.png')} 
-              className="w-full h-full rounded-full" 
+              source={require('@/assets/images/city.png')} 
+              className="\ rounded-full" 
             />
           </View>
         </View>
 
         {/* Welcome Message */}
-        <Text className="text-5xl font-bold text-blue-950 mb-2 text-center">
+        <Text className="text-5xl font-bold text-blue-950 mb-6 text-center">
           Welcome to Departure Away👋
         </Text>
 
         {/* Description */}
-        <Text className="text-xl text-black-800 text-center">
-          Your Pocket Companion for Unforgettable Journeys,
+        <Text className="text-lg font-bold text-black-800 text-center">
+          Your Pocket Companion for Unforgettable 
         </Text>
-        <Text className="text-xl text-black-800 text-center">
-          Tailoring Dream Itineraries Worldwide.
+        <Text className="text-lg font-bold text-black-800 text-center">
+          Journeys, Tailoring Dream Itineraries Worldwide.
         </Text>
       </View>
     </SafeAreaView>
