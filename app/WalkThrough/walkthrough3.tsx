@@ -35,7 +35,7 @@ const WalkthroughScreen3 = () => {
           {/* Get Started Button */}
           <TouchableOpacity
             className="bg-rose-500 py-4 rounded-full"
-            onPress={() => router.push('/Account/letsYouIn')}
+            onPress={() => router.push('/SignInUp/letsYouIn')}
           >
             <Text className="text-white text-center font-semibold text-lg">Get Started</Text>
           </TouchableOpacity>
