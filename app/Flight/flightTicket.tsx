@@ -17,9 +17,9 @@ const FlightTicket = () => {
   const locations = [
     {
       airport: "Dhaka",
-      country: "Bangladesh"
-    }
-  ]
+      country: "Bangladesh",
+    },
+  ];
   const filterOptions = [
     {
       title: "All",
@@ -63,12 +63,12 @@ const FlightTicket = () => {
   return (
     <View className='w-full h-full bg-white overflow-hidden shadow-lg flex flex-col'>
       <View className='bg-[#fbb040] p-4 flex-row justify-center relative w-full rounded-bl-[50px] min-h-[158px]'>
-        <TouchableOpacity className='absolute left-6 top-16'>
-          <Image source={icons?.arrowLeft} className='' />
+        <TouchableOpacity className='absolute left-[5%] top-11'>
+          <Image source={icons?.arrowLeft} />
         </TouchableOpacity>
         <Image
           source={images?.logo}
-          className='w-[162px] h-[46px]'
+          className='w-[162px] h-[46px] mt-3'
           accessibilityLabel='Departure Away logo, stylized pink and orange circle with text Departure Away'
         />
         <View className='bg-white rounded-[20px] shadow-md p-4 absolute -bottom-[45%] px-6 py-4  min-w-[82%]'>
@@ -94,17 +94,22 @@ const FlightTicket = () => {
             selectedValue={"Dhaka, Bangladesh"}
             onValueChange={() => {}}
             className='w-full rounded-[20px] border border-gray-200 px-3 py-2 text-base text-[#212121] bg-[#FAFAFA]'>
-              {
-                locations?.map(location => (<Picker.Item label={`${location?.airport}, ${location?.country}`} value='Dhaka, Bangladesh' />))
-              }
+            {locations?.map((location, i) => (
+              <Picker.Item
+                key={i + 1}
+                label={`${location?.airport}, ${location?.country}`}
+                value={`${location?.airport}, ${location?.country}`}
+              />
+            ))}
           </Picker>
         </View>
         <View>
           <Text className='text-base text-[#4F4F4F]'>Filter By</Text>
 
           <View className='flex-row gap-3 items-center py-3'>
-            {filterOptions.map((option) => (
+            {filterOptions.map((option, i) => (
               <TouchableOpacity
+                key={i + 1}
                 onPress={() => setActiveTab(option?.title)}
                 className={`${
                   activeTab == option.title && "bg-[#FF1A5A] rounded-[30px]"
@@ -124,7 +129,7 @@ const FlightTicket = () => {
         <Text className='text-base font-medium text-[#212121] my-2'>
           Total 23 founds
         </Text>
-        <ScrollView className='max-h-auto pr-1 flex-col gap-3'>
+        <ScrollView showsVerticalScrollIndicator={false} className='max-h-auto pr-1 flex-col gap-3'>
           {sellers?.map((item, i) => (
             <TouchableOpacity
               key={i}
@@ -146,9 +151,9 @@ const FlightTicket = () => {
                   </Text>
                 </View>
                 <View className='flex-row items-center gap-1 text-yellow-400 mt-0.5'>
-                  <FontAwesome name='star' size={10} color='#fbbf24' />
+                  <FontAwesome name='star' size={18} color='#fbbf24' />
                   <Text className='text-[#000000] ml-1 font-medium text-xs'>
-                    4.9/5 <Text className='text-[#828282]'> (306)</Text>
+                    4.9/5 <Text className='text-[#828282] ml-1'> (306)</Text>
                   </Text>
                 </View>
               </View>
