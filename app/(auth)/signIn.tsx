@@ -93,7 +93,7 @@ const SignIn = () => {
         {/* Sign in button */}
         <TouchableOpacity
           className='bg-rose-500 py-4 rounded-full mb-12'
-          onPress={() => router.push("/home")}>
+          onPress={() => {}}>
           <Text className='text-white text-center font-semibold text-lg'>
             Log In
           </Text>
