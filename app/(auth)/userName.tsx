@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 const SignUpScreen2 = () => {
   const router = useRouter();
-  const [username, setUsername] = useState('samful786');
+  const [username, setUsername] = useState('');
 
   return (
     <SafeAreaView className="flex-1 bg-white">
