@@ -71,7 +71,7 @@ const FlightTicket = () => {
           className='w-[162px] h-[46px] mt-3'
           accessibilityLabel='Departure Away logo, stylized pink and orange circle with text Departure Away'
         />
-        <View className='bg-white rounded-[20px] shadow-md p-4 absolute -bottom-[45%] px-6 py-4  min-w-[82%]'>
+        <View className='bg-white rounded-[20px] shadow-md p-4 absolute -bottom-[45%] px-6 py-4 w-full  max-w-[80%]'>
           <Text className='text-center font-medium text-[#212121] mb-3 text-lg'>
             Book your Flight
           </Text>

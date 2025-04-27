@@ -7,7 +7,7 @@ import { images } from "@/constants/images";
 const FlightTicketAgencyEconomy = () => {
   const [ticketClass, setTicketClass] = useState("Economy");
   return (
-    <View className='w-full h-full bg-white rounded-xl overflow-y-auto overflow-x-hidden shadow-lg flex flex-col'>
+    <View className='w-full h-full bg-white overflow-y-auto overflow-x-hidden shadow-lg flex flex-col'>
       <View className='bg-[#fbb040] p-4 flex-row justify-center relative w-full rounded-bl-[50px] min-h-[158px]'>
         <TouchableOpacity className='absolute left-[4%] top-11'>
           <Image source={icons?.arrowLeft} />
@@ -19,7 +19,7 @@ const FlightTicketAgencyEconomy = () => {
         />
         <Image
           source={images?.Rectangle4}
-          className='rounded-xl absolute -bottom-[110%] max-w-[94%] h[210px] mx-auto'
+          className='rounded-xl absolute -bottom-[110%] w-full max-w-[94%] h[210px] mx-auto'
           accessibilityLabel='Eiffel Tower under cloudy sky with dramatic clouds, travel destination'
         />
       </View>
