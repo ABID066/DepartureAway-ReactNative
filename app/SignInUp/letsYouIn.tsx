@@ -61,14 +61,14 @@ const SignInScreen = () => {
         {/* Divider */}
         <View className="flex-row items-center justify-center  mb-6">
           <View className="flex-1 h-px bg-gray-300"></View>
-          <Text className="mx-4 text-gray-500 my-4">or</Text>
+          <Text className="mx-4 font-bold text-gray-600 my-4">or</Text>
           <View className="flex-1 h-px bg-gray-300"></View>
         </View>
 
         {/* Sign in with password button */}
         <TouchableOpacity 
           className="bg-rose-500 py-4 rounded-full mb-6"
-          onPress={() => router.push('/login')}
+          onPress={() => router.push('/SignInUp/signIn')}
         >
           <Text className="text-white text-center font-semibold text-lg">Sign in with password</Text>
         </TouchableOpacity>
@@ -76,7 +76,7 @@ const SignInScreen = () => {
         {/* Sign up link */}
         <View className="flex-row justify-center">
           <Text className="text-gray-500">Don't have an account? </Text>
-          <TouchableOpacity onPress={() => router.push('/signup')}>
+          <TouchableOpacity onPress={() => router.push('/SignInUp/signUp')}>
             <Text className="text-blue-600 font-medium">Sign up</Text>
           </TouchableOpacity>
         </View>
