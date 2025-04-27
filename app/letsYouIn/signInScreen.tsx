@@ -68,7 +68,7 @@ const SignInScreen = () => {
         {/* Sign in with password button */}
         <TouchableOpacity 
           className="bg-rose-500 py-4 rounded-full mb-6"
-          onPress={() => router.push('/login')}
+          onPress={() => router.push('/signIn')}
         >
           <Text className="text-white text-center font-semibold text-lg">Sign in with password</Text>
         </TouchableOpacity>
@@ -76,7 +76,7 @@ const SignInScreen = () => {
         {/* Sign up link */}
         <View className="flex-row justify-center">
           <Text className="text-gray-500">Don't have an account? </Text>
-          <TouchableOpacity onPress={() => router.push('/signup')}>
+          <TouchableOpacity onPress={() => router.push('/signUp')}>
             <Text className="text-blue-600 font-medium">Sign up</Text>
           </TouchableOpacity>
         </View>

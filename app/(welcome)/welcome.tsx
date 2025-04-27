@@ -8,7 +8,7 @@ const WelcomeScreen = () => {
   // Automatically navigate to Walkthrough after 2 seconds
   useEffect(() => {
     setTimeout(() => {
-      router.push('/WalkThrough/walkthrough1');
+      router.push('/walkThrough/walkthrough1');
     }, 2000); // 2-second delay
   }, [router]);
 
@@ -77,7 +77,7 @@ const WelcomeScreen = () => {
           <View className="absolute -left-8 top-1/3 w-12 h-12">
             <Image 
               source={require('@/assets/images/city.png')} 
-              className="\ rounded-full" 
+              className="rounded-full" 
             />
           </View>
         </View>

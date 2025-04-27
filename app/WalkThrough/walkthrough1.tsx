@@ -6,7 +6,7 @@ const WalkthroughScreen = () => {
   const router = useRouter();
   
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 overflow-hidden">
       {/* Full screen background image */}
       <View className="absolute inset-0">
         <Image
@@ -35,7 +35,7 @@ const WalkthroughScreen = () => {
           {/* Next Button */}
           <TouchableOpacity
             className="bg-rose-500 py-4 rounded-full"
-            onPress={() => router.push('/WalkThrough/walkthrough2')}
+            onPress={() => router.push('/walkThrough/walkthrough2')}
           >
             <Text className="text-white text-center font-semibold text-lg">Next</Text>
           </TouchableOpacity>
