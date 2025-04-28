@@ -70,6 +70,7 @@ const OrderPage1 = () => {
         </TouchableOpacity>
       </View>
       <ScrollView
+        contentContainerStyle={{ minHeight: "90%", paddingBottom: 24 }}
         showsVerticalScrollIndicator={false}
         className='p-5 flex-1 flex-col gap-5 mt-24'>
         <View className='flex-col gap-4 text-xs text-gray-700'>
@@ -141,9 +142,9 @@ const OrderPage1 = () => {
               </Text>
             </TouchableOpacity>
           </View>
-          <View className='py-24'>
+          <View className='pt-24'>
             <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-3'>
-              <Text className='text-white text-center font-semibold text-sm'>
+              <Text className='text-white text-center font-semibold text-base'>
                 Continue
               </Text>
             </TouchableOpacity>
