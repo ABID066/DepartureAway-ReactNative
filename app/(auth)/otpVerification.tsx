@@ -10,6 +10,7 @@ const OTPVerificationScreen = () => {
   const [phoneNumber, setPhoneNumber] = useState('+1 111 ******99');
   const [resendActive, setResendActive] = useState(true);
   const [countdown, setCountdown] = useState(0);
+  const [showValidation, setShowValidation] = useState(false);
 
   // Handle OTP input change
   const handleOtpChange = (text: string, index: number) => {
@@ -25,14 +26,17 @@ const OTPVerificationScreen = () => {
     if (text !== '' && index < otp.length - 1) {
       inputRefs.current[index + 1]?.focus();
     }
+    
+    // Hide validation message when user starts typing
+    setShowValidation(false);
   };
 
   // Handle key press for backspace
-const handleKeyPress = (e: { nativeEvent: { key: string } }, index: number): void => {
+  const handleKeyPress = (e: { nativeEvent: { key: string } }, index: number): void => {
     if (e.nativeEvent.key === 'Backspace' && index > 0 && otp[index] === '') {
-        inputRefs.current[index - 1]?.focus();
+      inputRefs.current[index - 1]?.focus();
     }
-};
+  };
 
   // Handle resend OTP
   const handleResend = () => {
@@ -45,6 +49,9 @@ const handleKeyPress = (e: { nativeEvent: { key: string } }, index: number): voi
     // Start countdown timer
     setResendActive(false);
     setCountdown(30);
+    
+    // Hide validation message
+    setShowValidation(false);
   };
 
   // Countdown effect
@@ -65,6 +72,10 @@ const handleKeyPress = (e: { nativeEvent: { key: string } }, index: number): voi
     if (otpValue.length === 4) {
       // Navigation would go here - normally to the next screen
       router.push('/legal/terms'); // Change this to the appropriate route
+      setShowValidation(false);
+    } else {
+      // Show validation message if OTP is incomplete
+      setShowValidation(true);
     }
   };
 
@@ -79,9 +90,9 @@ const handleKeyPress = (e: { nativeEvent: { key: string } }, index: number): voi
       </View>
 
       <View className="flex-1 px-6 flex-col justify-between">
-        <View>
+        <View className='flex-1 justify-center items-center'>
           {/* Message */}
-          <Text className="text-center mt-12 mb-8 text-gray-700">
+          <Text className="text-center mt-12 mb-8 text-xl text-black-800">
             Code has been send to {phoneNumber}
           </Text>
 
@@ -91,7 +102,7 @@ const handleKeyPress = (e: { nativeEvent: { key: string } }, index: number): voi
               <TextInput
                 key={index}
                 ref={(ref) => (inputRefs.current[index] = ref)}
-                className="w-16 h-16 bg-gray-100 rounded-lg text-center text-xl font-bold"
+                className="w-16 h-16 mx-3 bg-gray-100 rounded-lg text-center text-xl font-bold"
                 value={digit}
                 onChangeText={(text) => handleOtpChange(text, index)}
                 onKeyPress={(e) => handleKeyPress(e, index)}
@@ -112,6 +123,13 @@ const handleKeyPress = (e: { nativeEvent: { key: string } }, index: number): voi
               {resendActive ? 'Resend' : `Resend (${countdown}s)`}
             </Text>
           </TouchableOpacity>
+          
+          {/* Validation message */}
+          {showValidation && (
+            <Text className="text-rose-500 text-center mt-4 font-medium">
+              4-Digit OTP Required
+            </Text>
+          )}
         </View>
 
         {/* Verify button */}
