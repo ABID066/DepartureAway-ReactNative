@@ -18,7 +18,7 @@ const BusinessClassTicket = () => {
           accessibilityLabel='Departure Away logo, stylized pink and orange circle with text Departure Away'
         />
         <Image
-          source={images?.Rectangle4}
+          source={images?.rectangle4}
           className='rounded-xl absolute -bottom-[110%] w-full max-w-[94%] h[210px] mx-auto'
           accessibilityLabel='Eiffel Tower under cloudy sky with dramatic clouds, travel destination'
         />
@@ -107,7 +107,7 @@ const BusinessClassTicket = () => {
         <View className='py-6 gap-2'>
           <View className='flex-row items-center gap-2'>
             <Image
-              source={images?.Ellipse}
+              source={images?.ellipse}
               className='w-8 h-8 rounded-full'
               accessibilityLabel='Skyward Bliss agency logo, circular icon with initials SB'
             />

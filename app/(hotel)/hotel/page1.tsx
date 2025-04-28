@@ -12,11 +12,11 @@ import { FontAwesome } from "@expo/vector-icons";
 import { images } from "@/constants/images";
 import { icons } from "@/constants/icons";
 
-const FlightTicket = () => {
+const HotelPage1 = () => {
   const [activeTab, setActiveTab] = useState("All");
   const locations = [
     {
-      airport: "Dhaka",
+      capital: "Dhaka",
       country: "Bangladesh",
     },
   ];
@@ -36,25 +36,25 @@ const FlightTicket = () => {
   ];
   const sellers = [
     {
-      img: images?.rectangle,
+      img: images?.hotel,
       title: "Seamless Flight Booking Experience Package",
       agency: "Skyward Bliss",
       personImg: images?.ellipse,
     },
     {
-      img: images?.rectangle1,
+      img: images?.hotel1,
       title: "Seamless Flight Booking Experience Package",
       agency: "Royelx tech",
       personImg: images?.ellipse1,
     },
     {
-      img: images?.rectangle2,
+      img: images?.hotel2,
       title: "Seamless Flight Booking Experience Package",
       agency: "Al Hella Agency",
       personImg: images?.ellipse2,
     },
     {
-      img: images?.rectangle3,
+      img: images?.hotel3,
       title: "Seamless Flight Booking Experience Package",
       agency: "Skyward Bliss",
       personImg: images?.ellipse,
@@ -73,7 +73,7 @@ const FlightTicket = () => {
         />
         <View className='bg-white rounded-[20px] shadow-md p-4 absolute -bottom-[45%] px-6 py-4 w-full  max-w-[80%]'>
           <Text className='text-center font-medium text-[#212121] mb-3 text-lg'>
-            Book your Flight
+            Book your Hotel
           </Text>
           <View className='flex-row items-center gap-2 relative'>
             <TextInput
@@ -97,8 +97,8 @@ const FlightTicket = () => {
             {locations?.map((location, i) => (
               <Picker.Item
                 key={i + 1}
-                label={`${location?.airport}, ${location?.country}`}
-                value={`${location?.airport}, ${location?.country}`}
+                label={`${location?.capital}, ${location?.country}`}
+                value={`${location?.capital}, ${location?.country}`}
               />
             ))}
           </Picker>
@@ -167,4 +167,4 @@ const FlightTicket = () => {
   );
 };
 
-export default FlightTicket;
+export default HotelPage1;
