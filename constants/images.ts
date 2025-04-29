@@ -11,6 +11,7 @@ import hotel from "@/assets/images/Rectangle-2258-h.png";
 import hotel1 from "@/assets/images/Rectangle-2258-h1.png";
 import hotel2 from "@/assets/images/Rectangle-2258-h2.png";
 import hotel3 from "@/assets/images/Rectangle-2258-h3.png";
+import hotel4 from "@/assets/images/Rectangle-2259-h4.png";
 
 export const images = {
   logo,
@@ -26,4 +27,5 @@ export const images = {
   hotel1,
   hotel2,
   hotel3,
+  hotel4,
 };
