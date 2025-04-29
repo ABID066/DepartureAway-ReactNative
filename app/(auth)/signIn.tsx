@@ -32,7 +32,7 @@ const SignIn = () => {
       {/* Main content */}
       <View className='flex-1 px-8'>
         {/* Logo */}
-        <View className='items-center justify-center mb-12 mt-4'>
+        <View className='items-center justify-center mb-12'>
           <Image
             source={require("@/assets/images/logo.png")}
             className='w-41 h-16'
@@ -41,7 +41,7 @@ const SignIn = () => {
         </View>
 
         {/* Title */}
-        <Text className='text-5xl font-bold text-center mb-12'>Sign in</Text>
+        <Text className='text-4xl font-bold text-center mb-6'>Sign in</Text>
 
         {/* Email input */}
         <View className='flex-row items-center bg-gray-100 rounded-2xl px-4 py-3 mt-4 mb-6'>

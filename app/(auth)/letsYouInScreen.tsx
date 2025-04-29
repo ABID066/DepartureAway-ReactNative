@@ -22,13 +22,13 @@ const letsYouInScreen = () => {
         <View className="items-center justify-center mt-5 mb-8">
           <Image
             source={require('@/assets/images/amico.png')}
-            className="w-44 h-4"
+            className="w-40 h-40"
             resizeMode="contain"
           />
         </View>
 
         {/* Title */}
-        <Text className="text-5xl font-bold text-center mb-10">
+        <Text className="text-4xl font-bold text-center mb-10">
           Let's you in
         </Text>
 
