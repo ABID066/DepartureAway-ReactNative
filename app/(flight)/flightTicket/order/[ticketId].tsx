@@ -12,7 +12,7 @@ import { Picker } from "@react-native-picker/picker";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 
-const OrderPage1 = () => {
+const OrderPage = () => {
   const toLocations = [
     {
       airport: "Dhaka",
@@ -47,7 +47,7 @@ const OrderPage1 = () => {
         />
         <TouchableOpacity className='flex-row gap-3 bg-white rounded-xl p-2 border border-[#F2F2F2] absolute -bottom-[55%] px-3 py-4 w-[94%] max-w-[94%] overflow-hidden z-10'>
           <Image
-            source={images?.Rectangle}
+            source={images?.rectangle}
             className='w-24 h-[110px] rounded-lg'
             accessibilityLabel={`Seamless Flight Booking Experience Package image`}
             resizeMode='cover'
@@ -60,7 +60,7 @@ const OrderPage1 = () => {
               Seamless Flight Booking Experience Package
             </Text>
             <View className='flex-row items-center gap-2 my-1'>
-              <Image source={images?.Ellipse} className='w-5 h-5' />
+              <Image source={images?.ellipse} className='w-5 h-5' />
               <Text className='text-xs font-medium text-[#828282]'>
                 Skyward Bliss
               </Text>
@@ -70,6 +70,7 @@ const OrderPage1 = () => {
         </TouchableOpacity>
       </View>
       <ScrollView
+        contentContainerStyle={{ minHeight: "90%", paddingBottom: 24 }}
         showsVerticalScrollIndicator={false}
         className='p-5 flex-1 flex-col gap-5 mt-24'>
         <View className='flex-col gap-4 text-xs text-gray-700'>
@@ -141,9 +142,9 @@ const OrderPage1 = () => {
               </Text>
             </TouchableOpacity>
           </View>
-          <View className='py-24'>
+          <View className='pt-24'>
             <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-3'>
-              <Text className='text-white text-center font-semibold text-sm'>
+              <Text className='text-white text-center font-semibold text-base'>
                 Continue
               </Text>
             </TouchableOpacity>
@@ -154,4 +155,4 @@ const OrderPage1 = () => {
   );
 };
 
-export default OrderPage1;
+export default OrderPage;

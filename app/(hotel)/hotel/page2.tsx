@@ -4,8 +4,8 @@ import { FontAwesome } from "@expo/vector-icons";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 
-const BusinessClassTicket = () => {
-  const [ticketClass, setTicketClass] = useState("Business");
+const HotelPage2 = () => {
+  const [hotelClass, setHotelClass] = useState("Basic Hotel");
   return (
     <View className='w-full h-full bg-white overflow-y-auto overflow-x-hidden shadow-lg flex flex-col'>
       <View className='bg-[#fbb040] p-4 flex-row justify-center relative w-full rounded-bl-[50px] min-h-[158px]'>
@@ -18,7 +18,7 @@ const BusinessClassTicket = () => {
           accessibilityLabel='Departure Away logo, stylized pink and orange circle with text Departure Away'
         />
         <Image
-          source={images?.Rectangle4}
+          source={images?.hotel4}
           className='rounded-xl absolute -bottom-[110%] w-full max-w-[94%] h[210px] mx-auto'
           accessibilityLabel='Eiffel Tower under cloudy sky with dramatic clouds, travel destination'
         />
@@ -68,46 +68,46 @@ const BusinessClassTicket = () => {
         </View>
         <View className='flex-row gap-3 text-xs font-semibold items-center pt-6 my-3 border-t border-[#F2F2F2]'>
           <TouchableOpacity
-            onPress={() => setTicketClass("Economy")}
+            onPress={() => setHotelClass("Basic Hotel")}
             className={`${
-              ticketClass == "Economy" && "bg-[#FF1A5A] rounded-full"
+              hotelClass == "Basic Hotel" && "bg-[#FF1A5A] rounded-full"
             } px-3 py-1`}>
             <Text
               className={`text-base ${
-                ticketClass == "Economy" && "text-white font-semibold"
+                hotelClass == "Basic Hotel" && "text-white font-semibold"
               }`}>
-              Economy ($20)
+              Basic Hotel ($20)
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => setTicketClass("Business")}
+            onPress={() => setHotelClass("Standard Hotel")}
             className={`${
-              ticketClass == "Business" && "bg-[#FF1A5A] rounded-full"
+              hotelClass == "Standard Hotel" && "bg-[#FF1A5A] rounded-full"
             } px-3 py-1`}>
             <Text
               className={`text-base ${
-                ticketClass == "Business" && "text-white font-semibold"
+                hotelClass == "Standard Hotel" && "text-white font-semibold"
               }`}>
-              Business ($50)
+              Standard Hotel ($50)
             </Text>
           </TouchableOpacity>
         </View>
         <View className='border-b border-[#F2F2F2]'>
           <Text className='font-semibold text-[#212121] text-2xl leading-tight'>
-            Seamless Flight Booking Experience Package, Economy
+            I'll make the booking for your honeymoon hotel stay
           </Text>
           <Text className='text-sm text-[#4F4F4F] leading-snug my-5'>
-            Discover stress-free booking with our Economy Seamless Flight
-            Booking Experience Package. Perfect for budget travelers, it
-            combines value and convenience, offering personalized service and
-            exclusive economy deals. Ensure a smooth start to your journey with
-            the best deals, effortlessly.
+            Experience the ultimate in romance and luxury without the hassle of
+            handling reservations yourself. With my personalized honeymoon hotel
+            booking service, I'll take care of securing your dream
+            accommodation. Simply provide your desired destination, dates,
+            <Text> See More</Text>
           </Text>
         </View>
         <View className='py-6 gap-2'>
           <View className='flex-row items-center gap-2'>
             <Image
-              source={images?.Ellipse}
+              source={images?.ellipse}
               className='w-8 h-8 rounded-full'
               accessibilityLabel='Skyward Bliss agency logo, circular icon with initials SB'
             />
@@ -137,4 +137,4 @@ const BusinessClassTicket = () => {
   );
 };
 
-export default BusinessClassTicket;
+export default HotelPage2;
