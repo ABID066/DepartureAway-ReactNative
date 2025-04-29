@@ -12,7 +12,7 @@ import { Picker } from "@react-native-picker/picker";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 
-const OrderPage1 = () => {
+const OrderPage = () => {
   const toLocations = [
     {
       airport: "Dhaka",
@@ -155,4 +155,4 @@ const OrderPage1 = () => {
   );
 };
 
-export default OrderPage1;
+export default OrderPage;

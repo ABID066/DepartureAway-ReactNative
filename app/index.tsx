@@ -15,9 +15,7 @@ const index = () => {
   }, [router]);
 
   return (
-    <View
-    className='flex-1 justify-center items-center bg-yellow-400'
-    >
+    <View className='flex-1 justify-center items-center bg-yellow-400'>
       <Image
         source={require("@/assets/images/logo.png")} // Adjust the path to your actual logo
       />
