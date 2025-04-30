@@ -52,7 +52,7 @@ const letsYouInScreen = () => {
 
           <TouchableOpacity className="flex-row items-center justify-center border border-gray-200 p-4 rounded-full">
             <Image 
-              source={require('@/assets/icons/Frame1.png')} 
+              source={require('@/assets/icons/Frame2.png')} 
               className="w-5 h-5 mr-3" 
             />
             <Text className="text-black-800 text-lg font-bold">Continue with Google</Text>

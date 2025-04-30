@@ -123,7 +123,7 @@ const SignIn = () => {
 
             <TouchableOpacity className='w-20 h-16 rounded-lg bg-blue-50 items-center justify-center'>
               <Image
-                source={require("@/assets/icons/Frame1.png")}
+                source={require("@/assets/icons/Frame2.png")}
                 className='w-6 h-6'
               />
             </TouchableOpacity>

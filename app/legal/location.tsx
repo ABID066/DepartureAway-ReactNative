@@ -9,7 +9,7 @@ const LocationPermissionScreen = () => {
   const handleAllowLocation = () => {
     // Request location permission logic would go here
     // After permission is granted, navigate to the next screen
-    router.push('/home'); // Change this to the appropriate route
+    router.push('/home');
   };
 
   return (
