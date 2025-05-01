@@ -11,8 +11,10 @@ import { Picker } from "@react-native-picker/picker";
 import { FontAwesome } from "@expo/vector-icons";
 import { images } from "@/constants/images";
 import { icons } from "@/constants/icons";
+import { Link, useRouter } from "expo-router";
 
 const FlightTicket = () => {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("All");
   const locations = [
     {
@@ -34,26 +36,30 @@ const FlightTicket = () => {
       title: "Local Sellers",
     },
   ];
-  const sellers = [
+  const tourPackages = [
     {
+      id: 1,
       img: images?.rectangle,
       title: "Seamless Flight Booking Experience Package",
       agency: "Skyward Bliss",
       personImg: images?.ellipse,
     },
     {
+      id: 2,
       img: images?.rectangle1,
       title: "Seamless Flight Booking Experience Package",
       agency: "Royelx tech",
       personImg: images?.ellipse1,
     },
     {
+      id: 3,
       img: images?.rectangle2,
       title: "Seamless Flight Booking Experience Package",
       agency: "Al Hella Agency",
       personImg: images?.ellipse2,
     },
     {
+      id: 4,
       img: images?.rectangle3,
       title: "Seamless Flight Booking Experience Package",
       agency: "Skyward Bliss",
@@ -62,27 +68,34 @@ const FlightTicket = () => {
   ];
   return (
     <View className='w-full h-full bg-white overflow-hidden shadow-lg flex flex-col'>
-      <View className='bg-[#fbb040] p-4 flex-row justify-center relative w-full rounded-bl-[50px] min-h-[158px]'>
-        <TouchableOpacity className='absolute left-[5%] top-11'>
-          <Image source={icons?.arrowLeft} />
+      <View className='bg-[#fbb040] p-4 flex-row justify-center relative w-full rounded-bl-[50px] min-h-[180px] md:min-h-[200px]'>
+        <TouchableOpacity
+          className='absolute left-[5%] top-11'
+          onPress={() => router.back()}>
+          <Image source={icons?.arrowLeft} className='w-6 h-6' />
         </TouchableOpacity>
+
         <Image
           source={images?.logo}
-          className='w-[162px] h-[46px] mt-3'
+          className='w-[40%] max-w-[162px] h-[46px] mt-3'
           accessibilityLabel='Departure Away logo, stylized pink and orange circle with text Departure Away'
+          resizeMode='contain'
         />
-        <View className='bg-white rounded-[20px] shadow-md p-4 absolute -bottom-[45%] px-6 py-4 w-full  max-w-[80%]'>
-          <Text className='text-center font-medium text-[#212121] mb-3 text-lg'>
+
+        <View className='bg-white rounded-[20px] shadow-md p-4 absolute -bottom-[45%] px-4 md:px-6 py-4 w-[90%] max-w-[90%] md:max-w-[80%]'>
+          <Text className='text-center font-medium text-[#212121] mb-3 text-base md:text-lg'>
             Book your Flight
           </Text>
+
           <View className='flex-row items-center gap-2 relative'>
             <TextInput
               placeholder='Where are you going ?'
               placeholderTextColor='#828282'
-              className='rounded-md border border-[#F2F2F2] px-3 py-2 text-sm text-gray-600 w-full h-14'
+              className='rounded-md border border-[#F2F2F2] px-3 py-2 text-sm md:text-base text-gray-600 w-full h-12 md:h-14'
             />
-            <TouchableOpacity className='bg-[#FF1A5A] rounded-[10px] size-[52px] flex items-center justify-center absolute right-0'>
-              <Image source={icons?.search} className='size-6' />
+
+            <TouchableOpacity className='bg-[#FF1A5A] rounded-[10px] w-12 h-12 md:size-[52px] flex items-center justify-center absolute right-0'>
+              <Image source={icons?.search} className='w-5 h-5 md:size-6' />
             </TouchableOpacity>
           </View>
         </View>
@@ -132,34 +145,40 @@ const FlightTicket = () => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           className='max-h-auto pr-1 flex-col gap-3'>
-          {sellers?.map((item, i) => (
-            <TouchableOpacity
+          {tourPackages?.map((item, i) => (
+            <Link
+              href={{
+                pathname: "/flightTicket/agencyDetails/[agencyId]",
+                params: { agencyId: item?.id },
+              }}
               key={i}
-              className='flex-row gap-3 bg-white rounded-xl p-2 w-full border border-[#F2F2F2] mb-3'>
-              <Image
-                source={item?.img}
-                className='w-24 h-[110px] rounded-lg'
-                accessibilityLabel={`${item.title} image`}
-              />
-              <View className='flex-col'>
-                <Text className='text-[#FF1A5A] font-medium'>From $20</Text>
-                <Text className='font-medium leading-tight my-1.5 w-[85%] text-[#000000]'>
-                  {item.title}
-                </Text>
-                <View className='flex-row items-center gap-2 my-1'>
-                  <Image source={item.personImg} className='size-5' />
-                  <Text className='text-xs font-medium text-[#4F4F4F]'>
-                    {item.agency}
+              asChild>
+              <TouchableOpacity className='flex-row gap-3 bg-white rounded-xl p-2 w-full border border-[#F2F2F2] mb-3'>
+                <Image
+                  source={item?.img}
+                  className='w-24 h-[110px] rounded-lg'
+                  accessibilityLabel={`${item.title} image`}
+                />
+                <View className='flex-col'>
+                  <Text className='text-[#FF1A5A] font-medium'>From $20</Text>
+                  <Text className='font-medium leading-tight my-1.5 w-[85%] text-[#000000]'>
+                    {item.title}
                   </Text>
+                  <View className='flex-row items-center gap-2 my-1'>
+                    <Image source={item.personImg} className='size-5' />
+                    <Text className='text-xs font-medium text-[#4F4F4F]'>
+                      {item.agency}
+                    </Text>
+                  </View>
+                  <View className='flex-row items-center gap-1 text-yellow-400 mt-0.5'>
+                    <FontAwesome name='star' size={18} color='#fbbf24' />
+                    <Text className='text-[#000000] ml-1 font-medium text-xs'>
+                      4.9/5 <Text className='text-[#828282] ml-1'> (306)</Text>
+                    </Text>
+                  </View>
                 </View>
-                <View className='flex-row items-center gap-1 text-yellow-400 mt-0.5'>
-                  <FontAwesome name='star' size={18} color='#fbbf24' />
-                  <Text className='text-[#000000] ml-1 font-medium text-xs'>
-                    4.9/5 <Text className='text-[#828282] ml-1'> (306)</Text>
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </Link>
           ))}
         </ScrollView>
       </View>
