@@ -17,16 +17,16 @@ const TermsOfServiceScreen = () => {
         </TouchableOpacity>
         <Text className="text-2xl font-bold ml-4">Terms of Service</Text>
       </View>
+      <ScrollView className="flex-1 px-3 mt-2">
+
+        {/* Last updated text */}
+        <Text className="text-center text-black-800 text-lg">
+          Last Updated July 2023
+        </Text>
+        
+        {/* Divider line */}
+        <View className="h-px bg-gray-200 mx-4 my-4" />
       
-      {/* Last updated text */}
-      <Text className="text-center text-black-800 text-lg">
-        Last Updated July 2023
-      </Text>
-      
-      {/* Divider line */}
-      <View className="h-px bg-gray-200 mx-4 my-4" />
-      
-      <ScrollView className="flex-1 px-4 mt-2">
         {/* Terms and conditions section */}
         <Text className="font-bold text-xl mb-2">Terms and Conditions of Use for Departure Away</Text>
         
@@ -84,7 +84,7 @@ const TermsOfServiceScreen = () => {
       <View className="px-6 mt-10  pb-8">
         <TouchableOpacity 
           className="bg-rose-500 py-4 rounded-full"
-          onPress={() => {}} // Change this to the appropriate route
+          onPress={() => router.push('/legal/location')} // Change this to the appropriate route
         >
           <Text className="text-white text-center font-semibold text-lg">Agree</Text>
         </TouchableOpacity>

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Pressable,
+  ScrollView,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -20,17 +21,18 @@ const SignIn = () => {
 
   return (
     <SafeAreaView className='flex-1 bg-white'>
+      <ScrollView>
       {/* Back button */}
       <View className='p-4'>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name='arrow-back' size={24} color='black' />
         </TouchableOpacity>
       </View>
-
+      
       {/* Main content */}
       <View className='flex-1 px-8'>
         {/* Logo */}
-        <View className='items-center justify-center mb-12 mt-4'>
+        <View className='items-center justify-center mb-12'>
           <Image
             source={require("@/assets/images/logo.png")}
             className='w-41 h-16'
@@ -39,7 +41,7 @@ const SignIn = () => {
         </View>
 
         {/* Title */}
-        <Text className='text-5xl font-bold text-center mb-12'>Sign in</Text>
+        <Text className='text-4xl font-bold text-center mb-6'>Sign in</Text>
 
         {/* Email input */}
         <View className='flex-row items-center bg-gray-100 rounded-2xl px-4 py-3 mt-4 mb-6'>
@@ -85,7 +87,7 @@ const SignIn = () => {
               <Ionicons name='checkmark' size={12} color='white' />
             )}
           </TouchableOpacity>
-          <Text className='ml-2 text-lg font-bold text-black-700'>
+          <Text className='ml-2 text-md font-bold text-black-700'>
             Remember me
           </Text>
         </View>
@@ -103,7 +105,7 @@ const SignIn = () => {
         <View className='items-center mb-6'>
           <View className='flex-row items-center justify-center  '>
             <View className='flex-1 h-px bg-gray-300'></View>
-            <Text className='mx-4 text-xl font-bold text-gray-500 my-4'>
+            <Text className='mx-4 text-md font-bold text-gray-500 my-4'>
               or continue with
             </Text>
             <View className='flex-1 h-px bg-gray-300'></View>
@@ -121,7 +123,7 @@ const SignIn = () => {
 
             <TouchableOpacity className='w-20 h-16 rounded-lg bg-blue-50 items-center justify-center'>
               <Image
-                source={require("@/assets/icons/Frame1.png")}
+                source={require("@/assets/icons/Frame2.png")}
                 className='w-6 h-6'
               />
             </TouchableOpacity>
@@ -129,17 +131,18 @@ const SignIn = () => {
         </View>
 
         {/* Create account link */}
-        <View className='flex-row justify-center mt-4'>
-          <Text className='text-lg text-gray-500 font-medium'>
+        <View className='flex-row justify-center mt-4 mb-10'>
+          <Text className='text-md text-gray-500 font-medium'>
             Don't have an account yet?{" "}
           </Text>
           <TouchableOpacity onPress={() => router.push("/signUp")}>
-            <Text className='text-xl text-blue-800 font-bold'>
+            <Text className='text-md text-blue-800 font-bold'>
               Create Account
             </Text>
           </TouchableOpacity>
         </View>
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
