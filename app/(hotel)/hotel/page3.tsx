@@ -12,9 +12,10 @@ import { Picker } from "@react-native-picker/picker";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 import Header2 from "@/components/Shared/Header2";
+import { Link } from "expo-router";
 
 const HotelPage3 = () => {
-  const [preferredLocations] = [
+  const preferredLocations = [
     {
       airport: "Dubai",
       country: "UAE",
@@ -26,7 +27,7 @@ const HotelPage3 = () => {
   ];
   return (
     <View className='w-full min-h-screen h-auto bg-white overflow-x-hidden shadow-lg  flex-col'>
-      {<Header2/>}
+      {<Header2 />}
       <ScrollView
         contentContainerStyle={{ minHeight: "60%", paddingBottom: 24 }}
         showsVerticalScrollIndicator={false}
@@ -40,7 +41,7 @@ const HotelPage3 = () => {
               selectedValue={"Dubai, UAE"}
               onValueChange={() => {}}
               className='w-full rounded-[20px] border border-gray-200 px-3 py-2 text-base text-[#212121] bg-[#FAFAFA]'>
-              {[preferredLocations]?.map((location, i) => (
+              {preferredLocations?.map((location, i) => (
                 <Picker.Item
                   key={i + 1}
                   label={`${location?.airport}, ${location?.country}`}
@@ -71,11 +72,13 @@ const HotelPage3 = () => {
           </View>
         </View>
         <View className='pt-24 mt-auto'>
+          <Link href={"/hotel/payment/page1"} asChild>
           <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-3'>
             <Text className='text-white text-center font-semibold text-base'>
               Continue
             </Text>
           </TouchableOpacity>
+          </Link>
         </View>
       </ScrollView>
     </View>

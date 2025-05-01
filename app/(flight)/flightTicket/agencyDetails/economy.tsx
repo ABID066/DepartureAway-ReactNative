@@ -3,24 +3,38 @@ import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
+import { useRouter } from "expo-router";
 
 const EconomyClassTicket = () => {
+  const router = useRouter();
   const [ticketClass, setTicketClass] = useState("Economy");
   return (
     <View className='w-full h-full bg-white overflow-y-auto overflow-x-hidden shadow-lg flex flex-col'>
-      <View className='bg-[#fbb040] p-4 flex-row justify-center relative w-full rounded-bl-[50px] min-h-[158px]'>
-        <TouchableOpacity className='absolute left-[4%] top-11'>
-          <Image source={icons?.arrowLeft} />
+      <View className='bg-[#fbb040] p-4 flex-row justify-center relative w-full rounded-bl-[50px] min-h-[180px] md:min-h-[200px]'>
+        <TouchableOpacity
+          className='absolute left-[4%] top-11'
+          onPress={() => {
+            if (router.canGoBack()) {
+              router.back();
+            } else {
+              router.push("/flightTicket"); // fallback to home
+            }
+          }}>
+          <Image source={icons?.arrowLeft} className='w-6 h-6' />
         </TouchableOpacity>
+
         <Image
           source={images?.logo}
-          className='w-[162px] h-[46px] mt-3'
+          className='w-[40%] max-w-[162px] h-[46px] mt-3'
           accessibilityLabel='Departure Away logo, stylized pink and orange circle with text Departure Away'
+          resizeMode='contain'
         />
+
         <Image
           source={images?.rectangle4}
-          className='rounded-xl absolute -bottom-[110%] w-full max-w-[94%] h[210px] mx-auto'
+          className='rounded-xl absolute -bottom-[80%] w-[94%] max-w-[94%] h-[200px] md:h-[210px] mx-auto'
           accessibilityLabel='Eiffel Tower under cloudy sky with dramatic clouds, travel destination'
+          resizeMode='cover'
         />
       </View>
       <ScrollView

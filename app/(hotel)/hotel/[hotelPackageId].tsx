@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
+import { Link } from "expo-router";
 
 const HotelPage2 = () => {
   const [hotelClass, setHotelClass] = useState("Basic Hotel");
@@ -123,9 +124,11 @@ const HotelPage2 = () => {
           </View>
         </View>
         <View className='flex-row gap-3 mt-auto pb-12'>
+          <Link href={"/hotel/page3"} asChild>
           <TouchableOpacity className='border border-[#FF1A5A] rounded-full flex-grow px-4 py-[18px]'>
             <Text className='text-center text-base text-[#FF1A5A]'>Order</Text>
           </TouchableOpacity>
+          </Link>
           <TouchableOpacity className='bg-[#FF1A5A] rounded-full flex-grow px-4 py-[18px] shadow-lg'>
             <Text className='text-center text-white text-base font-semibold'>
               Chat

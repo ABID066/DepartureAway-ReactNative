@@ -1,12 +1,26 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, type ImageSourcePropType } from "react-native";
 import React from "react";
 import { images } from "@/constants/images";
 import { icons } from "@/constants/icons";
+import { useRouter } from "expo-router";
 
-const Header2 = () => {
+interface ItemProps {
+  id?: number;
+  img?: ImageSourcePropType | undefined;
+  title?: string;
+  agency?: string;
+  personImg?: ImageSourcePropType | undefined;
+}
+
+interface Header2Props {
+  item?: ItemProps
+}
+
+const Header2 = ({item}: Header2Props) => {
+  const router = useRouter()
   return (
     <View className='bg-[#fbb040] p-4 flex-row justify-center relative w-full rounded-bl-[50px] min-h-[180px]'>
-      <TouchableOpacity className='absolute left-[5%] top-11'>
+      <TouchableOpacity className='absolute left-[5%] top-11' onPress={() => router.back()}>
         <Image source={icons?.arrowLeft} className='w-6 h-6' />
       </TouchableOpacity>
       <Image

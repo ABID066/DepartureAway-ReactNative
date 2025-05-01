@@ -10,10 +10,55 @@ import {
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { icons } from "@/constants/icons";
-import { images } from "@/constants/images";
 import Header2 from "@/components/Shared/Header2";
+import { useLocalSearchParams } from "expo-router/build/hooks";
+import { images } from "@/constants/images";
+import { Link } from "expo-router";
 
 const OrderPage = () => {
+  const { packageId } = useLocalSearchParams();
+  console.log(typeof packageId, packageId);
+  const tourPackages = [
+    {
+      id: 1,
+      img: images?.rectangle,
+      title: "Seamless Flight Booking Experience Package",
+      agency: "Skyward Bliss",
+      personImg: images?.ellipse,
+    },
+    {
+      id: 2,
+      img: images?.rectangle1,
+      title: "Seamless Flight Booking Experience Package",
+      agency: "Royelx tech",
+      personImg: images?.ellipse1,
+    },
+    {
+      id: 3,
+      img: images?.rectangle2,
+      title: "Seamless Flight Booking Experience Package",
+      agency: "Al Hella Agency",
+      personImg: images?.ellipse2,
+    },
+    {
+      id: 4,
+      img: images?.rectangle3,
+      title: "Seamless Flight Booking Experience Package",
+      agency: "Skyward Bliss",
+      personImg: images?.ellipse,
+    },
+  ];
+
+  const tourPackage = tourPackages.find(
+    (item) => item.id.toString() === packageId
+  ) || {
+    id: 0, // Default values
+    img: images?.rectangle, // Fallback image
+    title: "Default Package",
+    agency: "Default Agency",
+    personImg: images?.ellipse, // Fallback image
+  };
+
   const toLocations = [
     {
       airport: "Dhaka",
@@ -36,7 +81,7 @@ const OrderPage = () => {
   ];
   return (
     <View className='w-full min-h-screen h-auto bg-white overflow-x-hidden shadow-lg  flex-col'>
-      <Header2/>
+      <Header2 item={tourPackage} />
       <ScrollView
         contentContainerStyle={{ minHeight: "90%", paddingBottom: 24 }}
         showsVerticalScrollIndicator={false}
@@ -111,11 +156,13 @@ const OrderPage = () => {
             </TouchableOpacity>
           </View>
           <View className='pt-24'>
-            <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-3'>
-              <Text className='text-white text-center font-semibold text-base'>
-                Continue
-              </Text>
-            </TouchableOpacity>
+            <Link href={{ pathname: "/flightTicket/order/payment/page1" }} asChild>
+              <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-3'>
+                <Text className='text-white text-center font-semibold text-base'>
+                  Continue
+                </Text>
+              </TouchableOpacity>
+            </Link>
           </View>
         </View>
       </ScrollView>

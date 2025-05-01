@@ -4,12 +4,13 @@ import { FontAwesome } from "@expo/vector-icons";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 import Header1 from "@/components/Shared/Header1";
+import { Link } from "expo-router";
 
 const AgencyDetailsPage = () => {
   const [ticketClass, setTicketClass] = useState("Business");
   return (
     <View className='w-full h-full bg-white overflow-y-auto overflow-x-hidden shadow-lg flex flex-col'>
-      {<Header1/>}
+      {<Header1 />}
       <ScrollView
         showsVerticalScrollIndicator={false}
         className='px-6 flex-1 flex-col gap-4 mt-48'>
@@ -110,9 +111,18 @@ const AgencyDetailsPage = () => {
           </View>
         </View>
         <View className='flex-row gap-3 mt-auto pb-12'>
-          <TouchableOpacity className='border border-[#FF1A5A] rounded-full flex-grow px-4 py-[18px]'>
-            <Text className='text-center text-base text-[#FF1A5A]'>Order</Text>
-          </TouchableOpacity>
+          <Link
+            href={{
+              pathname: "/flightTicket/order/[packageId]",
+              params: { packageId: 1 },
+            }}
+            asChild>
+            <TouchableOpacity className='border border-[#FF1A5A] rounded-full flex-grow px-4 py-[18px]'>
+              <Text className='text-center text-base text-[#FF1A5A]'>
+                Order
+              </Text>
+            </TouchableOpacity>
+          </Link>
           <TouchableOpacity className='bg-[#FF1A5A] rounded-full flex-grow px-4 py-[18px] shadow-lg'>
             <Text className='text-center text-white text-base font-semibold'>
               Chat
