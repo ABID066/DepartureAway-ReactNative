@@ -13,7 +13,7 @@ import { icons } from "@/constants/icons";
 
 const AddNewPaymentCard = () => {
   return (
-    <View className='w-full min-h-screen h-auto bg-white overflow-x-hidden shadow-lg  flex-col'>
+    <View className='w-full min-h-screen h-auto bg-white overflow-x-hidden shadow-lg'>
       {<Header2 />}
       <ScrollView
         contentContainerStyle={{
@@ -25,7 +25,7 @@ const AddNewPaymentCard = () => {
         }}
         
         showsVerticalScrollIndicator={false}>
-        <View className='w-full h-[239px] rounded-[44px] overflow-hidden bg-[#FF1A5A] shadow-[0_20px_40px_rgba(255,26,90,0.24)] relative mt-24'>
+        <View className='w-full h-[239px] rounded-[44px] overflow-hidden bg-[#FF1A5A] shadow-[0_20px_40px_0px_rgba(255,26,90,0.24)] relative mt-24'>
           <View className='relative flex-1 p-6 justify-between text-white'>
             <View className='flex-row justify-end '>
               <Image
@@ -62,7 +62,7 @@ const AddNewPaymentCard = () => {
               Card Name
             </Text>
             <TextInput
-              className='w-full rounded-lg bg-gray-100 text-gray-900 text-sm font-normal px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-500'
+              className='w-full rounded-lg bg-gray-100 text-gray-900 text-sm font-normal px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FF1A5A]'
               placeholder='Samiul Islam'
               placeholderTextColor='#999'
             />
@@ -73,7 +73,7 @@ const AddNewPaymentCard = () => {
               Card Number
             </Text>
             <TextInput
-              className='w-full rounded-lg bg-gray-100 text-gray-900 text-sm font-normal px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-500'
+              className='w-full rounded-lg bg-gray-100 text-gray-900 text-sm font-normal px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FF1A5A]'
               placeholder='2672 4738 7837 7285'
               placeholderTextColor='#999'
               keyboardType='numeric'
@@ -87,7 +87,7 @@ const AddNewPaymentCard = () => {
               </Text>
               <View className='relative'>
                 <TextInput
-                  className='w-full rounded-lg bg-gray-100 text-gray-900 text-sm font-normal px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-pink-500'
+                  className='w-full rounded-lg bg-gray-100 text-gray-900 text-sm font-normal px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-[#FF1A5A]'
                   placeholder='MM/DD/YY'
                   placeholderTextColor='#999'
                   keyboardType='numeric'
@@ -112,7 +112,7 @@ const AddNewPaymentCard = () => {
                 CVV
               </Text>
               <TextInput
-                className='w-full rounded-lg bg-gray-100 text-gray-900 text-sm font-normal px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-500'
+                className='w-full rounded-lg bg-gray-100 text-gray-900 text-sm font-normal px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FF1A5A]'
                 placeholder='699'
                 placeholderTextColor='#999'
                 keyboardType='numeric'
