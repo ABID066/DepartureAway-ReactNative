@@ -16,8 +16,7 @@ const AppLayout = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <Slot />{" "}
-      {/* This will render the current screen based on the navigation */}
+      <Slot />
     </View>
   );
 };
