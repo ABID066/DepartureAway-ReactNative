@@ -11,7 +11,7 @@ import Header2 from "../Shared/Header2";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { icons } from "@/constants/icons";
 
-const AddNewPaymentCard = () => {
+const AddNewPaymentCardComponent = () => {
   return (
     <View className='w-full min-h-screen h-auto bg-white overflow-x-hidden shadow-lg'>
       {<Header2 />}
@@ -134,4 +134,4 @@ const AddNewPaymentCard = () => {
   );
 };
 
-export default AddNewPaymentCard;
+export default AddNewPaymentCardComponent;

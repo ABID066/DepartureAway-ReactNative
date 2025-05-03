@@ -72,12 +72,12 @@ const HotelPage3 = () => {
           </View>
         </View>
         <View className='pt-24 mt-auto'>
-          <Link href={"/hotel/payment/page1"} asChild>
-          <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-5'>
-            <Text className='text-white text-center font-semibold text-base'>
-              Continue
-            </Text>
-          </TouchableOpacity>
+          <Link href={"/payment/selectPaymentMethod"} asChild>
+            <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-5'>
+              <Text className='text-white text-center font-semibold text-base'>
+                Continue
+              </Text>
+            </TouchableOpacity>
           </Link>
         </View>
       </ScrollView>
