@@ -157,7 +157,7 @@ const OrderPage = () => {
           </View>
           <View className='pt-24'>
             <Link href={{ pathname: "/flightTicket/order/payment/selectPaymentMethod" }} asChild>
-              <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-3'>
+              <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-5'>
                 <Text className='text-white text-center font-semibold text-base'>
                   Continue
                 </Text>

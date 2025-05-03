@@ -6,6 +6,8 @@ import frame3 from "@/assets/icons/Frame3.png";
 import selected from "@/assets/icons/Selected.png";
 import unselected from "@/assets/icons/Unselected.png";
 import aiChat from "@/assets/icons/ai-chat-02.png";
+import exclude from "@/assets/icons/exclude.png";
+import group from "@/assets/icons/group.png";
 
 export const icons = {
   search,
@@ -16,4 +18,6 @@ export const icons = {
   frame3,
   selected,
   unselected,
+  exclude,
+  group
 };

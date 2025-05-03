@@ -44,7 +44,7 @@ const PaymentMethodSelectPage = () => {
           </TouchableOpacity>
         </View>
         <View className='py-24'>
-          <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-3'>
+          <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-5'>
             <Text className='text-white text-center font-semibold text-base'>
               Continue
             </Text>
