@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { icons } from "@/constants/icons";
 import PaymentMethodItem from "@/components/Payment/PaymentMethodItem";
 import Header2 from "../Shared/Header2";
+import { Link } from "expo-router";
 
 const paymentMethods: PaymentMethod[] = [
   { id: "1", name: "PayPal", logo: icons?.frame1 },
@@ -35,6 +36,8 @@ const PaymentMethodSelectPage = () => {
               setSelectedMethod={setSelectedMethod}
             />
           ))}
+          <Link href={"/payment/AddNewPaymentCard"} asChild>
+          
           <TouchableOpacity
             className='bg-[#FF1A5A1A] py-[18px] px-4 rounded-[100px]'
             onPress={() => {
@@ -42,13 +45,16 @@ const PaymentMethodSelectPage = () => {
             }}>
             <Text className='text-center text-[#FF1A5A]'>Add New Card</Text>
           </TouchableOpacity>
+          </Link>
         </View>
         <View className='py-24'>
-          <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-5'>
-            <Text className='text-white text-center font-semibold text-base'>
-              Continue
-            </Text>
-          </TouchableOpacity>
+          <Link href={"/payment/addNewPaymentCard"} asChild>
+            <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-5'>
+              <Text className='text-white text-center font-semibold text-base'>
+                Continue
+              </Text>
+            </TouchableOpacity>
+          </Link>
         </View>
       </ScrollView>
     </View>

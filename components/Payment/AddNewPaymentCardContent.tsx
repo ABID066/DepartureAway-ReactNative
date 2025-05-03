@@ -10,8 +10,9 @@ import React from "react";
 import Header2 from "../Shared/Header2";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { icons } from "@/constants/icons";
+import { Link } from "expo-router";
 
-const AddNewPaymentCardComponent = () => {
+const AddNewPaymentCardContent = () => {
   return (
     <View className='w-full min-h-screen h-auto bg-white overflow-x-hidden shadow-lg'>
       {<Header2 />}
@@ -121,17 +122,20 @@ const AddNewPaymentCardComponent = () => {
             </View>
           </View>
 
+          <Link href={"/payment/paymentSummary"} asChild>
           <TouchableOpacity
             className='w-full bg-[#FF1A5A] active:bg-[#FF1A5A] text-white font-semibold text-sm rounded-[100px] py-5 mt-6 shadow-[4px_8px_24px_0px_rgba(255,31,87,0.5)]'
-            accessibilityRole='button'>
+            accessibilityRole='button'
+            >
             <Text className='text-center text-white font-semibold text-base'>
               Add
             </Text>
           </TouchableOpacity>
+          </Link>
         </View>
       </ScrollView>
     </View>
   );
 };
 
-export default AddNewPaymentCardComponent;
+export default AddNewPaymentCardContent;

@@ -1,12 +1,10 @@
-import { View, Text } from "react-native";
-import React from "react";
-import AddNewPaymentCardComponent from "@/components/Payment/AddNewPaymentCardComponent";
+import AddNewPaymentCardContent from "@/components/Payment/AddNewPaymentCardContent";
 
 const AddNewPaymentCard = () => {
   return (
-    <View>
-      <AddNewPaymentCardComponent />
-    </View>
+    <>
+      <AddNewPaymentCardContent />
+    </>
   );
 };
 

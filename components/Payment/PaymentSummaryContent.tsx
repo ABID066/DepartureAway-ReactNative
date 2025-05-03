@@ -1,12 +1,10 @@
 import { ScrollView, View, Text, Image, TouchableOpacity } from "react-native";
-import Header2 from "../Shared/Header2";
 import { Link } from "expo-router";
 import { icons } from "@/constants/icons";
 
-const PaymentSummary = () => {
+const PaymentSummaryContent = () => {
   return (
-    <View className='w-full min-h-screen h-auto bg-white overflow-x-hidden shadow-lg'>
-      {<Header2 />}
+    <>
       <ScrollView
         contentContainerStyle={{
           paddingBottom: 20,
@@ -82,8 +80,8 @@ const PaymentSummary = () => {
           </Link>
         </View>
       </ScrollView>
-    </View>
+    </>
   );
 };
 
-export default PaymentSummary;
+export default PaymentSummaryContent;
