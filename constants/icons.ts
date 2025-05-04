@@ -11,6 +11,12 @@ import aiChat from "@/assets/icons/ai-chat-02.png";
 import exclude from "@/assets/icons/exclude.png";
 import group from "@/assets/icons/group.png";
 import paid from "@/assets/icons/paid.png";
+import call from "@/assets/icons/Call.png";
+import send from "@/assets/icons/Send.png";
+import readIcon from "@/assets/icons/readIcon.png";
+import smileIcon from "@/assets/icons/smile-icon.png";
+import attachIcon from "@/assets/icons/attach-icon.png";
+import moreCircle from "@/assets/icons/More-Circle.png";
 
 export const icons = {
   search,
@@ -26,5 +32,10 @@ export const icons = {
   exclude,
   group,
   paid,
-  
+  attachIcon,
+  moreCircle,
+  call,
+  send,
+  smileIcon,
+  readIcon,
 };
