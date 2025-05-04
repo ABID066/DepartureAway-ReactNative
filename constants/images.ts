@@ -14,6 +14,7 @@ import hotel3 from "@/assets/images/Rectangle-2258-h3.png";
 import hotel4 from "@/assets/images/Rectangle-2259-h4.png";
 import errorModal from "@/assets/images/ErrorModal.png";
 import successModal from "@/assets/images/SuccessModal.png";
+import paidBarCode from "@/assets/images/Auto-Layout-Horizontal.png";
 
 export const images = {
   logo,
@@ -32,4 +33,5 @@ export const images = {
   hotel4,
   errorModal,
   successModal,
+  paidBarCode,
 };

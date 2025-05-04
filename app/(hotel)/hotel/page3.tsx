@@ -11,7 +11,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
-import Header2 from "@/components/Shared/Header2";
+import Header2 from "@/components/Shared/(Headers)/Header2";
 import { Link } from "expo-router";
 
 const HotelPage3 = () => {

@@ -2,12 +2,12 @@ import { Text, View } from "react-native";
 import React, { useState } from "react";
 import PaymentSummaryContent from "@/components/Payment/PaymentSummaryContent";
 import PaymentErrorModal from "@/components/Payment/PaymentErrorModal";
-import Header2 from "@/components/Shared/Header2";
+import Header2 from "@/components/Shared/(Headers)/Header2";
 import PaymentSuccessModal from "@/components/Payment/PaymentSuccessModal";
 
 const PaymentSummary = () => {
   const [showPaymentErrorModal, setShowPaymentErrorModal] = useState(false);
-  const [showPaymentSuccessModal, setShowPaymentSuccessModal] = useState(true);
+  const [showPaymentSuccessModal, setShowPaymentSuccessModal] = useState(false);
   return (
     <View className='w-full min-h-screen h-auto bg-white overflow-x-hidden'>
       <Header2 />

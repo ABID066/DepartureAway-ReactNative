@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { useState } from "react";
 import { icons } from "@/constants/icons";
 import PaymentMethodItem from "@/components/Payment/PaymentMethodItem";
-import Header2 from "../Shared/Header2";
+import Header2 from "../Shared/(Headers)/Header2";
 import { Link } from "expo-router";
 
 const paymentMethods: PaymentMethod[] = [
@@ -37,14 +37,13 @@ const PaymentMethodSelectPage = () => {
             />
           ))}
           <Link href={"/payment/AddNewPaymentCard"} asChild>
-          
-          <TouchableOpacity
-            className='bg-[#FF1A5A1A] py-[18px] px-4 rounded-[100px]'
-            onPress={() => {
-              /* navigation logic */
-            }}>
-            <Text className='text-center text-[#FF1A5A]'>Add New Card</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              className='bg-[#FF1A5A1A] py-[18px] px-4 rounded-[100px]'
+              onPress={() => {
+                /* navigation logic */
+              }}>
+              <Text className='text-center text-[#FF1A5A]'>Add New Card</Text>
+            </TouchableOpacity>
           </Link>
         </View>
         <View className='py-24'>

@@ -10,7 +10,7 @@ import {
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { icons } from "@/constants/icons";
-import Header2 from "@/components/Shared/Header2";
+import Header2 from "@/components/Shared/(Headers)/Header2";
 import { useLocalSearchParams } from "expo-router/build/hooks";
 import { images } from "@/constants/images";
 import { Link } from "expo-router";

@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
-import Header1 from "@/components/Shared/Header1";
+import Header1 from "@/components/Shared/(Headers)/Header1";
 import { Link } from "expo-router";
 
 const AgencyDetailsPage = () => {

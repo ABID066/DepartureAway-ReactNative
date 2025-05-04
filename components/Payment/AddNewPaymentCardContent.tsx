@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from "react-native";
 import React from "react";
-import Header2 from "../Shared/Header2";
+import Header2 from "../Shared/(Headers)/Header2";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { icons } from "@/constants/icons";
 import { Link } from "expo-router";
@@ -24,7 +24,6 @@ const AddNewPaymentCardContent = () => {
           paddingBottom: 40,
           minHeight: "95%",
         }}
-        
         showsVerticalScrollIndicator={false}>
         <View className='w-full h-[239px] rounded-[44px] overflow-hidden bg-[#FF1A5A] shadow-[0_20px_40px_0px_rgba(255,26,90,0.24)] relative mt-24'>
           <View className='relative flex-1 p-6 justify-between text-white'>
@@ -123,14 +122,13 @@ const AddNewPaymentCardContent = () => {
           </View>
 
           <Link href={"/payment/paymentSummary"} asChild>
-          <TouchableOpacity
-            className='w-full bg-[#FF1A5A] active:bg-[#FF1A5A] text-white font-semibold text-sm rounded-[100px] py-5 mt-6 shadow-[4px_8px_24px_0px_rgba(255,31,87,0.5)]'
-            accessibilityRole='button'
-            >
-            <Text className='text-center text-white font-semibold text-base'>
-              Add
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              className='w-full bg-[#FF1A5A] active:bg-[#FF1A5A] text-white font-semibold text-sm rounded-[100px] py-5 mt-6 shadow-[4px_8px_24px_0px_rgba(255,31,87,0.5)]'
+              accessibilityRole='button'>
+              <Text className='text-center text-white font-semibold text-base'>
+                Add
+              </Text>
+            </TouchableOpacity>
           </Link>
         </View>
       </ScrollView>
