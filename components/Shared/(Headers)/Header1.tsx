@@ -23,7 +23,7 @@ const Header1 = () => {
 
       <Image
         source={images?.rectangle4}
-        className='rounded-xl absolute -bottom-[80%] w-[94%] max-w-[94%] h-[200px] md:h-[210px] mx-auto'
+        className='rounded-xl absolute -bottom-[80%] w-[94%] max-w-[94%] h-[200px] md:h-[210px] mx-auto z-10'
         accessibilityLabel='Eiffel Tower under cloudy sky with dramatic clouds, travel destination'
         resizeMode='cover'
       />

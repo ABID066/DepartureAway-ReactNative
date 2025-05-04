@@ -10,7 +10,7 @@ import {
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { icons } from "@/constants/icons";
-import Header2 from "@/components/Shared/Header2";
+import Header2 from "@/components/Shared/(Headers)/Header2";
 import { useLocalSearchParams } from "expo-router/build/hooks";
 import { images } from "@/constants/images";
 import { Link } from "expo-router";
@@ -156,8 +156,8 @@ const OrderPage = () => {
             </TouchableOpacity>
           </View>
           <View className='pt-24'>
-            <Link href={{ pathname: "/flightTicket/order/payment/page1" }} asChild>
-              <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-3'>
+            <Link href={{ pathname: "/payment/selectPaymentMethod" }} asChild>
+              <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-5'>
                 <Text className='text-white text-center font-semibold text-base'>
                   Continue
                 </Text>

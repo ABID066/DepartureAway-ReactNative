@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
-import Header1 from "@/components/Shared/Header1";
+import Header1 from "@/components/Shared/(Headers)/Header1";
 import { Link } from "expo-router";
 
 const AgencyDetailsPage = () => {
-  const [ticketClass, setTicketClass] = useState("Business");
+  const [ticketClass, setTicketClass] = useState("Economy");
   return (
     <View className='w-full h-full bg-white overflow-y-auto overflow-x-hidden shadow-lg flex flex-col'>
       {<Header1 />}
@@ -123,11 +122,13 @@ const AgencyDetailsPage = () => {
               </Text>
             </TouchableOpacity>
           </Link>
+          <Link href={"/liveChat"} asChild>
           <TouchableOpacity className='bg-[#FF1A5A] rounded-full flex-grow px-4 py-[18px] shadow-lg'>
             <Text className='text-center text-white text-base font-semibold'>
               Chat
             </Text>
           </TouchableOpacity>
+          </Link>
         </View>
       </ScrollView>
     </View>

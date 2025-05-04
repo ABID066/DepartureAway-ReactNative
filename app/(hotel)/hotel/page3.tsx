@@ -11,7 +11,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
-import Header2 from "@/components/Shared/Header2";
+import Header2 from "@/components/Shared/(Headers)/Header2";
 import { Link } from "expo-router";
 
 const HotelPage3 = () => {
@@ -72,12 +72,12 @@ const HotelPage3 = () => {
           </View>
         </View>
         <View className='pt-24 mt-auto'>
-          <Link href={"/hotel/payment/page1"} asChild>
-          <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-3'>
-            <Text className='text-white text-center font-semibold text-base'>
-              Continue
-            </Text>
-          </TouchableOpacity>
+          <Link href={"/payment/selectPaymentMethod"} asChild>
+            <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-5'>
+              <Text className='text-white text-center font-semibold text-base'>
+                Continue
+              </Text>
+            </TouchableOpacity>
           </Link>
         </View>
       </ScrollView>

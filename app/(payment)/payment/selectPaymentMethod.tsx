@@ -1,7 +1,7 @@
 import React from "react";
 import PaymentMethodSelectPage from "@/components/Payment/PaymentMethodSelectPage";
 
-const HotelPaymentPage1 = () => {
+const SelectPaymentMethod = () => {
   return (
     <>
       <PaymentMethodSelectPage />
@@ -9,4 +9,4 @@ const HotelPaymentPage1 = () => {
   );
 };
 
-export default HotelPaymentPage1;
+export default SelectPaymentMethod;
