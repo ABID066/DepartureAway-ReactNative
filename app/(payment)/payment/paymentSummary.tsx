@@ -7,7 +7,7 @@ import PaymentSuccessModal from "@/components/Payment/PaymentSuccessModal";
 
 const PaymentSummary = () => {
   const [showPaymentErrorModal, setShowPaymentErrorModal] = useState(false);
-  const [showPaymentSuccessModal, setShowPaymentSuccessModal] = useState(false);
+  const [showPaymentSuccessModal, setShowPaymentSuccessModal] = useState(true);
   return (
     <View className='w-full min-h-screen h-auto bg-white overflow-x-hidden'>
       <Header2 />
