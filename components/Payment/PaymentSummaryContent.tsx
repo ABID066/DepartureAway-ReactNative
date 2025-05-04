@@ -1,8 +1,13 @@
 import { ScrollView, View, Text, Image, TouchableOpacity } from "react-native";
 import { Link } from "expo-router";
 import { icons } from "@/constants/icons";
+import React from "react";
 
-const PaymentSummaryContent = () => {
+interface contentPaymentProps {
+  continuePayment: () => void;
+}
+
+const PaymentSummaryContent = ({ continuePayment }: contentPaymentProps) => {
   return (
     <>
       <ScrollView
@@ -71,13 +76,13 @@ const PaymentSummaryContent = () => {
           </TouchableOpacity>
         </View>
         <View className='pt-24'>
-          <Link href={"/home"} asChild>
-            <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-5'>
-              <Text className='text-white text-center font-semibold text-base'>
-                Continue
-              </Text>
-            </TouchableOpacity>
-          </Link>
+          <TouchableOpacity
+            onPress={() => continuePayment()}
+            className='bg-[#FF1A5A] rounded-full py-5'>
+            <Text className='text-white text-center font-semibold text-base'>
+              Continue
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </>

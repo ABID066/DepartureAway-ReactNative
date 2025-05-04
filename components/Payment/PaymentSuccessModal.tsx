@@ -1,5 +1,6 @@
 import { images } from "@/constants/images";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
+import React from "react";
 import { View, Text, Modal, TouchableOpacity, Image } from "react-native";
 
 interface PaymentSuccessModalProps {
@@ -40,11 +41,13 @@ const PaymentSuccessModal = ({
             </Text>
           </View>
           <View className='w-full gap-2'>
-            <TouchableOpacity className='w-full py-[18px] rounded-[100px] bg-[#FF1A5A] focus:outline-none focus:ring-0'>
-              <Text className='text-center text-white font-bold text-base'>
-                View E-Receipt
-              </Text>
-            </TouchableOpacity>
+            <Link href={"/payment/paymentReceipt"} asChild>
+              <TouchableOpacity className='w-full py-[18px] rounded-[100px] bg-[#FF1A5A] focus:outline-none focus:ring-0'>
+                <Text className='text-center text-white font-bold text-base'>
+                  View E-Receipt
+                </Text>
+              </TouchableOpacity>
+            </Link>
             <TouchableOpacity
               onPress={() => Cancel()}
               className='w-full py-[18px] rounded-[100px] bg-[#FF1A5A1A] focus:outline-none focus:ring-0'>

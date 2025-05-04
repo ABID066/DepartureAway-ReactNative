@@ -3,6 +3,7 @@ import React from "react";
 import { icons } from "@/constants/icons";
 import Header2 from "../Shared/(Headers)/Header2";
 import Header3 from "../Shared/(Headers)/Header3";
+import { Link } from "expo-router";
 
 const PaymentReceiptContent = () => {
   return (
@@ -97,22 +98,14 @@ const PaymentReceiptContent = () => {
               Downloads
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity className='w-full py-[18px] rounded-[100px] bg-[#FF1A5A] focus:outline-none focus:ring-0'>
-            <Text className='text-center text-white font-bold text-base'>
-              Continue
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* <View>
           <Link href={"/home"} asChild>
-            <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-5'>
-              <Text className='text-white text-center font-semibold text-base'>
+            <TouchableOpacity className='w-full py-[18px] rounded-[100px] bg-[#FF1A5A] focus:outline-none focus:ring-0'>
+              <Text className='text-center text-white font-bold text-base'>
                 Continue
               </Text>
             </TouchableOpacity>
           </Link>
-        </View> */}
+        </View>
       </ScrollView>
     </View>
   );
