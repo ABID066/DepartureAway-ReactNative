@@ -36,7 +36,7 @@ const PaymentMethodSelectPage = () => {
               setSelectedMethod={setSelectedMethod}
             />
           ))}
-          <Link href={"/payment/AddNewPaymentCard"} asChild>
+          <Link href={"/payment/addNewPaymentCard"} asChild>
             <TouchableOpacity
               className='bg-[#FF1A5A1A] py-[18px] px-4 rounded-[100px]'
               onPress={() => {
