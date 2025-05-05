@@ -96,25 +96,25 @@ const countryData: CountryItem[] = [
   {
     id: 1,
     name: 'Italy',
-    flag: require('@/assets/images/italy.png'), // Replace with actual flag image
+    flag: require('@/assets/images/italy.png'),
     description: 'Known for its innovative food scene (pizza, Renaissance art, and architecture), Italy remains a consistent bucket list destination. Views of Venice in the cobblestone in Rome, Italy offers a beautiful blend of art, history, and gastronomy.'
   },
   {
     id: 2,
     name: 'Japan',
-    flag: require('@/assets/images/jp.png'), // Replace with actual flag image
+    flag: require('@/assets/images/jp.png'),
     description: 'A beautiful blend of ancient tradition and cutting-edge modernity, Japan offers travelers the chance to experience beautiful temples and diverse techniques like those found in Kyoto. The spring cherry blossoms are a particularly popular time to visit.'
   },
   {
     id: 3,
     name: 'France',
-    flag: require('@/assets/images/france.png'), // Replace with actual flag image
+    flag: require('@/assets/images/france.png'),
     description: 'From the iconic Eiffel Tower to the vineyards of Bordeaux, France captivates visitors with its romantic ambiance, culinary excellence, and rich cultural heritage that spans centuries of European history.'
   },
   {
     id: 4,
     name: 'Australia',
-    flag: require('@/assets/images/as.png'), // Replace with actual flag image
+    flag: require('@/assets/images/as.png'),
     description: 'With its stunning coastlines, unique wildlife, and vibrant cities, Australia offers an adventure-filled experience from the Great Barrier Reef to the rugged Outback landscapes and cosmopolitan urban centers.'
   },
 ];

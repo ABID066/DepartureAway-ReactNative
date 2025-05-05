@@ -21,7 +21,7 @@ const categories: {
 
 // Category Section Component
 const CategorySection = () => {
-  // Filter to show only the first 4 categories in the top row and next 3 in the bottom row
+  
   const topCategories = categories.slice(0, 4);
   const bottomCategories = categories.slice(4, 7);
 

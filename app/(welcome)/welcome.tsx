@@ -5,7 +5,6 @@ import { useRouter } from 'expo-router';
 const WelcomeScreen = () => {
   const router = useRouter();
 
-  // Automatically navigate to Walkthrough after 2 seconds
   useEffect(() => {
     setTimeout(() => {
       router.push('/walkThrough/walkthrough1');

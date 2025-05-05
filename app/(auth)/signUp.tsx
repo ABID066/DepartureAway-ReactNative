@@ -26,7 +26,7 @@ const SignUp = () => {
   // Gender options
   const genderOptions = ["Male", "Female", "Other", "Prefer not to say"];
   
-  // Example country codes - in a real app, you would have a complete list
+  // Example country codes
   const countryCodes = [
     { code: 'AE', dial_code: '+971', flag: '🇦🇪', name: 'United Arab Emirates' },
     { code: 'AR', dial_code: '+54', flag: '🇦🇷', name: 'Argentina' },
@@ -105,7 +105,7 @@ const SignUp = () => {
             </View>
           </View>
 
-          {/* Form fields - using only placeholders, no labels */}
+          {/* Form fields */}
           <View className="mb-4">
             <TextInput
               className="bg-gray-50 p-6 rounded-2xl"
@@ -189,7 +189,7 @@ const SignUp = () => {
               <Ionicons name="chevron-down" size={20} color="gray" />
             </TouchableOpacity>
           </View>
-        {/* Next button at bottom of screen - positioned like the previous "Create Account" button */}
+        {/* Next button */}
         <TouchableOpacity 
           className="bg-rose-500 py-4 rounded-full mb-20 mt-auto"
           onPress={() => router.push('/userName')}

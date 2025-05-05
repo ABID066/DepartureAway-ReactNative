@@ -8,7 +8,7 @@ const LocationPermissionScreen = () => {
 
   const handleAllowLocation = () => {
     // Request location permission logic would go here
-    // After permission is granted, navigate to the next screen
+    
     router.push('/home');
   };
 
@@ -26,12 +26,10 @@ const LocationPermissionScreen = () => {
       
       <View className="flex-1 justify-between px-6">
         <View className="items-center">
-          {/* Illustration */}
+          {/* photo */}
           <Image 
             source={require('@/assets/images/amico1.png')} 
             className="w-64 h-64 mt-8"
-            // If you don't have this image, you can use a placeholder or create one
-            // The fallback below ensures the component won't crash if image is missing
             onError={(e) => console.log('Image could not be loaded, using fallback')}
           />
           
