@@ -84,7 +84,7 @@ const TermsOfServiceScreen = () => {
       <View className="px-6 mt-10  pb-8">
         <TouchableOpacity 
           className="bg-rose-500 py-4 rounded-full"
-          onPress={() => router.push('/legal/location')} // Change this to the appropriate route
+          onPress={() => router.push('/legal/location')}
         >
           <Text className="text-white text-center font-semibold text-lg">Agree</Text>
         </TouchableOpacity>

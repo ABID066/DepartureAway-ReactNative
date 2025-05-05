@@ -29,7 +29,7 @@ const SignUpScreen2 = () => {
             </View>
           </View>
 
-          {/* Form fields - using only placeholders, no labels */}
+          {/* Form fields */}
           <View className="mb-4">
             <TextInput
               className="bg-gray-50 p-6 rounded-2xl"

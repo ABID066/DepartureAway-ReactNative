@@ -270,7 +270,7 @@ const TravelPackagesSection = ({
         numColumns={2}
         columnWrapperStyle={{ justifyContent: 'space-between' }}
         showsVerticalScrollIndicator={false}
-        scrollEnabled={false} // Disable scrolling as parent ScrollView handles it
+        scrollEnabled={false}
       />
     </View>
   );

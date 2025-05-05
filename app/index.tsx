@@ -10,14 +10,14 @@ const index = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      router.push("/welcome"); // Navigate to the welcome screen after 2 seconds
+      router.push("/welcome"); 
     }, 2000);
   }, [router]);
 
   return (
     <View className='flex-1 justify-center items-center bg-yellow-400'>
       <Image
-        source={require("@/assets/images/logo.png")} // Adjust the path to your actual logo
+        source={require("@/assets/images/logo.png")} 
       />
     </View>
   );

@@ -70,8 +70,8 @@ const OTPVerificationScreen = () => {
   const handleVerify = () => {
     const otpValue = otp.join('');
     if (otpValue.length === 4) {
-      // Navigation would go here - normally to the next screen
-      router.push('/legal/terms'); // Change this to the appropriate route
+      // Navigation 
+      router.push('/legal/terms');
       setShowValidation(false);
     } else {
       // Show validation message if OTP is incomplete
