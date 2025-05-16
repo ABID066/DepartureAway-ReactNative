@@ -9,4 +9,6 @@ const AddNewPaymentCard = () => {
   );
 };
 
+// Tru to fix fix folder name change problem solve in development-flight branch
+
 export default AddNewPaymentCard;
