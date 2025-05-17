@@ -83,9 +83,8 @@ const OrderPage = () => {
     <View className='w-full min-h-screen h-auto bg-white overflow-x-hidden shadow-lg  flex-col'>
       <Header2 item={tourPackage} />
       <ScrollView
-        contentContainerStyle={{ minHeight: "90%", paddingBottom: 24 }}
         showsVerticalScrollIndicator={false}
-        className='p-5 flex-1 flex-col gap-5 mt-24'>
+        className='p-5 flex-1 flex-col gap-5 mt-24 max-h-auto'>
         <View className='flex-col gap-4 text-xs text-gray-700'>
           <View>
             <Text className='mb-1 font-normal text-base text-[#4F4F4F]'>
@@ -155,7 +154,7 @@ const OrderPage = () => {
               </Text>
             </TouchableOpacity>
           </View>
-          <View className='pt-24'>
+          <View className='py-28'>
             <Link href={{ pathname: "/payment/selectPaymentMethod" }} asChild>
               <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-5'>
                 <Text className='text-white text-center font-semibold text-base'>

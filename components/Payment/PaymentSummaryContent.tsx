@@ -13,10 +13,9 @@ const PaymentSummaryContent = ({ continuePayment }: contentPaymentProps) => {
       <ScrollView
         contentContainerStyle={{
           paddingBottom: 20,
-          minHeight: "77%",
         }}
         showsVerticalScrollIndicator={false}
-        className='w-full mx-auto mt-28 p-6'>
+        className='w-full mx-auto mt-28 p-6 max-h-[70vh]'>
         {/* Departure Info */}
         <View className='rounded-[20px] bg-white shadow-[0px_4px_60px_0px_rgba(4,6,15,0.05)] p-6 gap-4 '>
           <View className='flex-row justify-between'>
@@ -75,7 +74,7 @@ const PaymentSummaryContent = ({ continuePayment }: contentPaymentProps) => {
             <Text className='text-[#FF1A5A] font-semibold text-sm'>Change</Text>
           </TouchableOpacity>
         </View>
-        <View className='pt-24'>
+        <View className='py-28'>
           <TouchableOpacity
             onPress={() => continuePayment()}
             className='bg-[#FF1A5A] rounded-full py-5'>
