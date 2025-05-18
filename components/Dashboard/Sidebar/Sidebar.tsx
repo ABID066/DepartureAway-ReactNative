@@ -47,9 +47,9 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
           isActive: pathname === "/dashboard/services",
         },
         {
-          label: "Add Service",
-          route: "/dashboard/services/add-service",
-          isActive: pathname === "/services/add-service",
+          label: "Add New Service",
+          route: "/dashboard/services/add-new-service",
+          isActive: pathname === "/services/add-new-service",
         },
       ],
     },
@@ -59,13 +59,13 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
         <MaterialIcons name='shopping-cart' size={24} color='#FF1A5A' />
       ),
       label: "Orders",
-      route: "/orders",
+      route: "/dashboard/orders",
     },
     {
       icon: <MaterialIcons name='inventory' size={24} color='black' />,
       activeIcon: <MaterialIcons name='inventory' size={24} color='#FF1A5A' />,
       label: "Products",
-      route: "/products",
+      route: "/dashboard/products",
     },
     {
       icon: <FontAwesome5 name='users' size={24} color='black' />,

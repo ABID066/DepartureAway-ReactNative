@@ -50,3 +50,28 @@ interface Service {
   standardPrice: number;
   premiumPrice: number;
 }
+
+interface ServiceForm {
+  title: string;
+  description: string;
+  category: string;
+  location: string;
+  basicPrice: string;
+  standardPrice: string;
+  premiumPrice: string;
+  duration: string;
+  mediaUrls: string;
+  images: string[];
+}
+
+
+interface FormErrors {
+  title?: string;
+  description?: string;
+  category?: string;
+  location?: string;
+  basicPrice?: string;
+  standardPrice?: string;
+  premiumPrice?: string;
+  duration?: string;
+}

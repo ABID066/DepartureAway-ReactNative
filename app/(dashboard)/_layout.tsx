@@ -3,7 +3,6 @@ import Entypo from '@expo/vector-icons/Entypo';
 import {
   View,
   TouchableOpacity,
-  Image,
   Animated,
   Pressable,
 } from "react-native";
