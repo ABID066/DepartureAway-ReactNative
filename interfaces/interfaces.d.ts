@@ -14,8 +14,9 @@ interface SidebarProps {
 interface StatCardProps {
   title: string;
   value: string;
-  subValue: string;
-  date: string;
+  subValue?: string;
+  date?: string;
+  bgColor?: string;
 }
 
 // for menu
