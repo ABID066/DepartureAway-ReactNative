@@ -94,7 +94,7 @@ const AddNewService = () => {
 
   const onSubmit = (data: ServiceForm) => {
     Alert.alert("Submitted", JSON.stringify(data, null, 2));
-    router.back();
+    router.push("/dashboard/services");
   };
 
   return (
