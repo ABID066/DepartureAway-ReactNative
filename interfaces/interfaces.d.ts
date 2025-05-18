@@ -75,3 +75,24 @@ interface FormErrors {
   premiumPrice?: string;
   duration?: string;
 }
+
+
+interface ChatItem {
+  id: string;
+  name: string;
+  lastMessage: string;
+  time: string;
+  avatar: string;
+  unread: number;
+  isOnline: boolean;
+  lastActive?: string;
+}
+
+
+interface ChatUser {
+  id: string;
+  name: string;
+  avatar: string;
+  isOnline: boolean;
+  lastActive?: string;
+}
