@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image, Pressable } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -7,15 +7,16 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { images } from "@/constants/images";
 import MenuItem from "@/components/Dashboard/Sidebar/Menu/MenuItem";
-import { usePathname } from "expo-router";
+import { usePathname, useRouter } from "expo-router";
 
 const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const pathname = usePathname();
+  const router = useRouter();
 
   const handleSubmenuToggle = (label: string) => {
     setOpenSubmenu(openSubmenu === label ? null : label);
   };
-  const pathname = usePathname();
 
   const menuItems: MenuItemProps[] = [
     {
@@ -108,12 +109,14 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
         </TouchableOpacity>
       </View>
       <View className='mb-8 w-full p-4 pt-6'>
-        <Image
-          source={images?.logo}
-          className='max-w-[162px] h-[46px] mt-3'
-          accessibilityLabel='Departure Away logo, stylized pink and orange circle with text Departure Away'
-          resizeMode='contain'
-        />
+      <Pressable onPress={() => router.push("/home")}>
+          <Image
+            source={images?.logo}
+            className='max-w-[162px] h-[46px] mt-3'
+            accessibilityLabel='Departure Away logo, stylized pink and orange circle with text Departure Away'
+            resizeMode='contain'
+          />
+        </Pressable>
         <Text className='text-gray-500 mt-1 text-right'>Admin Dashboard</Text>
       </View>
 
