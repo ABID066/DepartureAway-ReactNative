@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from "react-native";
 import React from "react";
-import Header2 from "../Shared/(Headers)/Header2";
+import Header2 from "@/components/Shared/(Headers)/Header2";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { icons } from "@/constants/icons";
 import { Link } from "expo-router";

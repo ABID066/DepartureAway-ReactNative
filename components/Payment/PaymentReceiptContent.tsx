@@ -1,8 +1,7 @@
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import React from "react";
 import { icons } from "@/constants/icons";
-import Header2 from "../Shared/(Headers)/Header2";
-import Header3 from "../Shared/(Headers)/Header3";
+import Header3 from "@/components/Shared/(Headers)/Header3";
 import { Link } from "expo-router";
 
 const PaymentReceiptContent = () => {

@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { useState } from "react";
 import { icons } from "@/constants/icons";
 import PaymentMethodItem from "@/components/Payment/PaymentMethodItem";
-import Header2 from "../Shared/(Headers)/Header2";
+import Header2 from "@/components/Shared/(Headers)/Header2";
 import { Link } from "expo-router";
 
 const paymentMethods: PaymentMethod[] = [
