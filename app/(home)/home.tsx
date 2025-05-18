@@ -6,9 +6,10 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  Pressable,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 
 // Import components
 import CategorySection from "@/app/(home)/category";
@@ -64,12 +65,14 @@ const Header = () => {
   return (
     <View className='bg-amber-300 pb-6 pt-6 px-4 rounded-bl-[50px]'>
       <View className='flex-row justify-between items-center mb-2'>
-        <View className='w-12 h-12 rounded-full overflow-hidden border-2 border-white'>
-          <Image
-            source={require("@/assets/images/profile.jpg")}
-            className='w-full h-full'
-          />
-        </View>
+        <Link href={"/dashboard"} asChild>
+          <Pressable className='w-12 h-12 rounded-full overflow-hidden border-2 border-white'>
+            <Image
+              source={require("@/assets/images/profile.jpg")}
+              className='w-full h-full'
+            />
+          </Pressable>
+        </Link>
 
         <View className='flex-row items-center'>
           <View className='mr-1'>
