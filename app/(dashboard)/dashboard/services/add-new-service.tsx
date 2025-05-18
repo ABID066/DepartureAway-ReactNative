@@ -18,9 +18,12 @@ import { router } from "expo-router";
 const serviceSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
-  category: z.enum(["flight", "hotel", "tour"], {
-    errorMap: () => ({ message: "Please select a category" }),
-  }),
+  category: z.enum(
+    ["flight", "hotel", "tour", "guider", "lost-bag", "others"],
+    {
+      errorMap: () => ({ message: "Please select a category" }),
+    }
+  ),
   location: z.string().min(1, "Location is required"),
   basicPrice: z
     .string()
@@ -51,8 +54,8 @@ const serviceSchema = z.object({
   //   .string()
   //   .min(1, "Media URL is required")
   //   .url("Media URL must be a valid URL"),
-  //   images: z.array(z.string()).optional(),
   images: z.array(z.string().min(1)).min(1, "At least one image is required"),
+  //   images: z.array(z.string()).optional(),
 });
 
 type ServiceForm = z.infer<typeof serviceSchema>;
@@ -68,7 +71,13 @@ const AddNewService = () => {
     defaultValues: {
       title: "",
       description: "",
-      category: "flight" as "flight" | "hotel" | "tour",
+      category: "" as
+        | "flight"
+        | "hotel"
+        | "tour"
+        | "guider"
+        | "lost-bag"
+        | "others",
       location: "",
       basicPrice: "",
       standardPrice: "",
@@ -155,6 +164,9 @@ const AddNewService = () => {
               <Picker.Item label='Flight' value='flight' />
               <Picker.Item label='Hotel' value='hotel' />
               <Picker.Item label='Tour' value='tour' />
+              <Picker.Item label='Guider' value='guider' />
+              <Picker.Item label='Lost Bag' value='lost-bag' />
+              <Picker.Item label='Others' value='others' />
             </Picker>
           </View>
         )}
