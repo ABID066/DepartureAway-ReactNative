@@ -24,7 +24,6 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
       activeIcon: <MaterialIcons name='dashboard' size={24} color='#FF1A5A' />,
       label: "Dashboard",
       route: "/dashboard",
-      isActive: pathname === "/dashboard",
     },
     {
       icon: (
@@ -38,19 +37,19 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
         />
       ),
       label: "Services",
-      route: "/services",
+      route: "/dashboard/services",
       hasSubmenu: true,
-      isActive: pathname.startsWith("/services"),
+      isActive: pathname.startsWith("/dashboard/services"),
       submenuItems: [
         {
           label: "All Services",
-          route: "/services/all",
-          isActive: pathname === "/services/all",
+          route: "/dashboard/services",
+          isActive: pathname === "/dashboard/services",
         },
         {
-          label: "Create Service",
-          route: "/services/create",
-          isActive: pathname === "/services/create",
+          label: "Add Service",
+          route: "/dashboard/services/add-service",
+          isActive: pathname === "/services/add-service",
         },
       ],
     },
@@ -61,21 +60,18 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
       ),
       label: "Orders",
       route: "/orders",
-      isActive: pathname === "/orders",
     },
     {
       icon: <MaterialIcons name='inventory' size={24} color='black' />,
       activeIcon: <MaterialIcons name='inventory' size={24} color='#FF1A5A' />,
       label: "Products",
       route: "/products",
-      isActive: pathname === "/products",
     },
     {
       icon: <FontAwesome5 name='users' size={24} color='black' />,
       activeIcon: <FontAwesome5 name='users' size={24} color='#FF1A5A' />,
       label: "Customers",
-      route: "/customers",
-      isActive: pathname === "/customers",
+      route: "/dashboard/customers",
     },
   ];
 
@@ -84,15 +80,13 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
       icon: <FontAwesome name='user' size={24} color='black' />,
       activeIcon: <FontAwesome name='user' size={24} color='#FF1A5A' />,
       label: "Profile",
-      route: "/profile",
-      isActive: pathname === "/profile",
+      route: "/dashboard/profile",
     },
     {
       icon: <Ionicons name='settings' size={24} color='black' />,
       activeIcon: <Ionicons name='settings' size={24} color='#FF1A5A' />,
       label: "Preferences",
-      route: "/preferences",
-      isActive: pathname === "/preferences",
+      route: "/dashboard/preferences",
     },
   ];
 
@@ -109,7 +103,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
         </TouchableOpacity>
       </View>
       <View className='mb-8 w-full p-4 pt-6'>
-      <Pressable onPress={() => router.push("/home")}>
+        <Pressable onPress={() => router.push("/home")}>
           <Image
             source={images?.logo}
             className='max-w-[162px] h-[46px] mt-3'
@@ -127,6 +121,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
             key={index}
             {...item}
             isOpen={isOpen}
+            toggleSidebar={toggleSidebar}
             isSubmenuOpen={openSubmenu === item.label}
             onSubmenuToggle={handleSubmenuToggle}
           />
