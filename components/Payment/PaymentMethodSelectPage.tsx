@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { useState } from "react";
 import { icons } from "@/constants/icons";
 import PaymentMethodItem from "@/components/Payment/PaymentMethodItem";
-import Header2 from "../Shared/(Headers)/Header2";
+import Header2 from "@/components/Shared/(Headers)/Header2";
 import { Link } from "expo-router";
 
 const paymentMethods: PaymentMethod[] = [
@@ -18,12 +18,11 @@ const PaymentMethodSelectPage = () => {
       {<Header2 />}
       <ScrollView
         contentContainerStyle={{
-          minHeight: "90%",
           paddingBottom: 24,
           paddingTop: 100,
         }}
         showsVerticalScrollIndicator={false}
-        className='p-5'>
+        className='p-5 max-h-[80vh]'>
         <Text className='text-base font-normal text-[#212121]  pb-3 text-justify mx-auto'>
           Select the payment method you want to use.
         </Text>
@@ -46,7 +45,7 @@ const PaymentMethodSelectPage = () => {
             </TouchableOpacity>
           </Link>
         </View>
-        <View className='py-24'>
+        <View className='py-28'>
           <Link href={"/payment/addNewPaymentCard"} asChild>
             <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-5'>
               <Text className='text-white text-center font-semibold text-base'>

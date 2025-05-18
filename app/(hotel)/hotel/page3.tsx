@@ -29,9 +29,9 @@ const HotelPage3 = () => {
     <View className='w-full min-h-screen h-auto bg-white overflow-x-hidden shadow-lg  flex-col'>
       {<Header2 />}
       <ScrollView
-        contentContainerStyle={{ minHeight: "60%", paddingBottom: 24 }}
+        contentContainerStyle={{ paddingBottom: 24 }}
         showsVerticalScrollIndicator={false}
-        className='p-5 flex-1 flex-col gap-5 mt-24'>
+        className='p-5 flex-1 flex-col gap-5 mt-24 max-h-auto'>
         <View className='flex-col gap-4 text-xs text-gray-700'>
           <View>
             <Text className='mb-1 font-normal text-base text-[#4F4F4F]'>
@@ -71,7 +71,7 @@ const HotelPage3 = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <View className='pt-24 mt-auto'>
+        <View className='pt-28 mt-auto'>
           <Link href={"/payment/selectPaymentMethod"} asChild>
             <TouchableOpacity className='bg-[#FF1A5A] rounded-full py-5'>
               <Text className='text-white text-center font-semibold text-base'>

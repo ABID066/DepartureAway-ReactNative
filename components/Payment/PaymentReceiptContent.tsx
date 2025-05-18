@@ -1,8 +1,7 @@
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import React from "react";
 import { icons } from "@/constants/icons";
-import Header2 from "../Shared/(Headers)/Header2";
-import Header3 from "../Shared/(Headers)/Header3";
+import Header3 from "@/components/Shared/(Headers)/Header3";
 import { Link } from "expo-router";
 
 const PaymentReceiptContent = () => {
@@ -12,10 +11,9 @@ const PaymentReceiptContent = () => {
       <ScrollView
         contentContainerStyle={{
           paddingBottom: 20,
-          minHeight: "95%",
         }}
         showsVerticalScrollIndicator={false}
-        className='w-full mx-auto mt-28 p-6'>
+        className='w-full mx-auto mt-28 p-6 max-h-[70vh]'>
         {/* Departure Info */}
         <View className='rounded-[20px] bg-white shadow-[0px_4px_60px_0px_rgba(4,6,15,0.05)] p-6 gap-4 '>
           <View className='flex-row justify-between'>
@@ -92,7 +90,7 @@ const PaymentReceiptContent = () => {
 
         {/* Buttons */}
 
-        <View className='w-full gap-4 mt-16'>
+        <View className='w-full gap-4 mt-16 pb-28'>
           <TouchableOpacity className='w-full py-[18px] rounded-[100px] bg-white border border-[#FF1A5A]'>
             <Text className='text-center text-[#FF1A5A] font-bold text-base'>
               Downloads
