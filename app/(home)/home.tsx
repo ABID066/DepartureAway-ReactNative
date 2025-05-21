@@ -12,11 +12,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
 
 // Import components
-import CategorySection from "@/app/(home)/category";
-import SearchBar from "@/app/(home)/search";
-import DiscoverPlacesSection from "@/app/(home)/discover";
-import GuidesSection from "@/app/(home)/guider";
-import TravelPackagesSection from "@/app/(home)/travelPackage";
+import CategorySection from "@/components/Home/category";
+import SearchBar from "@/components/Home/search";
+import DiscoverPlacesSection from "@/components/Home/discover";
+import GuidesSection from "@/components/Home/guider";
+import TravelPackagesSection from "@/components/Home/travelPackage";
 
 const HomePage = () => {
   const router = useRouter();
