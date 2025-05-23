@@ -11,12 +11,6 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
 
-// Import components
-import CategorySection from "@/components/Home/category";
-import SearchBar from "@/components/Home/search";
-import DiscoverPlacesSection from "@/components/Home/discover";
-import GuidesSection from "@/components/Home/guider";
-import TravelPackagesSection from "@/components/Home/travelPackage";
 
 const HomePage = () => {
   const router = useRouter();
@@ -24,50 +18,52 @@ const HomePage = () => {
   const [activePackageTab, setActivePackageTab] = useState("Traveler Choose");
   const [currentDestinationIndex, setCurrentDestinationIndex] = useState(0);
 
-  const sections = [
-    {
-      title: 'header',
-      data: [null],
-      renderItem: () => <Header />
-    },
-    {
-      title: 'categories',
-      data: [null],
-      renderItem: () => <CategorySection />
-    },
-    {
-      title: 'search',
-      data: [null],
-      renderItem: () => <SearchBar />
-    },
-    {
-      title: 'discover',
-      data: [null],
-      renderItem: () => (
-        <DiscoverPlacesSection
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          currentIndex={currentDestinationIndex}
-          setCurrentIndex={setCurrentDestinationIndex}
-        />
-      )
-    },
-    {
-      title: 'guides',
-      data: [null],
-      renderItem: () => <GuidesSection />
-    },
-    {
-      title: 'packages',
-      data: [null],
-      renderItem: () => (
-        <TravelPackagesSection
-          activePackageTab={activePackageTab}
-          setActivePackageTab={setActivePackageTab}
-        />
-      )
-    }
-  ];
+  const sections: any[] = []
+
+  // const sections = [
+  //   {
+  //     title: 'header',
+  //     data: [null],
+  //     renderItem: () => <Header />
+  //   },
+  //   {
+  //     title: 'categories',
+  //     data: [null],
+  //     renderItem: () => <CategorySection />
+  //   },
+  //   {
+  //     title: 'search',
+  //     data: [null],
+  //     renderItem: () => <SearchBar />
+  //   },
+  //   {
+  //     title: 'discover',
+  //     data: [null],
+  //     renderItem: () => (
+  //       <DiscoverPlacesSection
+  //         activeTab={activeTab}
+  //         setActiveTab={setActiveTab}
+  //         currentIndex={currentDestinationIndex}
+  //         setCurrentIndex={setCurrentDestinationIndex}
+  //       />
+  //     )
+  //   },
+  //   {
+  //     title: 'guides',
+  //     data: [null],
+  //     renderItem: () => <GuidesSection />
+  //   },
+  //   {
+  //     title: 'packages',
+  //     data: [null],
+  //     renderItem: () => (
+  //       <TravelPackagesSection
+  //         activePackageTab={activePackageTab}
+  //         setActivePackageTab={setActivePackageTab}
+  //       />
+  //     )
+  //   }
+  // ];
 
   return (
     <SafeAreaView className='flex-1 bg-[#FAFAFA]'>
