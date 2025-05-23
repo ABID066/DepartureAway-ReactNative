@@ -4,9 +4,9 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  ScrollView,
   SafeAreaView,
   Pressable,
+  SectionList,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
@@ -24,37 +24,60 @@ const HomePage = () => {
   const [activePackageTab, setActivePackageTab] = useState("Traveler Choose");
   const [currentDestinationIndex, setCurrentDestinationIndex] = useState(0);
 
-  return (
-    <SafeAreaView className='flex-1 bg-[#FAFAFA]'>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Header Section */}
-        <Header />
-
-        {/* Categories Section */}
-        <CategorySection />
-
-        {/* Search Bar */}
-        <SearchBar />
-
-        {/* Discover Places Section */}
+  const sections = [
+    {
+      title: 'header',
+      data: [null],
+      renderItem: () => <Header />
+    },
+    {
+      title: 'categories',
+      data: [null],
+      renderItem: () => <CategorySection />
+    },
+    {
+      title: 'search',
+      data: [null],
+      renderItem: () => <SearchBar />
+    },
+    {
+      title: 'discover',
+      data: [null],
+      renderItem: () => (
         <DiscoverPlacesSection
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           currentIndex={currentDestinationIndex}
           setCurrentIndex={setCurrentDestinationIndex}
         />
-
-        {/* Top Rated Guides Section */}
-        <GuidesSection />
-
-        {/* Travel Packages Section */}
+      )
+    },
+    {
+      title: 'guides',
+      data: [null],
+      renderItem: () => <GuidesSection />
+    },
+    {
+      title: 'packages',
+      data: [null],
+      renderItem: () => (
         <TravelPackagesSection
           activePackageTab={activePackageTab}
           setActivePackageTab={setActivePackageTab}
         />
-      </ScrollView>
+      )
+    }
+  ];
 
-      {/* Bottom Navigation Bar */}
+  return (
+    <SafeAreaView className='flex-1 bg-[#FAFAFA]'>
+      <SectionList
+        sections={sections}
+        renderItem={({ section }) => section.renderItem()}
+        renderSectionHeader={() => null}
+        showsVerticalScrollIndicator={false}
+        stickySectionHeadersEnabled={false}
+      />
       <BottomNavigation />
     </SafeAreaView>
   );

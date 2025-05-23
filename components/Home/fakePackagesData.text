@@ -1,0 +1,160 @@
+
+// Travel packages data for "Traveler Choose" tab
+const travelerChoosePackages: PackageItem[] = [
+  {
+    id: 1,
+    name: "Seajack valley package",
+    location: "AV Damero 770, Holles Q.A, Mexico",
+    price: "BDT 6000/ Person",
+    duration: "2 Day, 2 Night",
+    image: require("@/assets/images/HomePic1.jpg"),
+  },
+  {
+    id: 2,
+    name: "Seajack valley package",
+    location: "AV Damero 770, Holles Q.A, Mexico",
+    price: "BDT 6000/ Person",
+    duration: "2 Day, 2 Night",
+    image: require("@/assets/images/HomePic1.jpg"),
+  },
+  {
+    id: 3,
+    name: "Seajack valley package",
+    location: "AV Damero 770, Holles Q.A, Mexico",
+    price: "BDT 6000/ Person",
+    duration: "2 Day, 2 Night",
+    image: require("@/assets/images/HomePic1.jpg"),
+  },
+  {
+    id: 4,
+    name: "Seajack valley package",
+    location: "AV Damero 770, Holles Q.A, Mexico",
+    price: "BDT 6000/ Person",
+    duration: "2 Day, 2 Night",
+    image: require("@/assets/images/HomePic1.jpg"),
+  },
+  {
+    id: 5,
+    name: "Seajack valley package",
+    location: "AV Damero 770, Holles Q.A, Mexico",
+    price: "BDT 6000/ Person",
+    duration: "2 Day, 2 Night",
+    image: require("@/assets/images/HomePic1.jpg"),
+  },
+  {
+    id: 6,
+    name: "Seajack valley package",
+    location: "AV Damero 770, Holles Q.A, Mexico",
+    price: "BDT 6000/ Person",
+    duration: "2 Day, 2 Night",
+    image: require("@/assets/images/HomePic1.jpg"),
+  },
+];
+
+// Travel packages data for "Hajj" tab
+const hajjPackages: PackageItem[] = [
+  {
+    id: 1,
+    name: "Economy Hajj Package",
+    location: "Mecca & Medina, Saudi Arabia",
+    price: "BDT 350,000/ Person",
+    duration: "30 Days",
+    image: require("@/assets/images/Hajj.jpg"),
+  },
+  {
+    id: 2,
+    name: "Standard Hajj Package",
+    location: "Mecca & Medina, Saudi Arabia",
+    price: "BDT 450,000/ Person",
+    duration: "35 Days",
+    image: require("@/assets/images/Hajj.jpg"),
+  },
+  {
+    id: 3,
+    name: "Premium Hajj Package",
+    location: "Mecca & Medina, Saudi Arabia",
+    price: "BDT 550,000/ Person",
+    duration: "40 Days",
+    image: require("@/assets/images/Hajj.jpg"),
+  },
+  {
+    id: 4,
+    name: "VIP Hajj Package",
+    location: "Mecca & Medina, Saudi Arabia",
+    price: "BDT 650,000/ Person",
+    duration: "40 Days",
+    image: require("@/assets/images/Hajj.jpg"),
+  },
+];
+
+// Travel packages data for "Honeymoon" tab
+const honeymoonPackages: PackageItem[] = [
+  {
+    id: 1,
+    name: "Maldives Honeymoon",
+    location: "Damero 770, Male, Maldives",
+    price: "BDT 180,000/ Couple",
+    duration: "5 Day, 4 Night",
+    image: require("@/assets/images/hhh.jpg"),
+  },
+  {
+    id: 2,
+    name: "Bali Romance Package",
+    location: "Damero 770, Kuta, Bali, Indonesia",
+    price: "BDT 150,000/ Couple",
+    duration: "6 Day, 5 Night",
+    image: require("@/assets/images/hhh.jpg"),
+  },
+  {
+    id: 3,
+    name: "Santorini Getaway",
+    location: "Damero 770, Oia, Santorini, Greece",
+    price: "BDT 220,000/ Couple",
+    duration: "7 Day, 6 Night",
+    image: require("@/assets/images/hhh.jpg"),
+  },
+  {
+    id: 4,
+    name: "Paris Romance",
+    location: "Damero 770, Paris, France",
+    price: "BDT 200,000/ Couple",
+    duration: "6 Day, 5 Night",
+    image: require("@/assets/images/hhh.jpg"),
+  },
+];
+
+// Travel packages data for "Alpine" tab
+const alpinePackages: PackageItem[] = [
+  {
+    id: 1,
+    name: "Swiss Alps Adventure",
+    location: "Damero 770, Zermatt, Switzerland",
+    price: "BDT 250,000/ Person",
+    duration: "7 Day, 6 Night",
+    image: require("@/assets/images/HomePic1.jpg"),
+  },
+  {
+    id: 2,
+    name: "French Alps Ski Tour",
+    location: "Damero 770, Chamonix, France",
+    price: "BDT 220,000/ Person",
+    duration: "6 Day, 5 Night",
+    image: require("@/assets/images/HomePic1.jpg"),
+  },
+  {
+    id: 3,
+    name: "Austrian Alps Retreat",
+    location: "Damero 770, Innsbruck, Austria",
+    price: "BDT 230,000/ Person",
+    duration: "8 Day, 7 Night",
+    image: require("@/assets/images/HomePic1.jpg"),
+  },
+  {
+    id: 4,
+    name: "Italian Alps Explorer",
+    location: "Damero 770, Dolomites, Italy",
+    price: "BDT 210,000/ Person",
+    duration: "5 Day, 4 Night",
+    image: require("@/assets/images/HomePic1.jpg"),
+  },
+];
