@@ -10,6 +10,11 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
+import CategorySection from "@/components/Home/Category";
+import SearchBar from "@/components/Home/Search";
+import DiscoverPlacesSection from "@/components/Home/Discover";
+import GuidesSection from "@/components/Home/Guider";
+import TravelPackagesSection from "@/components/Home/TravelPackage";
 
 
 const HomePage = () => {
@@ -18,52 +23,50 @@ const HomePage = () => {
   const [activePackageTab, setActivePackageTab] = useState("Traveler Choose");
   const [currentDestinationIndex, setCurrentDestinationIndex] = useState(0);
 
-  const sections: any[] = []
-
-  // const sections = [
-  //   {
-  //     title: 'header',
-  //     data: [null],
-  //     renderItem: () => <Header />
-  //   },
-  //   {
-  //     title: 'categories',
-  //     data: [null],
-  //     renderItem: () => <CategorySection />
-  //   },
-  //   {
-  //     title: 'search',
-  //     data: [null],
-  //     renderItem: () => <SearchBar />
-  //   },
-  //   {
-  //     title: 'discover',
-  //     data: [null],
-  //     renderItem: () => (
-  //       <DiscoverPlacesSection
-  //         activeTab={activeTab}
-  //         setActiveTab={setActiveTab}
-  //         currentIndex={currentDestinationIndex}
-  //         setCurrentIndex={setCurrentDestinationIndex}
-  //       />
-  //     )
-  //   },
-  //   {
-  //     title: 'guides',
-  //     data: [null],
-  //     renderItem: () => <GuidesSection />
-  //   },
-  //   {
-  //     title: 'packages',
-  //     data: [null],
-  //     renderItem: () => (
-  //       <TravelPackagesSection
-  //         activePackageTab={activePackageTab}
-  //         setActivePackageTab={setActivePackageTab}
-  //       />
-  //     )
-  //   }
-  // ];
+  const sections = [
+    {
+      title: 'header',
+      data: [null],
+      renderItem: () => <Header />
+    },
+    {
+      title: 'categories',
+      data: [null],
+      renderItem: () => <CategorySection />
+    },
+    {
+      title: 'search',
+      data: [null],
+      renderItem: () => <SearchBar />
+    },
+    {
+      title: 'discover',
+      data: [null],
+      renderItem: () => (
+        <DiscoverPlacesSection
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          currentIndex={currentDestinationIndex}
+          setCurrentIndex={setCurrentDestinationIndex}
+        />
+      )
+    },
+    {
+      title: 'guides',
+      data: [null],
+      renderItem: () => <GuidesSection />
+    },
+    {
+      title: 'packages',
+      data: [null],
+      renderItem: () => (
+        <TravelPackagesSection
+          activePackageTab={activePackageTab}
+          setActivePackageTab={setActivePackageTab}
+        />
+      )
+    }
+  ];
 
   return (
     <SafeAreaView className='flex-1 bg-[#FAFAFA]'>
