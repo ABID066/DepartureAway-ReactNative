@@ -63,7 +63,7 @@ const TravelPackagesSection = ({
     status,
     error,
   } = useInfiniteQuery({
-    queryKey: ["travelPackages", activePackageTab],
+    queryKey: ["travelPackages", activePackageTab, "services"],
     queryFn: ({ pageParam }) => getTravelPackages(pageParam),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {

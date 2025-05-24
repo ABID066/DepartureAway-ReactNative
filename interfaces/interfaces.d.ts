@@ -52,6 +52,19 @@ interface Service {
   premiumPrice: number;
 }
 
+type ServiceData = {
+  provider_id: string;
+  title: string;
+  description: string;
+  category: "flight" | "hotel" | "tour" | "guider" | "lost-bag" | "others";
+  price_basic: string;
+  price_standard: string;
+  price_premium: string;
+  location: string;
+  duration_days: string;
+  media_urls: string;
+}
+
 interface ServiceForm {
   title: string;
   description: string;
