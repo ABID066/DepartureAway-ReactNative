@@ -15,8 +15,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import useUploadImage from "@/hooks/useUploadImage";
 import { useMutation } from "@tanstack/react-query";
-import useAxiosCommon from "@/hooks/useAxiosCommon";
 import Toast from "react-native-toast-message";
+import { createServicePackage } from "@/services/packagesServices";
 
 // Validation Schema
 const serviceSchema = z.object({
@@ -65,8 +65,7 @@ const serviceSchema = z.object({
 type ServiceForm = z.infer<typeof serviceSchema>;
 
 const AddNewService = () => {
-  const router = useRouter();
-  const axiosCommon = useAxiosCommon();
+  const router = useRouter()
   const { uploadImage, imageUploadError, imageUploading } = useUploadImage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isLoading = imageUploading || isSubmitting;
@@ -100,10 +99,7 @@ const AddNewService = () => {
 
   const { mutateAsync } = useMutation({
     mutationFn: async (serviceData: ServiceData) => {
-      const { data } = await axiosCommon.post(
-        "/service/create-service",
-        serviceData
-      );
+      const { data } = await createServicePackage(serviceData);
       return data;
     },
     onError: (err) => {
@@ -137,7 +133,7 @@ const AddNewService = () => {
       const imageUri = result.assets[0].uri;
 
       try {
-        const imageUrl = await uploadImage(imageUri);
+        const imageUrl = await uploadImage(imageUri); 
         setValue("images", [imageUrl]);
       } catch (err) {
         // Handle image upload error

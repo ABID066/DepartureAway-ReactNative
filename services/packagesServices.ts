@@ -12,3 +12,13 @@ export const getTravelPackages = async (page = 1, limit = 10) => {
     throw error;
   }
 };
+
+export const createServicePackage = async (serviceData: ServiceData) => {
+  try {
+    const { data } = await axiosCommon.post(`/service/create-service`, serviceData);
+    return data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};
