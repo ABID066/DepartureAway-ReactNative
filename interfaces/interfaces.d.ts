@@ -53,6 +53,7 @@ interface Service {
 }
 
 type ServiceData = {
+  id?: string | number;
   provider_id: string;
   title: string;
   description: string;
