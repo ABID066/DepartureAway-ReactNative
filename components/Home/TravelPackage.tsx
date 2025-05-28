@@ -20,12 +20,10 @@ interface PackageItem {
   id: number;
   title: string;
   location: string;
-  price_basic: string;
-  duration_days: string;
-  image?: any;
-  media_urls?: string | string[];
+  price1: string;
+  duration?: string;
+  imageUrl: string[];
 }
-
 
 // Travel Packages Section Component
 const TravelPackagesSection = ({
@@ -43,15 +41,15 @@ const TravelPackagesSection = ({
   const getPackagesData = () => {
     switch (activePackageTab) {
       case "Traveler Choose":
-        // return travelerChoosePackages;
+      // return travelerChoosePackages;
       case "Hajj":
-        // return hajjPackages;
+      // return hajjPackages;
       case "Honeymoon":
-        // return honeymoonPackages;
+      // return honeymoonPackages;
       case "Alpine":
-        // return alpinePackages;
+      // return alpinePackages;
       default:
-        // return travelerChoosePackages;
+      // return travelerChoosePackages;
     }
   };
 
@@ -70,12 +68,11 @@ const TravelPackagesSection = ({
       // Calculate if there are more pages based on meta data
       const { page, total, limit } = lastPage.meta;
       const totalPages = Math.ceil(total / limit);
-      
+
       // Return next page number if there are more pages, null if we're at the end
       return page < totalPages ? page + 1 : null;
     },
   });
-
 
   if (status === "pending") {
     return (
@@ -103,16 +100,16 @@ const TravelPackagesSection = ({
   const renderFooter = () => {
     if (isFetchingNextPage) {
       return (
-        <View className="py-4 justify-center items-center">
-          <ActivityIndicator size="small" color="#E11D48" />
+        <View className='py-4 justify-center items-center'>
+          <ActivityIndicator size='small' color='#E11D48' />
         </View>
       );
     }
 
     if (!hasNextPage) {
       return (
-        <View className="py-4 justify-center items-center">
-          <Text className="text-gray-500">No More Travel Packages.</Text>
+        <View className='py-4 justify-center items-center'>
+          <Text className='text-gray-500'>No More Travel Packages.</Text>
         </View>
       );
     }
@@ -128,7 +125,11 @@ const TravelPackagesSection = ({
       style={{ width: cardWidth }}>
       {/* Image */}
       <Image
-        source={typeof item?.media_urls === 'string' && item?.media_urls ? { uri: item.media_urls } : item?.image}
+        source={
+          typeof item?.imageUrl[0] === "string"
+            ? { uri: item.imageUrl[0] }
+            : { uri: "https//:placeimg.com/640/480/any?r=0.888" }
+        }
         className='w-full h-60'
         resizeMode='cover'
       />
@@ -136,7 +137,7 @@ const TravelPackagesSection = ({
       {/* Duration Tag */}
       <View className='absolute top-2 right-2 px-2 py-1 bg-yellow-400 rounded-lg'>
         <Text className='text-xs font-bold text-gray-800'>
-          {item?.duration_days}
+          {item?.duration}
         </Text>
       </View>
 
@@ -145,7 +146,9 @@ const TravelPackagesSection = ({
 
       {/* Content */}
       <View className='absolute bottom-0 left-0 right-0 p-2'>
-        <Text className='text-sm font-bold text-amber-400'>Start Price {item?.price_basic}</Text>
+        <Text className='text-sm font-bold text-amber-400'>
+          Start Price {item?.price1}
+        </Text>
         <Text className='text-sm font-bold text-white mt-0.5'>
           {item?.title}
         </Text>
@@ -159,7 +162,8 @@ const TravelPackagesSection = ({
     </TouchableOpacity>
   );
 
-  const packagesData = data?.pages.flatMap((page: { data: PackageItem[] }) => page.data) || [];
+  const packagesData =
+    data?.pages.flatMap((page: { data: PackageItem[] }) => page.data) || [];
   return (
     <View className='mt-5 px-4 mb-20'>
       <Text className='text-xl font-bold text-gray-800'>Travel package</Text>

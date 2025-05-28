@@ -133,7 +133,7 @@ const AddNewService = () => {
       const imageUri = result.assets[0].uri;
 
       try {
-        const imageUrl = await uploadImage(imageUri); 
+        const imageUrl = await uploadImage(imageUri);
         setValue("images", [imageUrl]);
       } catch (err) {
         // Handle image upload error

@@ -1,3 +1,15 @@
+//? Auth Related Interfaces
+interface UserData {
+  name: string;
+  email: string;
+  password?: string;
+  phone: string;
+  role?: string;
+  image: string;
+  gender?: string;
+  username?: string;
+}
+
 // ? payment related interfaces
 interface PaymentMethod {
   id?: string;
@@ -40,7 +52,6 @@ interface MenuItemProps extends MenuItem {
   toggleSidebar?: () => void;
 }
 
-
 //? service related interfaces
 
 interface Service {
@@ -64,7 +75,7 @@ type ServiceData = {
   location: string;
   duration_days: string;
   media_urls: string;
-}
+};
 
 interface ServiceForm {
   title: string;
@@ -79,7 +90,6 @@ interface ServiceForm {
   images: string[];
 }
 
-
 interface FormErrors {
   title?: string;
   description?: string;
@@ -91,7 +101,6 @@ interface FormErrors {
   duration?: string;
 }
 
-
 interface ChatItem {
   id: string;
   name: string;
@@ -102,7 +111,6 @@ interface ChatItem {
   isOnline: boolean;
   lastActive?: string;
 }
-
 
 interface ChatUser {
   id: string;

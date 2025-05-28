@@ -33,7 +33,7 @@ export const getAllServices = async (page = 1, limit = 10) => {
 export const getTravelPackages = async (page = 1, limit = 10) => {
   try {
     const { data } = await axiosCommon.get(
-      `/service/-all-service?page=${page}&limit=${limit}`
+      `/Tour/all-tour?page=${page}&limit=${limit}`
     );
     return data;
   } catch (error) {
