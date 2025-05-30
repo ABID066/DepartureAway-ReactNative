@@ -46,7 +46,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
         {
           label: "Travel Services",
           route: "/dashboard/services/travel-services",
-          isActive: pathname === "/dashboard/services/travel-services",
+          isActive: pathname.startsWith("/dashboard/services/travel-services"),
           hasSubmenu: true,
           submenuItems: [
             {
@@ -66,7 +66,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
         {
           label: "Flight Services",
           route: "/dashboard/services/flight-services",
-          isActive: pathname === "/dashboard/services/flight-services",
+          isActive: pathname.startsWith("/dashboard/services/flight-services"),
           hasSubmenu: true,
           submenuItems: [
             {
@@ -86,7 +86,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
         {
           label: "Hotel Services",
           route: "/dashboard/services/hotel-services",
-          isActive: pathname === "/dashboard/services/hotel-services",
+          isActive: pathname.startsWith("/dashboard/services/hotel-services"),
           hasSubmenu: true,
           submenuItems: [
             {
