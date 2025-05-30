@@ -34,19 +34,26 @@ interface StatCardProps {
 // for menu
 interface MenuItem {
   icon: any;
+  activeIcon?: any;
   label: string;
   route: LinkProps["href"];
   isActive?: boolean;
   isOpen?: boolean;
 }
+
+interface SubmenuItem {
+  label: string;
+  route: string;
+  isActive?: boolean;
+  hasSubmenu?: boolean;
+  submenuItems?: SubmenuItem[];
+  isSubmenuOpen?: boolean;
+}
 interface MenuItemProps extends MenuItem {
   hasSubmenu?: boolean;
-  activeIcon?: any;
-  submenuItems?: Array<{
-    label: string;
-    route: string;
-    isActive?: boolean;
-  }>;
+  openSubmenus?: boolean;
+  setOpenSubmenus?: (openSubmenus: boolean) => void;
+  submenuItems?: SubmenuItem[];
   isSubmenuOpen?: boolean;
   onSubmenuToggle?: (label: string) => void;
   toggleSidebar?: () => void;

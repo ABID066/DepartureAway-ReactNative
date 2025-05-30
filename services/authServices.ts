@@ -6,12 +6,12 @@ export const createUser = async (userData: UserData) => {
     const { data } = await axiosCommon.post(`/user/create-user`, userData);
     return data;
   } catch (error) {
-    console.error("API Error:", error);
+    // console.error("API Error:", error);
     throw error;
   }
 };
 
-export const verifyOTP = async (otpCode: number) => {
+export const verifyOTP = async (otpCode: string) => {
   try {
     const { data } = await axiosCommon.patch(`/user/verifyEmail`, otpCode);
     return data;

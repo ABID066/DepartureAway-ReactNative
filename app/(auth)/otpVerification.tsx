@@ -78,7 +78,7 @@ const OTPVerificationScreen = () => {
   }, [countdown]);
 
   const { mutateAsync } = useMutation({
-    mutationFn: async (otpData: number) => {
+    mutationFn: async (otpData: string) => {
       const { data } = await verifyOTP(otpData);
       return data;
     },
@@ -88,7 +88,6 @@ const OTPVerificationScreen = () => {
         text1: "Failed to email verification!",
       });
       console.error("Verification failed", err.message);
-      // setIsAccountCreating(false);
     },
     mutationKey: ["user", "users"],
     onSuccess: () => {
@@ -98,7 +97,6 @@ const OTPVerificationScreen = () => {
       });
       router.push("/signIn");
       setShowValidation(false);
-      // setIsAccountCreating(false);
     },
   });
 
@@ -106,8 +104,7 @@ const OTPVerificationScreen = () => {
   const handleVerify = () => {
     const otpValue = otp.join("");
     if (otpValue.length === 4) {
-      const otpCode = Number(otpValue);
-      mutateAsync(otpCode);
+      mutateAsync(otpValue);
     } else {
       // Show validation message if OTP is incomplete
       setShowValidation(true);

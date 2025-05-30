@@ -5,15 +5,18 @@ interface User {
   id: string;
   name: string;
   email: string;
+  phone?: string;
   role?: string;
   image?: string;
-  username?: string;
+  userName?: string;
 }
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  saveLoginInfo: (verifyToken: string, user: User) => Promise<void>;
+  setUser: (user: User | null) => void;
+  setLoading: (loading: boolean) => void;
+  setToken: (verifyToken: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -25,9 +28,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  console.log("from line number 31: ",user);
+  const [loading, setLoading] = useState(false);
 
   // 🔁 Check user on first load
   useEffect(() => {
@@ -37,6 +38,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const verifyToken = await AsyncStorage.getItem("verifyToken");
         if (!verifyToken) {
           setUser(null);
+        }else{
+          setUser(user);
         }
       } catch (error) {
         console.error("Auth check error:", error);
@@ -50,10 +53,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   // ✅ Login: Just store verifyToken
-  const saveLoginInfo = async (verifyToken: string, user: User) => {
+  const setToken = async (verifyToken: string) => {
     setLoading(true);
     await AsyncStorage.setItem("verifyToken", verifyToken);
-    setUser(user);
     setLoading(false);
   };
 
@@ -68,7 +70,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const authInfo = {
     user,
     loading,
-    saveLoginInfo,
+    setLoading,
+    setUser,
+    setToken,
     logout,
   };
 
@@ -76,5 +80,3 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );
 };
-
-// 🪝 Custom hook for useAuth

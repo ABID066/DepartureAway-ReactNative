@@ -13,11 +13,11 @@ import { Ionicons } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
 import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "@/services/authServices";
-import useAuth from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 
 const SignIn = () => {
   const router = useRouter();
-  const { saveLoginInfo } = useAuth();
+  const { setToken, user, setUser } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +25,7 @@ const SignIn = () => {
 
   const { mutateAsync } = useMutation({
     mutationFn: async (authData: { email: string; password: string }) => {
-      const data = await loginUser(authData);
+      const { data } = await loginUser(authData);
       return data;
     },
     onError: (err) => {
@@ -36,12 +36,26 @@ const SignIn = () => {
       console.error("Login failed", err.message);
     },
     mutationKey: ["user", "users"],
-    onSuccess: () => {
+    onSuccess: async (data) => {
+      const res = await data;
+      const accessToken = res?.accessToken;
+      const userData = res.user;
+      const userSaveData = {
+        id: userData?.id,
+        userName: userData?.userName,
+        name: userData?.name,
+        email: userData?.email,
+        phone: userData?.phone,
+        role: userData?.role,
+        image: userData?.image,
+      };
+      setUser(userSaveData);
+      await setToken(accessToken);
+      router.push("/home");
       Toast.show({
         type: "success",
         text1: "SignIn Successful!!",
       });
-      router.push("/home");
       setEmail("");
       setPassword("");
     },
@@ -49,21 +63,7 @@ const SignIn = () => {
 
   const handleLogin = async () => {
     if (email && password) {
-      const response = await mutateAsync({ email, password });
-      const res = response?.data;
-      console.log("from line number 53:", res);
-      if (response?.success) {
-        const accessToken = res?.accessToken;
-        const userData = res.user;
-        const user = {
-          email: userData?.email,
-          name: userData?.name,
-          phone: userData?.phone,
-          role: userData?.role,
-          id: userData?.id,
-        };
-        await saveLoginInfo(accessToken, user);
-      }
+      await mutateAsync({ email, password });
     } else {
       Toast.show({
         type: "error",

@@ -14,6 +14,7 @@ import Toast from "react-native-toast-message";
 import { useMutation } from "@tanstack/react-query";
 import { createUser } from "@/services/authServices";
 import useMultiStepForm from "@/hooks/useMultiStepForm";
+import { AxiosError } from "axios";
 
 const UserName = () => {
   const router = useRouter();
@@ -32,12 +33,33 @@ const UserName = () => {
       const { data } = await createUser(userData);
       return data;
     },
-    onError: (err) => {
+    onError: (err: unknown) => {
+      let errorMessage = "Something went wrong";
+
+      if (err instanceof AxiosError) {
+        if (
+          err.response?.data?.message === "Duplicate key error" ||
+          err.message === "Duplicate key error"
+        ) {
+          errorMessage = "User Already Exists!!";
+        } else {
+          errorMessage = err.response?.data?.message || err.message;
+        }
+      } else if (err instanceof Error) {
+        if (err.message === "Duplicate key error") {
+          errorMessage = "User Already Exists!!";
+        } else {
+          errorMessage = err.message;
+        }
+      }
+
       Toast.show({
         type: "error",
         text1: "Failed to create account!",
+        text2: errorMessage,
       });
-      console.error("Account creation failed", err.message);
+
+      // console.error("Account creation failed:", errorMessage);
       setIsAccountCreating(false);
     },
     mutationKey: ["user", "users"],
@@ -75,10 +97,9 @@ const UserName = () => {
         role: role,
         image: image,
         gender: gender,
-        username: username,
+        userName: username,
       };
-      const res = await mutateAsync(userData);
-      console.log("response", res);
+      await mutateAsync(userData);
     }
   };
 
