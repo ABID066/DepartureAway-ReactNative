@@ -7,13 +7,33 @@ import {
   FlatList,
   Dimensions,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { getTravelPackages } from "@/services/packagesServices";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 // Package categories data
-const packageCategories = ["Traveler Choose", "Hajj", "Honeymoon", "Alpine"];
+const packageCategories = [
+  { label: "Traveler Choose", value: "Traveler Choose" },
+  { label: "Hajj", value: "hajj" },
+  { label: "Honeymoon", value: "honeymoon" },
+  { label: "Alpine wanders", value: "alpine" },
+  { label: "Adventure Tours", value: "adventure" },
+  { label: "Cultural Tours", value: "cultural" },
+  { label: "Beach & Resort", value: "beach" },
+  { label: "City Tours", value: "city" },
+  { label: "Nature & Wildlife", value: "nature" },
+  { label: "Luxury Travel", value: "luxury" },
+  { label: "Budget Travel", value: "budget" },
+  { label: "Family Tours", value: "family" },
+  { label: "Honeymoon Packages", value: "honeymoon" },
+  { label: "Pilgrimage Tours", value: "pilgrimage" },
+  { label: "Resort Stay", value: "resort" },
+  { label: "Boat Trip", value: "boat-trip" },
+  { label: "Mountains", value: "mountain" },
+  { label: "Desert", value: "desert" },
+];
 
 // Interface for package data
 interface PackageItem {
@@ -163,28 +183,31 @@ const TravelPackagesSection = ({
     <View className='mt-5 px-4 mb-20'>
       <Text className='text-xl font-bold text-gray-800'>Travel package</Text>
 
-      <View className='flex-row my-4'>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        className='py-4'>
         {data &&
-          packageCategories.map((category) => (
+          packageCategories.map((category, i) => (
             <TouchableOpacity
-              key={category}
+              key={i + 0}
               className={`mr-4 py-1 ${
-                activePackageTab === category
+                activePackageTab === category.value
                   ? "bg-rose-500 px-4 rounded-full"
                   : ""
               }`}
-              onPress={() => setActivePackageTab(category)}>
+              onPress={() => setActivePackageTab(category.value)}>
               <Text
                 className={`text-base ${
-                  activePackageTab === category
+                  activePackageTab === category.value
                     ? "text-white font-semibold"
                     : "text-gray-500"
                 }`}>
-                {category}
+                {category?.label}
               </Text>
             </TouchableOpacity>
           ))}
-      </View>
+      </ScrollView>
 
       {/* Use FlatList instead of flex-wrap for more reliable grid layout */}
       <FlatList

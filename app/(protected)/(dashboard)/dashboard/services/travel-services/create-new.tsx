@@ -23,9 +23,30 @@ import { useAuth } from "@/hooks/useAuth";
 const serviceSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
-  category: z.enum(["hajj", "honeymoon", "others"], {
-    errorMap: () => ({ message: "Please select a category" }),
-  }),
+  category: z.enum(
+    [
+      "Traveler Choose",
+      "Hajj",
+      "Honeymoon",
+      "Alpine",
+      "Adventure",
+      "Cultural",
+      "Beach",
+      "City",
+      "Nature",
+      "Luxury",
+      "Budget",
+      "Family",
+      "Pilgrimage",
+      "Resort",
+      "Boat-trip",
+      "Mountain",
+      "Desert",
+    ],
+    {
+      errorMap: () => ({ message: "Please select a category" }),
+    }
+  ),
   location: z.string().min(1, "Location is required"),
   basicPrice: z
     .string()
@@ -56,6 +77,7 @@ const serviceSchema = z.object({
   //   images: z.array(z.string()).optional(),
 });
 
+
 type ServiceForm = z.infer<typeof serviceSchema>;
 
 const AddNewService = () => {
@@ -75,7 +97,24 @@ const AddNewService = () => {
     defaultValues: {
       title: "",
       description: "",
-      category: "" as "hajj" | "honeymoon" | "others",
+      category: "" as
+        | "Traveler Choose"
+        | "Hajj"
+        | "Honeymoon"
+        | "Alpine"
+        | "Adventure"
+        | "Cultural"
+        | "Beach"
+        | "City"
+        | "Nature"
+        | "Luxury"
+        | "Budget"
+        | "Family"
+        | "Pilgrimage"
+        | "Resort"
+        | "Boat-trip"
+        | "Mountain"
+        | "Desert",
       location: "",
       basicPrice: "",
       standardPrice: "",
@@ -215,7 +254,21 @@ const AddNewService = () => {
               <Picker.Item label='Select a category' value='' />
               <Picker.Item label='Hajj' value='hajj' />
               <Picker.Item label='Honeymoon' value='honeymoon' />
-              <Picker.Item label='Others' value='others' />
+              <Picker.Item label='Alpine wanders' value='alpine' />
+              <Picker.Item label='Adventure Tours' value='adventure' />
+              <Picker.Item label='Cultural Tours' value='cultural' />
+              <Picker.Item label='Beach & Resort' value='beach' />
+              <Picker.Item label='City Tours' value='city' />
+              <Picker.Item label='Nature & Wildlife' value='nature' />
+              <Picker.Item label='Luxury Travel' value='luxury' />
+              <Picker.Item label='Budget Travel' value='budget' />
+              <Picker.Item label='Family Tours' value='family' />
+              <Picker.Item label='Honeymoon Packages' value='honeymoon' />
+              <Picker.Item label='Pilgrimage Tours' value='pilgrimage' />
+              <Picker.Item label='Resort Stay' value='resort' />
+              <Picker.Item label='Boat Trip' value='boat-trip' />
+              <Picker.Item label='Mountains' value='mountain' />
+              <Picker.Item label='Desert' value='desert' />
             </Picker>
           </View>
         )}
