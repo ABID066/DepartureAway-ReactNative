@@ -123,8 +123,8 @@ const TravelPackagesSection = ({
 
     if (!hasNextPage) {
       return (
-        <View className='py-4 justify-center items-center'>
-          <Text className='text-gray-500'>No More Travel Packages.</Text>
+        <View className='py-6 justify-center items-center'>
+          <Text className='text-gray-500'>No Travel Packages Available.</Text>
         </View>
       );
     }
