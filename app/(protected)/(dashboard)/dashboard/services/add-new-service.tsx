@@ -1,18 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Alert,
+  ActivityIndicator,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
+import useUploadImage from "@/hooks/useUploadImage";
+import { useMutation } from "@tanstack/react-query";
+import Toast from "react-native-toast-message";
+import { createServicePackage } from "@/services/packagesServices";
 
 // Validation Schema
 const serviceSchema = z.object({
@@ -61,10 +65,15 @@ const serviceSchema = z.object({
 type ServiceForm = z.infer<typeof serviceSchema>;
 
 const AddNewService = () => {
+  const router = useRouter()
+  const { uploadImage, imageUploadError, imageUploading } = useUploadImage();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const isLoading = imageUploading || isSubmitting;
   const {
     control,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<ServiceForm>({
     resolver: zodResolver(serviceSchema),
@@ -88,22 +97,78 @@ const AddNewService = () => {
     },
   });
 
+  const { mutateAsync } = useMutation({
+    mutationFn: async (serviceData: ServiceData) => {
+      const { data } = await createServicePackage(serviceData);
+      return data;
+    },
+    onError: (err) => {
+      Toast.show({
+        type: "error",
+        text1: "Failed to create service",
+      });
+      console.error("Service creation failed", err);
+      setIsSubmitting(false);
+    },
+    mutationKey: ["create-service", "services"],
+    onSuccess: () => {
+      Toast.show({
+        type: "success",
+        text1: "Service created successfully",
+      });
+      reset();
+      router.push("/dashboard/services");
+      setIsSubmitting(false);
+    },
+  });
+
   const handleImagePick = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: "images",
       quality: 1,
-      allowsMultipleSelection: true,
+      allowsMultipleSelection: false,
     });
 
-    if (!result.canceled) {
-      const uris = result.assets.map((asset) => asset.uri);
-      setValue("images", uris);
+    if (!result.canceled && result.assets.length > 0) {
+      const imageUri = result.assets[0].uri;
+
+      try {
+        const imageUrl = await uploadImage(imageUri);
+        setValue("images", [imageUrl]);
+      } catch (err) {
+        // Handle image upload error
+        console.log("Image upload failed error: ", imageUploadError);
+        console.error("Image upload failed", err);
+      }
     }
   };
 
-  const onSubmit = (data: ServiceForm) => {
-    Alert.alert("Submitted", JSON.stringify(data, null, 2));
-    router.push("/dashboard/services");
+  const onSubmit = async (data: ServiceForm) => {
+    setIsSubmitting(true);
+    const {
+      basicPrice,
+      standardPrice,
+      premiumPrice,
+      title,
+      description,
+      category,
+      location,
+      duration,
+      images,
+    } = data;
+    const serviceData = {
+      provider_id: "683069aa6427eb088fdd9e78",
+      title: title,
+      description: description,
+      category: category,
+      price_basic: basicPrice,
+      price_standard: standardPrice,
+      price_premium: premiumPrice,
+      location: location,
+      duration_days: duration,
+      media_urls: images[0],
+    };
+    await mutateAsync(serviceData);
   };
 
   return (
@@ -201,12 +266,14 @@ const AddNewService = () => {
           <Controller
             control={control}
             name='basicPrice'
-            render={({ field }) => (
+            render={({ field: { value, onChange, onBlur } }) => (
               <TextInput
                 className='border border-gray-300 rounded-md p-3'
                 placeholder='Basic'
                 keyboardType='numeric'
-                {...field}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
               />
             )}
           />
@@ -219,12 +286,14 @@ const AddNewService = () => {
           <Controller
             control={control}
             name='standardPrice'
-            render={({ field }) => (
+            render={({ field: { value, onChange, onBlur } }) => (
               <TextInput
                 className='border border-gray-300 rounded-md p-3'
                 placeholder='Standard'
                 keyboardType='numeric'
-                {...field}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
               />
             )}
           />
@@ -240,12 +309,14 @@ const AddNewService = () => {
           <Controller
             control={control}
             name='premiumPrice'
-            render={({ field }) => (
+            render={({ field: { value, onChange, onBlur } }) => (
               <TextInput
                 className='border border-gray-300 rounded-md p-3'
                 placeholder='Premium'
                 keyboardType='numeric'
-                {...field}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
               />
             )}
           />
@@ -258,12 +329,14 @@ const AddNewService = () => {
           <Controller
             control={control}
             name='duration'
-            render={({ field }) => (
+            render={({ field: { value, onChange, onBlur } }) => (
               <TextInput
                 className='border border-gray-300 rounded-md p-3'
                 placeholder='Duration'
                 keyboardType='numeric'
-                {...field}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
               />
             )}
           />
@@ -274,7 +347,7 @@ const AddNewService = () => {
       </View>
 
       {/* Media URLs */}
-      <Text className='text-gray-700 mb-1'>Media URLs (optional)</Text>
+      {/* <Text className='text-gray-700 mb-1'>Media URLs (optional)</Text>
       <Controller
         control={control}
         name='mediaUrls'
@@ -285,19 +358,26 @@ const AddNewService = () => {
             {...field}
           />
         )}
-      />
+      /> */}
 
       {/* Upload Images */}
       <View>
         <Text className='text-gray-600 mb-2'>Upload Images</Text>
         <TouchableOpacity
           onPress={handleImagePick}
+          disabled={isLoading}
           className='border-2 border-dashed border-gray-200 rounded-lg p-6 items-center justify-center'>
-          <Text className='text-[#FF1A5A]'>Upload files</Text>
-          <Text className='text-gray-500 text-sm mt-1'>or drag and drop</Text>
-          <Text className='text-gray-400 text-xs mt-1'>
-            PNG, JPG, GIF up to 10MB
+          <Text className={imageUploading ? "text-gray-600" : "text-[#FF1A5A]"}>
+            {imageUploading ? "Image Uploading" : "Upload files"}
           </Text>
+          {/* <Text className='text-gray-500 text-sm mt-1'>or drag and drop</Text> */}
+          {imageUploading ? (
+            <ActivityIndicator size='small' color='#ffffff' />
+          ) : (
+            <Text className='text-gray-400 text-xs mt-1'>
+              PNG, JPG, GIF up to 10MB
+            </Text>
+          )}
         </TouchableOpacity>
         {errors.images && (
           <Text className='text-red-500 mb-4'>{errors.images.message}</Text>
@@ -324,14 +404,22 @@ const AddNewService = () => {
       {/* Buttons */}
       <View className='flex-row justify-end gap-4 mt-6 pb-24'>
         <TouchableOpacity
-          onPress={() => router.back()}
-          className='px-6 py-3 rounded-lg border border-gray-200'>
-          <Text className='text-gray-600'>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
           onPress={handleSubmit(onSubmit)}
-          className='px-6 py-3 rounded-lg bg-[#FF1A5A]'>
-          <Text className='text-white font-medium'>Create Service</Text>
+          disabled={isLoading}
+          className={`px-6 py-3 rounded-lg flex-row items-center justify-center ${
+            isLoading ? "bg-gray-400" : "bg-[#FF1A5A]"
+          }`}>
+          <Text
+            className={`font-medium ${
+              isLoading ? "text-gray-600" : "text-white"
+            } mr-2`}>
+            {imageUploading
+              ? "Image Uploading"
+              : isSubmitting
+              ? "Form Submitting"
+              : "Create Service"}
+          </Text>
+          {isLoading && <ActivityIndicator size='small' color='#ffffff' />}
         </TouchableOpacity>
       </View>
     </ScrollView>

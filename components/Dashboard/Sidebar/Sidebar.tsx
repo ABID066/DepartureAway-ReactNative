@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Image, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Pressable,
+  ScrollView,
+} from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -10,14 +17,9 @@ import MenuItem from "@/components/Dashboard/Sidebar/Menu/MenuItem";
 import { usePathname, useRouter } from "expo-router";
 
 const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
-  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const [openSubmenus, setOpenSubmenus] = useState<string[]>([]);
   const pathname = usePathname();
   const router = useRouter();
-
-  const handleSubmenuToggle = (label: string) => {
-    setOpenSubmenu(openSubmenu === label ? null : label);
-  };
-
   const menuItems: MenuItemProps[] = [
     {
       icon: <MaterialIcons name='dashboard' size={24} color='black' />,
@@ -42,14 +44,61 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
       isActive: pathname.startsWith("/dashboard/services"),
       submenuItems: [
         {
-          label: "All Services",
-          route: "/dashboard/services",
-          isActive: pathname === "/dashboard/services",
+          label: "Travel Services",
+          route: "/dashboard/services/travel-services",
+          isActive: pathname.startsWith("/dashboard/services/travel-services"),
+          hasSubmenu: true,
+          submenuItems: [
+            {
+              label: "All Travel Service",
+              route: "/dashboard/services/travel-services",
+              isActive: pathname === "/dashboard/services/travel-services",
+            },
+            {
+              label: "Create New Travel Service",
+              route: "/dashboard/services/travel-services/create-new",
+              isActive:
+                pathname === "/dashboard/services/travel-services/create-new",
+            },
+          ],
         },
         {
-          label: "Add New Service",
-          route: "/dashboard/services/add-new-service",
-          isActive: pathname === "/services/add-new-service",
+          label: "Flight Services",
+          route: "/dashboard/services/flight-services",
+          isActive: pathname.startsWith("/dashboard/services/flight-services"),
+          hasSubmenu: true,
+          submenuItems: [
+            {
+              label: "All Flight Service",
+              route: "/dashboard/services/flight-services",
+              isActive: pathname === "/dashboard/services/flight-services",
+            },
+            {
+              label: "Create New Flight Service",
+              route: "/dashboard/services/flight-services/create-new",
+              isActive:
+                pathname === "/dashboard/services/flight-services/create-new",
+            },
+          ],
+        },
+        {
+          label: "Hotel Services",
+          route: "/dashboard/services/hotel-services",
+          isActive: pathname.startsWith("/dashboard/services/hotel-services"),
+          hasSubmenu: true,
+          submenuItems: [
+            {
+              label: "All Hotel Service",
+              route: "/dashboard/services/hotel-services",
+              isActive: pathname === "/dashboard/services/hotel-services",
+            },
+            {
+              label: "Create New Hotel Service",
+              route: "/dashboard/services/hotel-services/create-new",
+              isActive:
+                pathname === "/dashboard/services/hotel-services/create-new",
+            },
+          ],
         },
       ],
     },
@@ -75,7 +124,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
     },
   ];
 
-  const settingsItems: MenuItemProps[] = [
+  const settingsItems: MenuItem[] = [
     {
       icon: <FontAwesome name='user' size={24} color='black' />,
       activeIcon: <FontAwesome name='user' size={24} color='#FF1A5A' />,
@@ -89,6 +138,32 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
       route: "/dashboard/preferences",
     },
   ];
+
+  const handleSubmenuToggle = (label: string) => {
+    setOpenSubmenus((prev) =>
+      prev.includes(label)
+        ? prev.filter((item) => item !== label)
+        : [...prev, label]
+    );
+  };
+
+  const updateSubmenuOpenState = (items: SubmenuItem[]): SubmenuItem[] => {
+    return items.map((item) => ({
+      ...item,
+      isSubmenuOpen: openSubmenus.includes(item.label),
+      submenuItems: item.submenuItems
+        ? updateSubmenuOpenState(item.submenuItems)
+        : undefined,
+    }));
+  };
+
+  const menuItemsWithState = menuItems.map((item) => ({
+    ...item,
+    isSubmenuOpen: openSubmenus.includes(item.label),
+    submenuItems: item.submenuItems
+      ? updateSubmenuOpenState(item.submenuItems)
+      : undefined,
+  }));
 
   return (
     <View
@@ -114,28 +189,28 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
         <Text className='text-gray-500 mt-1 text-right'>Admin Dashboard</Text>
       </View>
 
-      <View className='flex-1'>
-        {isOpen && <Text className='text-gray-400 text-xs mb-4'>MENU</Text>}
-        {menuItems.map((item, index) => (
+      {isOpen && <Text className='text-gray-400 text-xs mb-4'>MENU</Text>}
+      <ScrollView className='flex-1'>
+        {menuItemsWithState.map((item, index) => (
           <MenuItem
             key={index}
             {...item}
             isOpen={isOpen}
             toggleSidebar={toggleSidebar}
-            isSubmenuOpen={openSubmenu === item.label}
+            isSubmenuOpen={item.isSubmenuOpen}
             onSubmenuToggle={handleSubmenuToggle}
           />
         ))}
-      </View>
+      </ScrollView>
 
       <View>
-        {isOpen && <Text className='text-gray-400 text-xs mb-4'>SETTINGS</Text>}
+        {isOpen && <Text className='text-gray-400 text-xs my-4'>SETTINGS</Text>}
         {settingsItems.map((item, index) => (
           <MenuItem
             key={index}
             {...item}
             isOpen={isOpen}
-            isSubmenuOpen={openSubmenu === item.label}
+            isSubmenuOpen={openSubmenus.includes(item.label)}
             onSubmenuToggle={handleSubmenuToggle}
           />
         ))}

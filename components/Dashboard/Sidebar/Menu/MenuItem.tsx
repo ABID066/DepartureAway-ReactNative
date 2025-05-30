@@ -1,7 +1,7 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { Link, usePathname, type LinkProps } from "expo-router";
-import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
+
 
 const MenuItem = ({
   icon,
@@ -18,6 +18,61 @@ const MenuItem = ({
 }: MenuItemProps): JSX.Element => {
   const pathname = usePathname();
   const isActivePath = pathname === route || isActive;
+
+  const renderSubmenuItem = (item: SubmenuItem, index: number, level: number = 0) => {
+    const isItemPathActive = pathname === item.route || item.isActive;
+
+    if (item.hasSubmenu && Array.isArray(item.submenuItems) && item.submenuItems.length > 0) {
+      return (
+        <View key={index} className={`ml-${level * 4}`}>
+          <TouchableOpacity
+            onPress={() => onSubmenuToggle?.(item.label)}
+            className={`flex-row items-center p-3 rounded-lg mb-1 ${
+              isItemPathActive ? "bg-gray-100" : ""
+            }`}>
+            <Text
+              className={`flex-1 ${
+                isItemPathActive ? "font-bold text-[#FF1A5A]" : ""
+              }`}>
+              {item.label}
+            </Text>
+            <MaterialIcons
+              name={
+                item.isSubmenuOpen ? "keyboard-arrow-up" : "keyboard-arrow-down"
+              }
+              size={24}
+              color={isItemPathActive ? "#FF1A5A" : "black"}
+            />
+          </TouchableOpacity>
+          {item.isSubmenuOpen && (
+            <View>
+              {item.submenuItems?.map((subItem, subIndex) =>
+                renderSubmenuItem(subItem, subIndex, level + 1)
+              )}
+            </View>
+          )}
+        </View>
+      );
+    }
+
+    return (
+      <Link key={index} href={item.route as LinkProps["href"]} asChild>
+        <TouchableOpacity
+          className={`flex-row items-center p-3 rounded-lg mb-1 ml-${level * 4} ${
+            isItemPathActive ? "bg-gray-100" : ""
+          }`}
+          onPress={toggleSidebar}>
+          <Text
+            className={`${
+              isItemPathActive ? "font-bold text-[#FF1A5A]" : ""
+            }`}>
+            {item.label}
+          </Text>
+        </TouchableOpacity>
+      </Link>
+    );
+  };
+
   if (hasSubmenu || submenuItems.length > 0) {
     return (
       <View>
@@ -49,28 +104,9 @@ const MenuItem = ({
         </TouchableOpacity>
         {isSubmenuOpen && isOpen && (
           <View className='ml-8'>
-            {submenuItems.map((item, index) => {
-              const isItemPathActive = pathname === item.route || item.isActive;
-              return (
-                <Link
-                  key={index}
-                  href={item.route as LinkProps["href"]}
-                  asChild>
-                  <TouchableOpacity
-                    className={`flex-row items-center p-3 rounded-lg mb-1 ${
-                      isItemPathActive ? "bg-gray-100" : ""
-                    }`}
-                    onPress={toggleSidebar}>
-                    <Text
-                      className={`${
-                        isItemPathActive ? "font-bold text-[#FF1A5A]" : ""
-                      }`}>
-                      {item.label}
-                    </Text>
-                  </TouchableOpacity>
-                </Link>
-              );
-            })}
+            {submenuItems.map((item, index) =>
+              renderSubmenuItem(item, index)
+            )}
           </View>
         )}
       </View>
@@ -78,7 +114,7 @@ const MenuItem = ({
   }
 
   return (
-    <Link href={route} asChild>
+    <Link href={route as LinkProps["href"]} asChild>
       <TouchableOpacity
         className={`flex-row items-center p-3 rounded-lg mb-1 ${
           isActivePath ? "bg-gray-100" : ""

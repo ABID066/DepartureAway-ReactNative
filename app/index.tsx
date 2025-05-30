@@ -10,15 +10,13 @@ const index = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      router.push("/welcome"); 
+      router.push("/signIn");
     }, 2000);
   }, [router]);
 
   return (
     <View className='flex-1 justify-center items-center bg-yellow-400'>
-      <Image
-        source={require("@/assets/images/logo.png")} 
-      />
+      <Image source={require("@/assets/images/logo.png")} />
     </View>
   );
 };

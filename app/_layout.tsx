@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React, { useEffect } from "react";
+import { View, StyleSheet } from "react-native";
 import * as Font from "expo-font";
 import { Slot } from "expo-router";
+import Toast from "react-native-toast-message";
+import { AppProviders } from "@/providers/AppProviders";
 
 const loadFonts = () => {
   return Font.loadAsync({
@@ -15,14 +16,13 @@ const AppLayout = () => {
     loadFonts();
   }, []);
 
-  const queryClient = new QueryClient();
-
   return (
-    <QueryClientProvider client={queryClient}>
+    <AppProviders>
       <View style={{ flex: 1 }}>
         <Slot />
       </View>
-    </QueryClientProvider>
+      <Toast />
+    </AppProviders>
   );
 };
 

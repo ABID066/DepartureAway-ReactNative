@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,25 +7,43 @@ import {
   FlatList,
   Dimensions,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { getTravelPackages } from "@/services/packagesServices";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 // Package categories data
-const packageCategories = ["Traveler Choose", "Hajj", "Honeymoon", "Alpine"];
+const packageCategories = [
+  { label: "Traveler Choose", value: "Traveler Choose" },
+  { label: "Hajj", value: "hajj" },
+  { label: "Honeymoon", value: "honeymoon" },
+  { label: "Alpine wanders", value: "alpine" },
+  { label: "Adventure Tours", value: "adventure" },
+  { label: "Cultural Tours", value: "cultural" },
+  { label: "Beach & Resort", value: "beach" },
+  { label: "City Tours", value: "city" },
+  { label: "Nature & Wildlife", value: "nature" },
+  { label: "Luxury Travel", value: "luxury" },
+  { label: "Budget Travel", value: "budget" },
+  { label: "Family Tours", value: "family" },
+  { label: "Honeymoon Packages", value: "honeymoon" },
+  { label: "Pilgrimage Tours", value: "pilgrimage" },
+  { label: "Resort Stay", value: "resort" },
+  { label: "Boat Trip", value: "boat-trip" },
+  { label: "Mountains", value: "mountain" },
+  { label: "Desert", value: "desert" },
+];
 
 // Interface for package data
 interface PackageItem {
   id: number;
   title: string;
   location: string;
-  price_basic: string;
-  duration_days: string;
-  image?: any;
-  media_urls?: string | string[];
+  price1: string;
+  duration?: string;
+  imageUrl: string[];
 }
-
 
 // Travel Packages Section Component
 const TravelPackagesSection = ({
@@ -38,22 +56,16 @@ const TravelPackagesSection = ({
   // Calculate screen width to set card width dynamically
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = (screenWidth - 32 - 8) / 2; // Accounting for padding and gap
-
-  // Get the appropriate data based on active tab
-  const getPackagesData = () => {
-    switch (activePackageTab) {
-      case "Traveler Choose":
-        // return travelerChoosePackages;
-      case "Hajj":
-        // return hajjPackages;
-      case "Honeymoon":
-        // return honeymoonPackages;
-      case "Alpine":
-        // return alpinePackages;
-      default:
-        // return travelerChoosePackages;
+  const [filterType, setFilterType] = useState("");
+  useEffect(() => {
+    if (activePackageTab === "Traveler Choose") {
+      setFilterType("");
+    } else {
+      setFilterType(activePackageTab);
     }
-  };
+  }, [activePackageTab]);
+
+  const dataLimit = 10;
 
   const {
     data,
@@ -63,19 +75,19 @@ const TravelPackagesSection = ({
     status,
     error,
   } = useInfiniteQuery({
-    queryKey: ["travelPackages", activePackageTab],
-    queryFn: ({ pageParam }) => getTravelPackages(pageParam),
+    queryKey: ["travelPackages", filterType, "services"],
+    queryFn: ({ pageParam }) =>
+      getTravelPackages(pageParam, dataLimit, filterType),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       // Calculate if there are more pages based on meta data
       const { page, total, limit } = lastPage.meta;
       const totalPages = Math.ceil(total / limit);
-      
+
       // Return next page number if there are more pages, null if we're at the end
       return page < totalPages ? page + 1 : null;
     },
   });
-
 
   if (status === "pending") {
     return (
@@ -103,16 +115,16 @@ const TravelPackagesSection = ({
   const renderFooter = () => {
     if (isFetchingNextPage) {
       return (
-        <View className="py-4 justify-center items-center">
-          <ActivityIndicator size="small" color="#E11D48" />
+        <View className='py-4 justify-center items-center'>
+          <ActivityIndicator size='small' color='#E11D48' />
         </View>
       );
     }
 
     if (!hasNextPage) {
       return (
-        <View className="py-4 justify-center items-center">
-          <Text className="text-gray-500">No More Travel Packages.</Text>
+        <View className='py-4 justify-center items-center'>
+          <Text className='text-gray-500'>No More Travel Packages.</Text>
         </View>
       );
     }
@@ -128,7 +140,11 @@ const TravelPackagesSection = ({
       style={{ width: cardWidth }}>
       {/* Image */}
       <Image
-        source={typeof item?.media_urls === 'string' && item?.media_urls ? { uri: item.media_urls } : item?.image}
+        source={
+          typeof item?.imageUrl[0] === "string"
+            ? { uri: item.imageUrl[0] }
+            : { uri: "https//:placeimg.com/640/480/any?r=0.888" }
+        }
         className='w-full h-60'
         resizeMode='cover'
       />
@@ -136,7 +152,7 @@ const TravelPackagesSection = ({
       {/* Duration Tag */}
       <View className='absolute top-2 right-2 px-2 py-1 bg-yellow-400 rounded-lg'>
         <Text className='text-xs font-bold text-gray-800'>
-          {item?.duration_days}
+          {item?.duration}
         </Text>
       </View>
 
@@ -145,7 +161,9 @@ const TravelPackagesSection = ({
 
       {/* Content */}
       <View className='absolute bottom-0 left-0 right-0 p-2'>
-        <Text className='text-sm font-bold text-amber-400'>Start Price {item?.price_basic}</Text>
+        <Text className='text-sm font-bold text-amber-400'>
+          Start Price {item?.price1}
+        </Text>
         <Text className='text-sm font-bold text-white mt-0.5'>
           {item?.title}
         </Text>
@@ -159,33 +177,37 @@ const TravelPackagesSection = ({
     </TouchableOpacity>
   );
 
-  const packagesData = data?.pages.flatMap((page: { data: PackageItem[] }) => page.data) || [];
+  const packagesData =
+    data?.pages.flatMap((page: { data: PackageItem[] }) => page.data) || [];
   return (
     <View className='mt-5 px-4 mb-20'>
       <Text className='text-xl font-bold text-gray-800'>Travel package</Text>
 
-      <View className='flex-row my-4'>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        className='py-4'>
         {data &&
-          packageCategories.map((category) => (
+          packageCategories.map((category, i) => (
             <TouchableOpacity
-              key={category}
+              key={i + 0}
               className={`mr-4 py-1 ${
-                activePackageTab === category
+                activePackageTab === category.value
                   ? "bg-rose-500 px-4 rounded-full"
                   : ""
               }`}
-              onPress={() => setActivePackageTab(category)}>
+              onPress={() => setActivePackageTab(category.value)}>
               <Text
                 className={`text-base ${
-                  activePackageTab === category
+                  activePackageTab === category.value
                     ? "text-white font-semibold"
                     : "text-gray-500"
                 }`}>
-                {category}
+                {category?.label}
               </Text>
             </TouchableOpacity>
           ))}
-      </View>
+      </ScrollView>
 
       {/* Use FlatList instead of flex-wrap for more reliable grid layout */}
       <FlatList
