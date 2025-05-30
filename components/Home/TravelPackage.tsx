@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -36,22 +36,16 @@ const TravelPackagesSection = ({
   // Calculate screen width to set card width dynamically
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = (screenWidth - 32 - 8) / 2; // Accounting for padding and gap
-
-  // Get the appropriate data based on active tab
-  const getPackagesData = () => {
-    switch (activePackageTab) {
-      case "Traveler Choose":
-      // return travelerChoosePackages;
-      case "Hajj":
-      // return hajjPackages;
-      case "Honeymoon":
-      // return honeymoonPackages;
-      case "Alpine":
-      // return alpinePackages;
-      default:
-      // return travelerChoosePackages;
+  const [filterType, setFilterType] = useState("");
+  useEffect(() => {
+    if (activePackageTab === "Traveler Choose") {
+      setFilterType("");
+    } else {
+      setFilterType(activePackageTab);
     }
-  };
+  }, [activePackageTab]);
+
+  const dataLimit = 10;
 
   const {
     data,
@@ -61,8 +55,9 @@ const TravelPackagesSection = ({
     status,
     error,
   } = useInfiniteQuery({
-    queryKey: ["travelPackages", activePackageTab, "services"],
-    queryFn: ({ pageParam }) => getTravelPackages(pageParam),
+    queryKey: ["travelPackages", filterType, "services"],
+    queryFn: ({ pageParam }) =>
+      getTravelPackages(pageParam, dataLimit, filterType),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       // Calculate if there are more pages based on meta data

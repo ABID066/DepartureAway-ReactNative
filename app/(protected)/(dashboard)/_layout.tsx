@@ -30,7 +30,7 @@ const DashboardLayout = () => {
   const sidebarWidth = sidebarAnimation.interpolate({
     inputRange: [0, 1],
 
-    outputRange: [0, 256], // 256px = 16rem (w-64)
+    outputRange: [0, 272], // 272px = 16rem (w-68)
   });
 
   return (

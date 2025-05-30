@@ -29,19 +29,6 @@ export const getAllServices = async (page = 1, limit = 10) => {
   }
 };
 
-// Get ALl Travel Packages Function
-export const getTravelPackages = async (page = 1, limit = 10) => {
-  try {
-    const { data } = await axiosCommon.get(
-      `/Tour/all-tour?page=${page}&limit=${limit}`
-    );
-    return data;
-  } catch (error) {
-    console.error("API Error:", error);
-    throw error;
-  }
-};
-
 // Get Service by ID Function (Replace with your actual API endpoint)
 export const getServiceById = async (serviceId: string) => {
   try {
@@ -80,3 +67,34 @@ export const deleteService = async (serviceId: string) => {
   }
 };
 
+// ? Travel Packages Services Related Function
+
+// Add New Service Function
+export const createTravelServicePackage = async (
+  serviceData: TravelServiceData
+) => {
+  try {
+    const { data } = await axiosCommon.post(`/Tour/create-tour`, serviceData);
+    return data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};
+
+// Get ALl Travel Packages Function
+export const getTravelPackages = async (
+  page = 1,
+  limit = 10,
+  filter = ""
+) => {
+  try {
+    const { data } = await axiosCommon.get(
+      `/Tour/all-tour?page=${page}&limit=${limit}&searchTerm=${filter}`
+    );
+    return data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};

@@ -108,6 +108,28 @@ interface FormErrors {
   duration?: string;
 }
 
+// Travel Packages Service
+type TravelServiceData = {
+  id?: string | number;
+  title: string;
+  location: string;
+  description: string;
+  duration: string;
+  price1: string;
+  price2: string;
+  category: string;
+  creatorType: string;
+  createdBy: mongoose.Types.ObjectId;
+  imageUrl: string[];
+  isPopular?: boolean;
+  rating?: number;
+  totalReviews?: number;
+};
+
+
+
+// ? chat related interfaces
+
 interface ChatItem {
   id: string;
   name: string;

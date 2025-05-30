@@ -52,14 +52,13 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
             {
               label: "All Travel Service",
               route: "/dashboard/services/travel-services",
-              isActive:
-                pathname === "/dashboard/services/travel-services",
+              isActive: pathname === "/dashboard/services/travel-services",
             },
             {
-              label: "Add New Travel Service",
-              route: "/dashboard/services/travel-services/add-new",
+              label: "Create New Travel Service",
+              route: "/dashboard/services/travel-services/create-new",
               isActive:
-                pathname === "/dashboard/services/travel-services/add-new",
+                pathname === "/dashboard/services/travel-services/create-new",
             },
           ],
         },
@@ -72,14 +71,13 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
             {
               label: "All Flight Service",
               route: "/dashboard/services/flight-services",
-              isActive:
-                pathname === "/dashboard/services/flight-services",
+              isActive: pathname === "/dashboard/services/flight-services",
             },
             {
-              label: "Add New Flight Service",
-              route: "/dashboard/services/flight-services/add-new",
+              label: "Create New Flight Service",
+              route: "/dashboard/services/flight-services/create-new",
               isActive:
-                pathname === "/dashboard/services/flight-services/add-new",
+                pathname === "/dashboard/services/flight-services/create-new",
             },
           ],
         },
@@ -92,14 +90,13 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
             {
               label: "All Hotel Service",
               route: "/dashboard/services/hotel-services",
-              isActive:
-                pathname === "/dashboard/services/hotel-services",
+              isActive: pathname === "/dashboard/services/hotel-services",
             },
             {
-              label: "Add New Hotel Service",
-              route: "/dashboard/services/hotel-services/add-new",
+              label: "Create New Hotel Service",
+              route: "/dashboard/services/hotel-services/create-new",
               isActive:
-                pathname === "/dashboard/services/hotel-services/add-new",
+                pathname === "/dashboard/services/hotel-services/create-new",
             },
           ],
         },
