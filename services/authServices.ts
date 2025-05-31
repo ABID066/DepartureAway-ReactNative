@@ -33,3 +33,14 @@ export const loginUser = async (authData: {
     throw error;
   }
 };
+
+// ? Guider Related Function
+export const getTopRatedGuider = async () => {
+  try {
+    const { data } = await axiosCommon.get(`/guider/all-guider`);
+    return data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};

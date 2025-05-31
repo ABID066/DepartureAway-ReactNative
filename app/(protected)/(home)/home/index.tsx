@@ -17,6 +17,8 @@ import DiscoverPlacesSection from "@/components/Home/Discover";
 import GuidesSection from "@/components/Home/Guider";
 import TravelPackagesSection from "@/components/Home/TravelPackage";
 import{ useAuth} from "@/hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import { getTopRatedGuider } from "@/services/authServices";
 
 // Import components
 const HomePage = () => {
@@ -24,6 +26,14 @@ const HomePage = () => {
   const [activeTab, setActiveTab] = useState("For you");
   const [activePackageTab, setActivePackageTab] = useState("Traveler Choose");
   const [currentDestinationIndex, setCurrentDestinationIndex] = useState(0);
+
+  
+const {data} = useQuery({
+  queryKey: ['guides', 'guider', "top-rated"],
+  queryFn: async () => getTopRatedGuider()})
+
+  const topRatedGuiders = data?.data || [];
+
 
   const sections = [
     {
@@ -56,7 +66,7 @@ const HomePage = () => {
     {
       title: "guides",
       data: [null],
-      renderItem: () => <GuidesSection />,
+      renderItem: () => <GuidesSection guiders={topRatedGuiders} />,
     },
     {
       title: "packages",
