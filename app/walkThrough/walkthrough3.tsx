@@ -35,12 +35,12 @@ const WalkthroughScreen3 = () => {
           <View className='flex-row justify-center items-center mb-6'>
             <View className='h-2 w-2 rounded-full bg-rose-400 mx-1'></View>
             <View className='h-2 w-2 rounded-full bg-rose-400 mx-1'></View>
-            <View className='h-2 w-6 rounded-full bg-rose-500 mx-1'></View>
+            <View className='h-2 w-6 rounded-full bg-[#F13F5F] mx-1'></View>
           </View>
 
           {/* Get Started Button */}
           <TouchableOpacity
-            className='bg-rose-500 py-4 rounded-full'
+            className='bg-[#F13F5F] py-4 rounded-full'
             onPress={() => router.push("/letsYouInScreen")}>
             <Text className='text-white text-center font-semibold text-lg'>
               Get Started

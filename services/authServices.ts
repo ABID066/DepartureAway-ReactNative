@@ -16,7 +16,7 @@ export const verifyOTP = async (otpCode: string) => {
     const { data } = await axiosCommon.patch(`/user/verifyEmail`, {code: otpCode});
     return data;
   } catch (error) {
-    console.error("API Error:", error);
+    // console.error("API Error:", error);
     throw error;
   }
 };
@@ -29,7 +29,7 @@ export const loginUser = async (authData: {
     const { data } = await axiosCommon.post(`/auth/login`, authData);
     return data;
   } catch (error) {
-    console.error("API Error:", error);
+    // console.error("API Error:", error);
     throw error;
   }
 };
@@ -40,7 +40,7 @@ export const getTopRatedGuider = async () => {
     const { data } = await axiosCommon.get(`/guider/all-guider`);
     return data;
   } catch (error) {
-    console.error("API Error:", error);
+    // console.error("API Error:", error);
     throw error;
   }
 };

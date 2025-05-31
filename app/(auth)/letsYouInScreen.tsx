@@ -1,84 +1,99 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, SafeAreaView, Pressable, ScrollView } from 'react-native';
-import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+  Pressable,
+  ScrollView,
+} from "react-native";
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 const letsYouInScreen = () => {
   const router = useRouter();
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView className='flex-1 bg-white'>
       <ScrollView>
-      {/* Back button */}
-        <View className="p-4">
+        {/* Back button */}
+        <View className='p-4'>
           <TouchableOpacity onPress={() => router.back()}>
-            <Ionicons name="arrow-back" size={24} color="black" />
+            <Ionicons name='arrow-back' size={24} color='black' />
           </TouchableOpacity>
         </View>
-      
+
         {/* Main content */}
-        <View className="flex-1 px-6">
+        <View className='flex-1 px-6'>
           {/* photo */}
-          <View className="items-center justify-center mt-5 mb-8">
+          <View className='items-center justify-center mt-5 mb-8'>
             <Image
-              source={require('@/assets/images/amico.png')}
-              className="w-40 h-40"
-              resizeMode="contain"
+              source={require("@/assets/images/amico.png")}
+              className='w-40 h-40'
+              resizeMode='contain'
             />
           </View>
 
           {/* Title */}
-          <Text className="text-4xl font-bold text-center mb-10">
+          <Text className='text-4xl font-bold text-center mb-10'>
             Let's you in
           </Text>
 
           {/* Social login buttons */}
-          <View className="mb-6 space-y-4">
-            <TouchableOpacity className="flex-row items-center justify-center border border-gray-200 p-4 rounded-full">
-              <Image 
-                source={require('@/assets/icons/Frame.png')} 
-                className="w-5 h-5 mr-3" 
+          <View className='mb-6 space-y-4'>
+            <TouchableOpacity className='flex-row items-center justify-center border border-gray-200 p-4 rounded-full'>
+              <Image
+                source={require("@/assets/icons/Frame.png")}
+                className='w-5 h-5 mr-3'
               />
-              <Text className="text-black-800 text-lg  font-bold">Continue with As a tourist</Text>
+              <Text className='text-black-800 text-lg  font-bold'>
+                Continue with As a tourist
+              </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity className="flex-row items-center justify-center border border-gray-200 p-4 my-6 rounded-full">
-              <Image 
-                source={require('@/assets/icons/Frame.png')} 
-                className="w-5 h-5 mr-3" 
+            <TouchableOpacity className='flex-row items-center justify-center border border-gray-200 p-4 my-6 rounded-full'>
+              <Image
+                source={require("@/assets/icons/Frame.png")}
+                className='w-5 h-5 mr-3'
               />
-              <Text className="text-black-800 text-lg font-bold">Continue with Facebook</Text>
+              <Text className='text-black-800 text-lg font-bold'>
+                Continue with Facebook
+              </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity className="flex-row items-center justify-center border border-gray-200 p-4 rounded-full">
-              <Image 
-                source={require('@/assets/icons/Frame2.png')} 
-                className="w-5 h-5 mr-3" 
+            <TouchableOpacity className='flex-row items-center justify-center border border-gray-200 p-4 rounded-full'>
+              <Image
+                source={require("@/assets/icons/Frame2.png")}
+                className='w-5 h-5 mr-3'
               />
-              <Text className="text-black-800 text-lg font-bold">Continue with Google</Text>
+              <Text className='text-black-800 text-lg font-bold'>
+                Continue with Google
+              </Text>
             </TouchableOpacity>
           </View>
 
           {/* Divider */}
-          <View className="flex-row items-center justify-center  mb-6">
-            <View className="flex-1 h-px bg-gray-300"></View>
-            <Text className="mx-4 text-gray-500 my-4">or</Text>
-            <View className="flex-1 h-px bg-gray-300"></View>
+          <View className='flex-row items-center justify-center  mb-6'>
+            <View className='flex-1 h-px bg-gray-300'></View>
+            <Text className='mx-4 text-gray-500 my-4'>or</Text>
+            <View className='flex-1 h-px bg-gray-300'></View>
           </View>
 
           {/* Sign in with password button */}
-          <TouchableOpacity 
-            className="bg-rose-500 py-4 rounded-full mb-6"
-            onPress={() => router.push('/signIn')}
-          >
-            <Text className="text-white text-center font-semibold text-lg">Sign in with password</Text>
+          <TouchableOpacity
+            className='bg-[#F13F5F] py-4 rounded-full mb-6'
+            onPress={() => router.push("/signIn")}>
+            <Text className='text-white text-center font-semibold text-lg'>
+              Sign in with password
+            </Text>
           </TouchableOpacity>
 
           {/* Sign up link */}
-          <View className="flex-row mb-10 justify-center">
-            <Text className="text-gray-500">Don't have an account? </Text>
-            <TouchableOpacity onPress={() => router.push('/signUp')}>
-              <Text className="text-blue-600 font-medium">Sign up</Text>
+          <View className='flex-row mb-10 justify-center'>
+            <Text className='text-gray-500'>Don't have an account? </Text>
+            <TouchableOpacity onPress={() => router.push("/signUp")}>
+              <Text className='text-blue-600 font-medium'>Sign up</Text>
             </TouchableOpacity>
           </View>
         </View>

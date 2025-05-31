@@ -16,7 +16,7 @@ import SearchBar from "@/components/Home/Search";
 import DiscoverPlacesSection from "@/components/Home/Discover";
 import GuidesSection from "@/components/Home/Guider";
 import TravelPackagesSection from "@/components/Home/TravelPackage";
-import{ useAuth} from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import { getTopRatedGuider } from "@/services/authServices";
 
@@ -27,13 +27,12 @@ const HomePage = () => {
   const [activePackageTab, setActivePackageTab] = useState("Traveler Choose");
   const [currentDestinationIndex, setCurrentDestinationIndex] = useState(0);
 
-  
-const {data} = useQuery({
-  queryKey: ['guides', 'guider', "top-rated"],
-  queryFn: async () => getTopRatedGuider()})
+  const { data } = useQuery({
+    queryKey: ["guides", "guider", "top-rated"],
+    queryFn: async () => getTopRatedGuider(),
+  });
 
   const topRatedGuiders = data?.data || [];
-
 
   const sections = [
     {
@@ -164,7 +163,7 @@ const Header = () => {
           </View>
         </View>
 
-        <TouchableOpacity className='w-12 h-12 rounded-full bg-rose-500 justify-center items-center'>
+        <TouchableOpacity className='w-12 h-12 rounded-full bg-[#F13F5F] justify-center items-center'>
           <Ionicons name='notifications-outline' size={24} color='white' />
         </TouchableOpacity>
       </View>
@@ -196,7 +195,7 @@ const BottomNavigation = () => {
       <TouchableOpacity className='items-center'>
         <View className='items-center'>
           <Ionicons name='home' size={24} color='#F13F5F' />
-          <Text className='text-xs text-rose-500 mt-0.5'>Home</Text>
+          <Text className='text-xs text-[#F13F5F] mt-0.5'>Home</Text>
         </View>
       </TouchableOpacity>
 

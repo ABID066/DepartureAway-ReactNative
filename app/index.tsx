@@ -10,7 +10,7 @@ const index = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      router.push("/signIn");
+      router.push("/welcome");
     }, 2000);
   }, [router]);
 

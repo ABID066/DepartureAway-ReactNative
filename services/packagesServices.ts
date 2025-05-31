@@ -11,7 +11,7 @@ export const createServicePackage = async (serviceData: ServiceData) => {
     );
     return data;
   } catch (error) {
-    console.error("API Error:", error);
+    // console.error("API Error:", error);
     throw error;
   }
 };
@@ -24,7 +24,7 @@ export const getAllServices = async (page = 1, limit = 10) => {
     );
     return data;
   } catch (error) {
-    console.error("API Error:", error);
+    // console.error("API Error:", error);
     throw error;
   }
 };
@@ -35,7 +35,7 @@ export const getServiceById = async (serviceId: string) => {
     const { data } = await axiosCommon.get(`/service/${serviceId}`);
     return data;
   } catch (error) {
-    console.error("API Error:", error);
+    // console.error("API Error:", error);
     throw error;
   }
 };
@@ -52,7 +52,7 @@ export const updateService = async (
     );
     return data;
   } catch (error) {
-    console.error("API Error:", error);
+    // console.error("API Error:", error);
     throw error;
   }
 };
@@ -77,7 +77,7 @@ export const createTravelServicePackage = async (
     const { data } = await axiosCommon.post(`/Tour/create-tour`, serviceData);
     return data;
   } catch (error) {
-    console.error("API Error:", error);
+    // console.error("API Error:", error);
     throw error;
   }
 };
@@ -90,7 +90,7 @@ export const getTravelPackages = async (page = 1, limit = 10, filter = "") => {
     );
     return data;
   } catch (error) {
-    console.error("API Error:", error);
+    // console.error("API Error:", error);
     throw error;
   }
 };
@@ -101,7 +101,7 @@ export const getSingleTravelPackage = async (id: string) => {
     const { data } = await axiosCommon.get(`/Tour/ById/${id}`);
     return data;
   } catch (error) {
-    console.error("API Error:", error);
+    // console.error("API Error:", error);
     throw error;
   }
 };
@@ -118,7 +118,7 @@ export const updateTravelPackage = async (
     );
     return data;
   } catch (error) {
-    console.error("API Error:", error);
+    // console.error("API Error:", error);
     throw error;
   }
 };
@@ -129,7 +129,7 @@ export const deleteTravelPackage = async (id: string) => {
     const { data } = await axiosCommon.delete(`/Tour/delete/${id}`);
     return data;
   } catch (error) {
-    console.error("API Error:", error);
+    // console.error("API Error:", error);
     throw error;
   }
 };
@@ -147,7 +147,7 @@ export const createFlightServicePackage = async (
     );
     return data;
   } catch (error) {
-    console.error("API Error:", error);
+    // console.error("API Error:", error);
     throw error;
   }
 };
@@ -160,7 +160,7 @@ export const getFlightPackages = async (page = 1, limit = 10, filter = "") => {
     );
     return data;
   } catch (error) {
-    console.error("API Error:", error);
+    // console.error("API Error:", error);
     throw error;
   }
 };
@@ -171,7 +171,7 @@ export const getSingleFlightPackages = async (id: string) => {
     const { data } = await axiosCommon.get(`/flight/ById/${id}`);
     return data;
   } catch (error) {
-    console.error("API Error:", error);
+    // console.error("API Error:", error);
     throw error;
   }
 };

@@ -181,7 +181,7 @@ const DiscoverPlacesSection = ({
       </TouchableOpacity>
 
       {/* Price Tag */}
-      <View className='absolute top-2 left-2 px-2 py-1 bg-rose-500 rounded-xl'>
+      <View className='absolute top-2 left-2 px-2 py-1 bg-[#F13F5F] rounded-xl'>
         <Text className='text-white font-bold text-xs'>{item.price}</Text>
       </View>
 
@@ -227,7 +227,7 @@ const DiscoverPlacesSection = ({
       <View className='flex-row justify-between items-center mb-4'>
         <Text className='text-xl font-bold text-gray-800'>Discover Place</Text>
         <TouchableOpacity>
-          <Text className='text-md border-rose-500 border rounded-2xl px-2 py-1 text-rose-500 font-semibold'>
+          <Text className='text-md border-[#F13F5F] border rounded-2xl px-2 py-1 text-[#F13F5F] font-semibold'>
             See all
           </Text>
         </TouchableOpacity>
@@ -238,7 +238,7 @@ const DiscoverPlacesSection = ({
           <TouchableOpacity
             key={tab}
             className={`mr-5 py-1 ${
-              activeTab === tab ? "bg-rose-500 px-4 rounded-full" : ""
+              activeTab === tab ? "bg-[#F13F5F] px-4 rounded-full" : ""
             }`}
             onPress={() => setActiveTab(tab)}>
             <Text
@@ -272,7 +272,7 @@ const DiscoverPlacesSection = ({
           <View
             key={`dot-${index}`}
             className={`h-2 mx-1 rounded-full ${
-              currentIndex === index ? "bg-rose-500 w-5" : "bg-gray-200 w-2"
+              currentIndex === index ? "bg-[#F13F5F] w-5" : "bg-gray-200 w-2"
             }`}
           />
         ))}

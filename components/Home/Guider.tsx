@@ -51,7 +51,7 @@ const GuidesSection = ({ guiders }: GuiderProps) => {
           Top Rated Guider
         </Text>
         <TouchableOpacity>
-          <Text className='text-md border-rose-500 border rounded-full px-4 py-1 text-rose-500 font-semibold'>
+          <Text className='text-md border-[#F13F5F] border rounded-full px-4 py-1 text-[#F13F5F] font-semibold'>
             Explore
           </Text>
         </TouchableOpacity>
@@ -76,7 +76,7 @@ const GuidesSection = ({ guiders }: GuiderProps) => {
                   className='w-10 h-10 rounded-full'
                 />
                 <View className='ml-1 bg-rose-50 py-1 px-2 rounded-full'>
-                  <Text className='text-rose-500 font-bold text-sm'>
+                  <Text className='text-[#F13F5F] font-bold text-sm'>
                     {guider?.hourlyRate}
                   </Text>
                 </View>

@@ -148,7 +148,7 @@ const OTPVerificationScreen = () => {
           <TouchableOpacity onPress={handleResend} disabled={!resendActive}>
             <Text
               className={`text-center ${
-                resendActive ? "text-rose-500" : "text-gray-400"
+                resendActive ? "text-[#F13F5F]" : "text-gray-400"
               } text-base font-medium`}>
               {resendActive ? "Resend" : `Resend (${countdown}s)`}
             </Text>
@@ -156,7 +156,7 @@ const OTPVerificationScreen = () => {
 
           {/* Validation message */}
           {showValidation && (
-            <Text className='text-rose-500 text-center mt-4 font-medium'>
+            <Text className='text-[#F13F5F] text-center mt-4 font-medium'>
               4-Digit OTP Required
             </Text>
           )}
@@ -164,7 +164,7 @@ const OTPVerificationScreen = () => {
 
         {/* Verify button */}
         <TouchableOpacity
-          className='bg-rose-500 py-4 rounded-full mb-20 mt-auto'
+          className='bg-[#F13F5F] py-4 rounded-full mb-20 mt-auto'
           onPress={handleVerify}>
           <Text className='text-white text-center font-semibold text-lg'>
             Verify
