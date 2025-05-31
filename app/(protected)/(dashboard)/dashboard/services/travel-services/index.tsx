@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,12 +6,20 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { Link } from "expo-router";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { getTravelPackages } from "@/services/packagesServices";
+import { Link, useRouter } from "expo-router";
+import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
+import {
+  deleteTravelPackage,
+  getTravelPackages,
+} from "@/services/packagesServices";
+import Toast from "react-native-toast-message";
+import { Modal } from "react-native";
 
 const TravelServices = () => {
-  const [currentPage, setCurrentPage] = React.useState(1);
+  const router = useRouter();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const itemsPerPage = 10;
 
   const { data, fetchNextPage, hasNextPage, status, error } = useInfiniteQuery({
@@ -24,6 +32,49 @@ const TravelServices = () => {
       return page < totalPages ? page + 1 : undefined;
     },
   });
+
+  const handlePageChange = async (newPage: number) => {
+    setCurrentPage(newPage);
+    if (newPage > (data?.pages.length || 0)) {
+      await fetchNextPage();
+    }
+  };
+
+  const { mutateAsync: deleteTravelPackageMutation, reset } = useMutation({
+    mutationKey: ["travel-services", "services"],
+    mutationFn: async (id: string) => await deleteTravelPackage(id),
+    onSuccess: async () => {
+      Toast.show({
+        type: "success",
+        text1: "Travel Service Deleted Successfully",
+        position: "top",
+      });
+      reset();
+      router.push("/dashboard/services/travel-services");
+    },
+  });
+
+  const confirmDelete = (id: string) => {
+    setSelectedId(id);
+    setModalVisible(true);
+  };
+
+  const handleDelete = async () => {
+    if (!selectedId) return;
+    try {
+      await deleteTravelPackageMutation(selectedId);
+    } catch (error) {
+      console.error("Error deleting travel package:", error);
+      Toast.show({
+        type: "error",
+        text1: "Failed to delete travel service",
+        position: "top",
+      });
+    } finally {
+      setModalVisible(false);
+      setSelectedId(null);
+    }
+  };
 
   if (status === "pending") {
     return (
@@ -41,22 +92,19 @@ const TravelServices = () => {
     );
   }
 
-  const handlePageChange = async (newPage: number) => {
-    setCurrentPage(newPage);
-    if (newPage > (data?.pages.length || 0)) {
-      await fetchNextPage();
-    }
-  };
-
   const currentPageData = data?.pages[currentPage - 1]?.data || [];
   const totalItems = data?.pages[0]?.meta?.total || 0;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const nextButtonDisabled =
+    (!hasNextPage && currentPage === totalPages) || status !== "success";
+  const prevButtonDisabled = currentPage === 1 || status !== "success";
 
   return (
     <View className='flex-1 bg-white p-4'>
       <View className='flex-row justify-between items-center my-6'>
         <Text className='text-2xl font-bold'>Travel Services</Text>
-        <Link href='/dashboard/services/travel-services/add-new' asChild>
+        <Link href='/dashboard/services/travel-services/create-new' asChild>
           <TouchableOpacity className='bg-[#FF1A5A] px-4 py-2 rounded-lg'>
             <Text className='text-white font-medium'>
               + Create New Travel Service
@@ -129,10 +177,15 @@ const TravelServices = () => {
                     </View>
 
                     <View className='w-[15%] px-4 py-3 flex-row gap-4'>
-                      <TouchableOpacity>
+                      <Link
+                        href={`/dashboard/services/travel-services/update/${service?._id}`}
+                        asChild>
                         <Text className='text-blue-500 text-base'>Edit</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity>
+                      </Link>
+                      <TouchableOpacity
+                        onPress={() =>
+                          confirmDelete(String(service._id || ""))
+                        }>
                         <Text className='text-red-500 text-base'>Delete</Text>
                       </TouchableOpacity>
                     </View>
@@ -151,13 +204,13 @@ const TravelServices = () => {
       <View className='flex-row justify-center items-center mt-4 gap-2 py-4 max-w-[100vw]'>
         <TouchableOpacity
           onPress={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
+          disabled={prevButtonDisabled}
           className={`px-3 py-2 rounded ${
-            currentPage === 1 ? "bg-gray-200" : "bg-[#FF1A5A]"
+            prevButtonDisabled ? "bg-gray-200" : "bg-[#FF1A5A]"
           }`}>
           <Text
             className={`font-bold ${
-              currentPage === 1 ? "text-gray-500" : "text-white"
+              prevButtonDisabled ? "text-gray-500" : "text-white"
             }`}>
             Prev
           </Text>
@@ -209,22 +262,44 @@ const TravelServices = () => {
 
         <TouchableOpacity
           onPress={() => handlePageChange(currentPage + 1)}
-          disabled={!hasNextPage && currentPage === totalPages}
+          disabled={nextButtonDisabled}
           className={`px-3 py-2 rounded ${
-            !hasNextPage && currentPage === totalPages
-              ? "bg-gray-200"
-              : "bg-[#FF1A5A]"
+            nextButtonDisabled ? "bg-gray-200" : "bg-[#FF1A5A]"
           }`}>
           <Text
             className={`font-bold ${
-              !hasNextPage && currentPage === totalPages
-                ? "text-gray-500"
-                : "text-white"
+              nextButtonDisabled ? "text-gray-500" : "text-white"
             }`}>
             Next
           </Text>
         </TouchableOpacity>
       </View>
+      {/* Confirmation Modal */}
+      <Modal
+        visible={modalVisible}
+        transparent
+        animationType='fade'
+        onRequestClose={() => setModalVisible(false)}>
+        <View className='flex-1 justify-center items-center bg-black/40'>
+          <View className='bg-white p-6 rounded-lg w-80 shadow-lg'>
+            <Text className='text-lg font-bold mb-4 text-center'>
+              Are you sure you want to delete this service?
+            </Text>
+            <View className='flex-row justify-between mt-4'>
+              <TouchableOpacity
+                className='bg-gray-200 px-4 py-2 rounded'
+                onPress={() => setModalVisible(false)}>
+                <Text className='text-gray-700 font-bold'>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                className='bg-red-500 px-4 py-2 rounded'
+                onPress={handleDelete}>
+                <Text className='text-white font-bold'>Yes, Delete</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };

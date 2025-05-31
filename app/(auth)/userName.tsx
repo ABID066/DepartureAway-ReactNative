@@ -161,7 +161,7 @@ const UserName = () => {
             {/* Create Account button */}
             <TouchableOpacity
               className={` ${
-                isAccountCreating ? "bg-gray-300" : "bg-rose-500"
+                isAccountCreating ? "bg-gray-300" : "bg-[#F13F5F]"
               }  py-4 rounded-full mb-8`}
               onPress={handleCreateAccount}>
               <Text className='text-white text-center font-semibold text-lg'>

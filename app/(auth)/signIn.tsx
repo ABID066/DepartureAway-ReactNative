@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -14,26 +15,38 @@ import Toast from "react-native-toast-message";
 import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "@/services/authServices";
 import { useAuth } from "@/hooks/useAuth";
+import { AxiosError } from "axios";
 
 const SignIn = () => {
   const router = useRouter();
-  const { setToken, user, setUser } = useAuth();
+  const { setToken, setUser } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const { mutateAsync } = useMutation({
     mutationFn: async (authData: { email: string; password: string }) => {
       const { data } = await loginUser(authData);
       return data;
     },
-    onError: (err) => {
+    onError: (err: unknown) => {
+      let errorMessage = "Something went wrong";
+      if (err instanceof AxiosError && err.response?.data?.message) {
+        errorMessage = err.response.data.message;
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+      setError(errorMessage);
       Toast.show({
         type: "error",
         text1: "Failed to Login!",
+        text2: errorMessage,
       });
-      console.error("Login failed", err.message);
+      // console.error("Login failed", errorMessage);
+      setIsLoading(false);
     },
     mutationKey: ["user", "users"],
     onSuccess: async (data) => {
@@ -58,10 +71,13 @@ const SignIn = () => {
       });
       setEmail("");
       setPassword("");
+      setError(null);
+      setIsLoading(false);
     },
   });
 
   const handleLogin = async () => {
+    setIsLoading(true);
     if (email && password) {
       await mutateAsync({ email, password });
     } else {
@@ -128,12 +144,17 @@ const SignIn = () => {
               />
             </TouchableOpacity>
           </View>
+          {/* Error message */}
+          {error && (
+            <Text className='text-red-500 text-sm mb-4 text-center font-semibold'>{error}</Text>
+          )}
+
 
           {/* Remember me checkbox */}
           <View className='flex-row justify-center items-center mb-6 mt-4'>
             <TouchableOpacity
               className={`w-5 h-5 rounded border flex items-center justify-center ${
-                rememberMe ? "bg-rose-500 border-rose-500" : "border-rose-700"
+                rememberMe ? "bg-[#F13F5F} border-[#F13F5F}" : "border-rose-700"
               }`}
               onPress={() => setRememberMe(!rememberMe)}>
               {rememberMe && (
@@ -147,11 +168,23 @@ const SignIn = () => {
 
           {/* Sign in button */}
           <TouchableOpacity
-            className='bg-rose-500 py-4 rounded-full mb-12'
+            disabled={isLoading}
+            activeOpacity={0.7}
+            className={`${
+              isLoading ? "bg-gray-300" : "bg-[#F13F5F]"
+            } py-4 rounded-full mb-12`}
             onPress={() => handleLogin()}>
-            <Text className='text-white text-center font-semibold text-lg'>
-              Log In
-            </Text>
+            {isLoading ? (
+              <ActivityIndicator
+                size='small'
+                color='#F13F5F'
+                className='mx-auto'
+              />
+            ) : (
+              <Text className='text-white text-center font-semibold text-lg'>
+                Log In
+              </Text>
+            )}
           </TouchableOpacity>
 
           {/* Continue with options */}

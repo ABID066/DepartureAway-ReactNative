@@ -123,8 +123,8 @@ const TravelPackagesSection = ({
 
     if (!hasNextPage) {
       return (
-        <View className='py-4 justify-center items-center'>
-          <Text className='text-gray-500'>No More Travel Packages.</Text>
+        <View className='py-6 justify-center items-center'>
+          <Text className='text-gray-500'>No Travel Packages Available.</Text>
         </View>
       );
     }
@@ -193,7 +193,7 @@ const TravelPackagesSection = ({
               key={i + 0}
               className={`mr-4 py-1 ${
                 activePackageTab === category.value
-                  ? "bg-rose-500 px-4 rounded-full"
+                  ? "bg-[#F13F5F] px-4 rounded-full"
                   : ""
               }`}
               onPress={() => setActivePackageTab(category.value)}>

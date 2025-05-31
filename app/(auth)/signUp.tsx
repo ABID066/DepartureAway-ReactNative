@@ -268,7 +268,7 @@ const SignUp = () => {
           </View>
 
           <TouchableOpacity
-            className='bg-rose-500 py-4 rounded-full mb-20'
+            className='bg-[#F13F5F] py-4 rounded-full mb-20'
             onPress={handleNext}>
             <Text className='text-white text-center font-semibold text-lg'>
               Next

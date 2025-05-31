@@ -3,10 +3,19 @@ import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { images } from "@/constants/images";
 import Header1 from "@/components/Shared/(Headers)/Header1";
-import { Link } from "expo-router";
+import { Link, useLocalSearchParams } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
+import { getSingleFlightPackages } from "@/services/packagesServices";
 
 const AgencyDetailsPage = () => {
   const [ticketClass, setTicketClass] = useState("Economy");
+  const { ticketId } = useLocalSearchParams();
+
+  const { data } = useQuery({
+    queryKey: ["ticketDetails", "services", ticketId],
+    queryFn: async () => await getSingleFlightPackages(ticketId as string),
+  });
+  const service = data?.data;
   return (
     <View className='w-full h-full bg-white overflow-y-auto overflow-x-hidden shadow-lg flex flex-col'>
       {<Header1 />}
@@ -63,7 +72,7 @@ const AgencyDetailsPage = () => {
               className={`text-base ${
                 ticketClass == "Economy" && "text-white font-semibold"
               }`}>
-              Economy ($20)
+              Economy (${service?.economicPrice || "30"})
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -75,20 +84,18 @@ const AgencyDetailsPage = () => {
               className={`text-base ${
                 ticketClass == "Business" && "text-white font-semibold"
               }`}>
-              Business ($50)
+              Business (${service?.businessPrice || "50"})
             </Text>
           </TouchableOpacity>
         </View>
         <View className='border-b border-[#F2F2F2]'>
           <Text className='font-semibold text-[#212121] text-2xl leading-tight'>
-            Seamless Flight Booking Experience Package, Economy
+            {service?.title ||
+              "Seamless Flight Booking Experience Package, Economy"}
           </Text>
           <Text className='text-sm text-[#4F4F4F] leading-snug my-5'>
-            Discover stress-free booking with our Economy Seamless Flight
-            Booking Experience Package. Perfect for budget travelers, it
-            combines value and convenience, offering personalized service and
-            exclusive economy deals. Ensure a smooth start to your journey with
-            the best deals, effortlessly.
+            {service?.description ||
+              " Discover stress-free booking with our Economy Seamless Flight Booking Experience Package. Perfect for budget travelers, it combines value and convenience, offering personalized service and exclusive economy deals. Ensure a smooth start to your journey with the best deals, effortlessly."}
           </Text>
         </View>
         <View className='py-6 gap-2'>
@@ -105,7 +112,11 @@ const AgencyDetailsPage = () => {
           <View className='flex-row items-center gap-2'>
             <FontAwesome name='star' size={18} color='#fbbf24' />
             <Text className='text-[#000000] font-medium text-xs'>
-              4.9/5 <Text className='text-[#828282] ml-8'> (306)</Text>
+              {service?.rating}/5{" "}
+              <Text className='text-[#828282] ml-8'>
+                {" "}
+                ({service?.totalReviews})
+              </Text>
             </Text>
           </View>
         </View>
@@ -123,11 +134,11 @@ const AgencyDetailsPage = () => {
             </TouchableOpacity>
           </Link>
           <Link href={"/liveChat"} asChild>
-          <TouchableOpacity className='bg-[#FF1A5A] rounded-full flex-grow px-4 py-[18px] shadow-lg'>
-            <Text className='text-center text-white text-base font-semibold'>
-              Chat
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity className='bg-[#FF1A5A] rounded-full flex-grow px-4 py-[18px] shadow-lg'>
+              <Text className='text-center text-white text-base font-semibold'>
+                Chat
+              </Text>
+            </TouchableOpacity>
           </Link>
         </View>
       </ScrollView>

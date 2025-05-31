@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,12 +6,16 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
+  FlatList,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { FontAwesome } from "@expo/vector-icons";
 import { images } from "@/constants/images";
 import { icons } from "@/constants/icons";
 import { Link, useRouter } from "expo-router";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { getFlightPackages } from "@/services/packagesServices";
 
 const FlightTicket = () => {
   const router = useRouter();
@@ -66,6 +70,126 @@ const FlightTicket = () => {
       personImg: images?.ellipse,
     },
   ];
+
+  const [filterType, setFilterType] = useState("");
+  useEffect(() => {
+    if (activeTab === "All") {
+      setFilterType("");
+    } else {
+      setFilterType(activeTab);
+    }
+  }, [activeTab]);
+
+  const dataLimit = 10;
+
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    status,
+    error,
+  } = useInfiniteQuery({
+    queryKey: ["flightPackages", filterType, "services"],
+    queryFn: ({ pageParam }) =>
+      getFlightPackages(pageParam, dataLimit, filterType),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      // Calculate if there are more pages based on meta data
+      const { page, total, limit } = lastPage.meta;
+      const totalPages = Math.ceil(total / limit);
+
+      // Return next page number if there are more pages, null if we're at the end
+      return page < totalPages ? page + 1 : null;
+    },
+  });
+
+  if (error) {
+    console.log(error);
+    return (
+      <View className='flex-1 justify-center items-center'>
+        <Text className='text-red-500'>Error loading packages</Text>
+      </View>
+    );
+  }
+
+  const loadMore = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  const renderFooter = () => {
+    if (isFetchingNextPage) {
+      return (
+        <View className='py-4 justify-center items-center'>
+          <ActivityIndicator size='small' color='#E11D48' />
+        </View>
+      );
+    }
+
+    if (!hasNextPage) {
+      return (
+        <View className='py-6 justify-center items-center'>
+          <Text className='text-gray-500'>No Travel Packages Available.</Text>
+        </View>
+      );
+    }
+
+    return null;
+  };
+
+  // Render individual package card
+  const renderPackageCard = ({ item }: { item: any }) => (
+    <Link
+      href={{
+        pathname: "/flightTicket/ticketDetails/[ticketId]",
+        params: { ticketId: item?._id },
+      }}
+      asChild>
+      <TouchableOpacity className='flex-row gap-3 bg-white rounded-xl p-2 w-full border border-[#F2F2F2] mb-3'>
+        <Image
+          source={
+            item?.imageURL && item.imageURL[0]
+              ? { uri: item.imageURL[0] }
+              : images?.rectangle
+          }
+          className='w-24 h-[110px] rounded-lg'
+          accessibilityLabel={`${item.title} image`}
+        />
+        <View className='flex-col'>
+          <Text className='text-[#FF1A5A] font-medium'>
+            From {item?.economicPrice}$
+          </Text>
+          <Text className='font-medium leading-tight my-1.5 w-[85%] text-[#000000]'>
+            {item.title}
+          </Text>
+          <View className='flex-row items-center gap-2 my-1'>
+            <Image source={item.personImg} className='size-5' />
+            <Text className='text-xs font-medium text-[#4F4F4F]'>
+              {item?.creatorCategory}
+            </Text>
+          </View>
+          <View className='flex-row items-center gap-1 text-yellow-400 mt-0.5'>
+            <FontAwesome name='star' size={18} color='#fbbf24' />
+            <Text className='text-[#000000] ml-1 font-medium text-xs'>
+              {item?.rating}/5{" "}
+              <Text className='text-[#828282] ml-1'> {item?.totalReviews}</Text>
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    </Link>
+  );
+
+  const packagesData =
+    data?.pages.flatMap((page: { data: any[] }) => page.data) || [];
+  const totalDataLength =
+    data?.pages.reduce(
+      (sum: number, page: { meta: { total: number } }) => sum + page.meta.total,
+      0
+    ) ?? 0;
+
   return (
     <View className='w-full h-full bg-white overflow-hidden shadow-lg flex flex-col'>
       <View className='bg-[#fbb040] p-4 flex-row justify-center relative w-full rounded-bl-[50px] min-h-[180px] md:min-h-[200px]'>
@@ -140,9 +264,9 @@ const FlightTicket = () => {
           </View>
         </View>
         <Text className='text-base font-medium text-[#212121] my-2'>
-          Total 23 founds
+          Total {totalDataLength} founds
         </Text>
-        <ScrollView
+        {/* <ScrollView
           showsVerticalScrollIndicator={false}
           className='max-h-auto pr-1 flex-col gap-3'>
           {tourPackages?.map((item, i) => (
@@ -180,7 +304,23 @@ const FlightTicket = () => {
               </TouchableOpacity>
             </Link>
           ))}
-        </ScrollView>
+        </ScrollView> */}
+        {status === "pending" ? (
+          <View className='flex-1 justify-center items-center'>
+            <ActivityIndicator size='large' color='#F13F5F' />
+          </View>
+        ) : (
+          <FlatList
+            data={packagesData}
+            renderItem={renderPackageCard}
+            keyExtractor={(item, index) => (index + 1).toString()}
+            numColumns={1}
+            showsVerticalScrollIndicator={false}
+            onEndReached={loadMore}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={renderFooter}
+          />
+        )}
       </View>
     </View>
   );

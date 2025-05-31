@@ -26,22 +26,22 @@ const serviceSchema = z.object({
   category: z.enum(
     [
       "Traveler Choose",
-      "Hajj",
-      "Honeymoon",
-      "Alpine",
-      "Adventure",
-      "Cultural",
-      "Beach",
-      "City",
-      "Nature",
-      "Luxury",
-      "Budget",
-      "Family",
-      "Pilgrimage",
-      "Resort",
-      "Boat-trip",
-      "Mountain",
-      "Desert",
+      "hajj",
+      "honeymoon",
+      "alpine",
+      "adventure",
+      "cultural",
+      "beach",
+      "city",
+      "nature",
+      "luxury",
+      "budget",
+      "family",
+      "pilgrimage",
+      "resort",
+      "boat-trip",
+      "mountain",
+      "desert",
     ],
     {
       errorMap: () => ({ message: "Please select a category" }),
@@ -99,22 +99,22 @@ const AddNewService = () => {
       description: "",
       category: "" as
         | "Traveler Choose"
-        | "Hajj"
-        | "Honeymoon"
-        | "Alpine"
-        | "Adventure"
-        | "Cultural"
-        | "Beach"
-        | "City"
-        | "Nature"
-        | "Luxury"
-        | "Budget"
-        | "Family"
-        | "Pilgrimage"
-        | "Resort"
-        | "Boat-trip"
-        | "Mountain"
-        | "Desert",
+        | "hajj"
+        | "honeymoon"
+        | "alpine"
+        | "adventure"
+        | "cultural"
+        | "beach"
+        | "city"
+        | "nature"
+        | "luxury"
+        | "budget"
+        | "family"
+        | "pilgrimage"
+        | "resort"
+        | "boat-trip"
+        | "mountain"
+        | "desert",
       location: "",
       basicPrice: "",
       standardPrice: "",
@@ -144,7 +144,7 @@ const AddNewService = () => {
         text1: "Service created successfully",
       });
       reset();
-      router.push("/dashboard/services");
+      router.push("/dashboard/services/travel-services");
       setIsSubmitting(false);
     },
   });
