@@ -83,15 +83,53 @@ export const createTravelServicePackage = async (
 };
 
 // Get ALl Travel Packages Function
-export const getTravelPackages = async (
-  page = 1,
-  limit = 10,
-  filter = ""
-) => {
+export const getTravelPackages = async (page = 1, limit = 10, filter = "") => {
   try {
     const { data } = await axiosCommon.get(
       `/Tour/all-tour?page=${page}&limit=${limit}&searchTerm=${filter}`
     );
+    return data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};
+
+// ? Flight Service Related All Function
+
+// Add New Service Function
+export const createFlightServicePackage = async (
+  serviceData: TravelServiceData
+) => {
+  try {
+    const { data } = await axiosCommon.post(
+      `/flight/create-flight`,
+      serviceData
+    );
+    return data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};
+
+// Get ALl Travel Packages Function
+export const getFlightPackages = async (page = 1, limit = 10, filter = "") => {
+  try {
+    const { data } = await axiosCommon.get(
+      `/flight/all-flight?page=${page}&limit=${limit}`
+    );
+    return data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};
+
+// Get ALl Travel Packages Function
+export const getSingleFlightPackages = async (id: string) => {
+  try {
+    const { data } = await axiosCommon.get(`/flight/ById/${id}`);
     return data;
   } catch (error) {
     console.error("API Error:", error);

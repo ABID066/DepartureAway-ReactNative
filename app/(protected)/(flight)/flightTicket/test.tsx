@@ -104,6 +104,14 @@ const FlightTicket = () => {
     },
   });
 
+  if (status === "pending") {
+    return (
+      <View className='flex-1 justify-center items-center'>
+        <ActivityIndicator size='large' color='#E11D48' />
+      </View>
+    );
+  }
+
   if (error) {
     console.log(error);
     return (
@@ -143,38 +151,31 @@ const FlightTicket = () => {
   const renderPackageCard = ({ item }: { item: any }) => (
     <Link
       href={{
-        pathname: "/flightTicket/ticketDetails/[ticketId]",
-        params: { ticketId: item?._id },
+        pathname: "/flightTicket/agencyDetails/[agencyId]",
+        params: { agencyId: item?.id },
       }}
       asChild>
       <TouchableOpacity className='flex-row gap-3 bg-white rounded-xl p-2 w-full border border-[#F2F2F2] mb-3'>
         <Image
-          source={
-            item?.imageURL && item.imageURL[0]
-              ? { uri: item.imageURL[0] }
-              : images?.rectangle
-          }
+          source={item?.img}
           className='w-24 h-[110px] rounded-lg'
           accessibilityLabel={`${item.title} image`}
         />
         <View className='flex-col'>
-          <Text className='text-[#FF1A5A] font-medium'>
-            From {item?.economicPrice}$
-          </Text>
+          <Text className='text-[#FF1A5A] font-medium'>From $20</Text>
           <Text className='font-medium leading-tight my-1.5 w-[85%] text-[#000000]'>
             {item.title}
           </Text>
           <View className='flex-row items-center gap-2 my-1'>
             <Image source={item.personImg} className='size-5' />
             <Text className='text-xs font-medium text-[#4F4F4F]'>
-              {item?.creatorCategory}
+              {item.agency}
             </Text>
           </View>
           <View className='flex-row items-center gap-1 text-yellow-400 mt-0.5'>
             <FontAwesome name='star' size={18} color='#fbbf24' />
             <Text className='text-[#000000] ml-1 font-medium text-xs'>
-              {item?.rating}/5{" "}
-              <Text className='text-[#828282] ml-1'> {item?.totalReviews}</Text>
+              4.9/5 <Text className='text-[#828282] ml-1'> (306)</Text>
             </Text>
           </View>
         </View>
@@ -184,11 +185,6 @@ const FlightTicket = () => {
 
   const packagesData =
     data?.pages.flatMap((page: { data: any[] }) => page.data) || [];
-  const totalDataLength =
-    data?.pages.reduce(
-      (sum: number, page: { meta: { total: number } }) => sum + page.meta.total,
-      0
-    ) ?? 0;
 
   return (
     <View className='w-full h-full bg-white overflow-hidden shadow-lg flex flex-col'>
@@ -264,7 +260,7 @@ const FlightTicket = () => {
           </View>
         </View>
         <Text className='text-base font-medium text-[#212121] my-2'>
-          Total {totalDataLength} founds
+          Total 23 founds
         </Text>
         {/* <ScrollView
           showsVerticalScrollIndicator={false}
@@ -305,22 +301,17 @@ const FlightTicket = () => {
             </Link>
           ))}
         </ScrollView> */}
-        {status === "pending" ? (
-          <View className='flex-1 justify-center items-center'>
-            <ActivityIndicator size='large' color='#F13F5F' />
-          </View>
-        ) : (
-          <FlatList
-            data={packagesData}
-            renderItem={renderPackageCard}
-            keyExtractor={(item, index) => (index + 1).toString()}
-            numColumns={1}
-            showsVerticalScrollIndicator={false}
-            onEndReached={loadMore}
-            onEndReachedThreshold={0.5}
-            ListFooterComponent={renderFooter}
-          />
-        )}
+        <FlatList
+                data={packagesData}
+                renderItem={renderPackageCard}
+                keyExtractor={(item, index) => (index + 1).toString()}
+                numColumns={1}
+                columnWrapperStyle={{ justifyContent: "center" }}
+                showsVerticalScrollIndicator={false}
+                onEndReached={loadMore}
+                onEndReachedThreshold={0.5}
+                ListFooterComponent={renderFooter}
+              />
       </View>
     </View>
   );
