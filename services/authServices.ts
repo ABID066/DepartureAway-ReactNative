@@ -13,7 +13,7 @@ export const createUser = async (userData: UserData) => {
 
 export const verifyOTP = async (otpCode: string) => {
   try {
-    const { data } = await axiosCommon.patch(`/user/verifyEmail`, otpCode);
+    const { data } = await axiosCommon.patch(`/user/verifyEmail`, {code: otpCode});
     return data;
   } catch (error) {
     console.error("API Error:", error);

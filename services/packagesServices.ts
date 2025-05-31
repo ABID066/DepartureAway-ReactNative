@@ -95,6 +95,21 @@ export const getTravelPackages = async (page = 1, limit = 10, filter = "") => {
   }
 };
 
+
+// Get Single Travel Package Function
+export const getSingleTravelPackage = async (id: string) => {}
+
+// Delete a Single Travel Package Function
+export const deleteTravelPackage = async (id: string) => {
+  try {
+    const { data } = await axiosCommon.delete(`/Tour/delete/${id}`);
+    return data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};
+
 // ? Flight Service Related All Function
 
 // Add New Service Function

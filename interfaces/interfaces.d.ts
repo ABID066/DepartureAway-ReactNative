@@ -110,7 +110,7 @@ interface FormErrors {
 
 // Travel Packages Service
 type TravelServiceData = {
-  id?: string | number;
+  _id?: string;
   title: string;
   location: string;
   description: string;
@@ -125,8 +125,6 @@ type TravelServiceData = {
   rating?: number;
   totalReviews?: number;
 };
-
-
 
 // ? chat related interfaces
 
