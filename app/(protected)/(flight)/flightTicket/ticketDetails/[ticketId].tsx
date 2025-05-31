@@ -12,7 +12,7 @@ const AgencyDetailsPage = () => {
   const { ticketId } = useLocalSearchParams();
 
   const { data } = useQuery({
-    queryKey: ["ticketDetails", "services"],
+    queryKey: ["ticketDetails", "services", ticketId],
     queryFn: async () => await getSingleFlightPackages(ticketId as string),
   });
   const service = data?.data;

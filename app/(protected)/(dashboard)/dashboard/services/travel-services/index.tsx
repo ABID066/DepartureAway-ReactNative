@@ -177,9 +177,11 @@ const TravelServices = () => {
                     </View>
 
                     <View className='w-[15%] px-4 py-3 flex-row gap-4'>
-                      <TouchableOpacity>
+                      <Link
+                        href={`/dashboard/services/travel-services/update/${service?._id}`}
+                        asChild>
                         <Text className='text-blue-500 text-base'>Edit</Text>
-                      </TouchableOpacity>
+                      </Link>
                       <TouchableOpacity
                         onPress={() =>
                           confirmDelete(String(service._id || ""))

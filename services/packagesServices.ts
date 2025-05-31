@@ -95,9 +95,33 @@ export const getTravelPackages = async (page = 1, limit = 10, filter = "") => {
   }
 };
 
-
 // Get Single Travel Package Function
-export const getSingleTravelPackage = async (id: string) => {}
+export const getSingleTravelPackage = async (id: string) => {
+  try {
+    const { data } = await axiosCommon.get(`/Tour/ById/${id}`);
+    return data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};
+
+// Update a Single Travel Package Function
+export const updateTravelPackage = async (
+  packageId: string,
+  packageData: TravelServiceData
+) => {
+  try {
+    const { data } = await axiosCommon.put(
+      `/Tour/update/${packageId}`,
+      packageData
+    );
+    return data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};
 
 // Delete a Single Travel Package Function
 export const deleteTravelPackage = async (id: string) => {
