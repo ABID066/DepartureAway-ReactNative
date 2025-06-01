@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 interface User {
   id: string;
@@ -13,10 +14,10 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  loading: boolean;
   setUser: (user: User | null) => void;
-  setLoading: (loading: boolean) => void;
-  setToken: (verifyToken: string) => Promise<void>;
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  saveLoginInfo: (token: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -30,20 +31,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // 🔁 Check user on first load
+  // ✅ Axios instance
+  const axiosInstance = axios.create({
+    baseURL: process.env.EXPO_PUBLIC_API_URL as string, // তোমার backend API URL
+  });
+
+  // ✅ Check auth on app load
   useEffect(() => {
     const checkAuth = async () => {
       setLoading(true);
       try {
-        const verifyToken = await AsyncStorage.getItem("verifyToken");
-        if (!verifyToken) {
+        const token = await AsyncStorage.getItem("verifyToken");
+
+        if (token) {
+          const { data } = await axiosInstance.get("/user/userBYToken", {
+            headers: {
+              Authorization: `${token}`,
+            },
+          });
+          const userData = await data.data;
+
+          setUser({
+            id: userData?.id,
+            userName: userData?.userName,
+            name: userData?.name,
+            email: userData?.email,
+            phone: userData?.phone,
+            role: userData?.role,
+            image: userData?.image,
+          });
+        } else {
           setUser(null);
-        }else{
-          setUser(user);
         }
-      } catch (error) {
-        console.error("Auth check error:", error);
+      } catch (error: any) {
+        // console.error(
+        //   "Auth check failed:",
+        //   error?.response?.data || error.message
+        // );
         setUser(null);
+        await AsyncStorage.removeItem("verifyToken");
       } finally {
         setLoading(false);
       }
@@ -52,14 +78,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     checkAuth();
   }, []);
 
-  // ✅ Login: Just store verifyToken
-  const setToken = async (verifyToken: string) => {
+  // ✅ Save login info
+  const saveLoginInfo = async (token: string) => {
     setLoading(true);
-    await AsyncStorage.setItem("verifyToken", verifyToken);
-    setLoading(false);
+    await AsyncStorage.setItem("verifyToken", token);
+
+    try {
+      const { data } = await axiosInstance.get("/user/userBYToken", {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+
+      const userData = await data.data;
+
+      setUser({
+        id: userData?.id,
+        userName: userData?.userName,
+        name: userData?.name,
+        email: userData?.email,
+        phone: userData?.phone,
+        role: userData?.role,
+        image: userData?.image,
+      });
+    } catch (error: any) {
+      // console.error(
+      //   "Login verify failed:",
+      //   error?.response?.data || error.message
+      // );
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // ❌ Logout: Clear verifyToken + user
+  // ✅ Logout
   const logout = async () => {
     setLoading(true);
     await AsyncStorage.removeItem("verifyToken");
@@ -67,13 +120,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(false);
   };
 
-  const authInfo = {
+  const authInfo: AuthContextType = {
     user,
-    loading,
-    setLoading,
     setUser,
-    setToken,
+    loading,
+    saveLoginInfo,
     logout,
+    setLoading,
   };
 
   return (

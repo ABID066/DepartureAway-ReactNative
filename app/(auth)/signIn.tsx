@@ -19,7 +19,7 @@ import { AxiosError } from "axios";
 
 const SignIn = () => {
   const router = useRouter();
-  const { setToken, setUser } = useAuth();
+  const { setUser, saveLoginInfo } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -63,7 +63,7 @@ const SignIn = () => {
         image: userData?.image,
       };
       setUser(userSaveData);
-      await setToken(accessToken);
+      saveLoginInfo(accessToken);
       router.push("/home");
       Toast.show({
         type: "success",
