@@ -137,9 +137,7 @@ export const deleteTravelPackage = async (id: string) => {
 // ? Flight Service Related All Function
 
 // Add New Flight Service Function
-export const createFlightServicePackage = async (
-  serviceData: any
-) => {
+export const createFlightServicePackage = async (serviceData: any) => {
   try {
     const { data } = await axiosCommon.post(
       `/flight/create-flight`,
@@ -156,7 +154,7 @@ export const createFlightServicePackage = async (
 export const getFlightPackages = async (page = 1, limit = 10, filter = "") => {
   try {
     const { data } = await axiosCommon.get(
-      `/flight/all-flight?page=${page}&limit=${limit}`
+      `/flight/all-flight?page=${page}&limit=${limit}&searchTerm=${filter}`
     );
     return data;
   } catch (error) {

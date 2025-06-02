@@ -129,6 +129,7 @@ type TravelServiceData = {
 
 // ? flight service related interface
 interface FlightServiceData {
+  _id?: string;
   title: string;
   title1: string;
   description: string;
@@ -137,8 +138,10 @@ interface FlightServiceData {
   economicPrice: string;
   businessPrice: string;
   creatorCategory: string;
-  createdBy: string;
+  createdBy: string | object | mongoose.Types.ObjectId;
   imageUrl: string[];
+  rating?: number;
+  totalReviews?: number;
 }
 
 // ? chat related interfaces

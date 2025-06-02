@@ -5,7 +5,6 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  ScrollView,
   ActivityIndicator,
   FlatList,
 } from "react-native";
@@ -75,6 +74,10 @@ const FlightTicket = () => {
   useEffect(() => {
     if (activeTab === "All") {
       setFilterType("");
+    } else if (activeTab === "Individual") {
+      setFilterType("user");
+    } else if (activeTab === "Local Sellers") {
+      setFilterType("user");
     } else {
       setFilterType(activeTab);
     }
@@ -140,18 +143,18 @@ const FlightTicket = () => {
   };
 
   // Render individual package card
-  const renderPackageCard = ({ item }: { item: any }) => (
+  const renderPackageCard = ({ item }: { item: FlightServiceData }) => (
     <Link
       href={{
         pathname: "/flightTicket/ticketDetails/[ticketId]",
-        params: { ticketId: item?._id },
+        params: { ticketId: item?._id || "" },
       }}
       asChild>
       <TouchableOpacity className='flex-row gap-3 bg-white rounded-xl p-2 w-full border border-[#F2F2F2] mb-3'>
         <Image
           source={
-            item?.imageURL && item.imageURL[0]
-              ? { uri: item.imageURL[0] }
+            item?.imageUrl && item.imageUrl[0]
+              ? { uri: item.imageUrl[0] }
               : images?.rectangle
           }
           className='w-24 h-[110px] rounded-lg'
@@ -162,12 +165,15 @@ const FlightTicket = () => {
             From {item?.economicPrice}$
           </Text>
           <Text className='font-medium leading-tight my-1.5 w-[85%] text-[#000000]'>
-            {item.title}
+            {item?.title}
           </Text>
           <View className='flex-row items-center gap-2 my-1'>
-            <Image source={item.personImg} className='size-5' />
+            <Image
+              source={item?.createdBy && { uri: item?.createdBy?.image }}
+              className='size-6 rounded-full'
+            />
             <Text className='text-xs font-medium text-[#4F4F4F]'>
-              {item?.creatorCategory}
+              {item?.createdBy?.name || "Unknown Agency"}
             </Text>
           </View>
           <View className='flex-row items-center gap-1 text-yellow-400 mt-0.5'>
@@ -183,7 +189,8 @@ const FlightTicket = () => {
   );
 
   const packagesData =
-    data?.pages.flatMap((page: { data: any[] }) => page.data) || [];
+    data?.pages.flatMap((page: { data: FlightServiceData[] }) => page.data) ||
+    [];
   const totalDataLength =
     data?.pages.reduce(
       (sum: number, page: { meta: { total: number } }) => sum + page.meta.total,
