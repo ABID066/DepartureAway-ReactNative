@@ -69,7 +69,7 @@ export const deleteService = async (serviceId: string) => {
 
 // ? Travel Packages Services Related Function
 
-// Add New Service Function
+// Add New Travel Service Function
 export const createTravelServicePackage = async (
   serviceData: TravelServiceData
 ) => {
@@ -136,9 +136,9 @@ export const deleteTravelPackage = async (id: string) => {
 
 // ? Flight Service Related All Function
 
-// Add New Service Function
+// Add New Flight Service Function
 export const createFlightServicePackage = async (
-  serviceData: TravelServiceData
+  serviceData: any
 ) => {
   try {
     const { data } = await axiosCommon.post(

@@ -80,7 +80,7 @@ const serviceSchema = z.object({
 
 type ServiceForm = z.infer<typeof serviceSchema>;
 
-const AddNewService = () => {
+const CreateNewTravelService = () => {
   const router = useRouter();
   const { user } = useAuth();
   const { uploadImage, imageUploadError, imageUploading } = useUploadImage();
@@ -201,7 +201,7 @@ const AddNewService = () => {
     <ScrollView
       showsVerticalScrollIndicator={false}
       className='flex-1 bg-white p-4'>
-      <Text className='text-2xl font-bold mb-6'>Create New Service</Text>
+      <Text className='text-2xl font-bold mb-6'>Create New Travel Service</Text>
 
       {/* Title */}
       <Text className='text-gray-700 mb-1'>Title *</Text>
@@ -412,4 +412,4 @@ const AddNewService = () => {
   );
 };
 
-export default AddNewService;
+export default CreateNewTravelService;

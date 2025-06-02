@@ -126,6 +126,21 @@ type TravelServiceData = {
   totalReviews?: number;
 };
 
+
+// ? flight service related interface
+interface FlightServiceData {
+  title: string;
+  title1: string;
+  description: string;
+  description1: string;
+  location: string;
+  economicPrice: string;
+  businessPrice: string;
+  creatorCategory: string;
+  createdBy: string;
+  imageUrl: string[];
+}
+
 // ? chat related interfaces
 
 interface ChatItem {

@@ -29,17 +29,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // ✅ Axios instance
   const axiosInstance = axios.create({
-    baseURL: process.env.EXPO_PUBLIC_API_URL as string, // তোমার backend API URL
+    baseURL: process.env.EXPO_PUBLIC_API_URL as string, 
   });
 
   // ✅ Check auth on app load
   useEffect(() => {
     const checkAuth = async () => {
-      setLoading(true);
       try {
         const token = await AsyncStorage.getItem("verifyToken");
 
@@ -80,7 +79,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // ✅ Save login info
   const saveLoginInfo = async (token: string) => {
-    setLoading(true);
     await AsyncStorage.setItem("verifyToken", token);
 
     try {
@@ -107,17 +105,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       //   error?.response?.data || error.message
       // );
       setUser(null);
-    } finally {
-      setLoading(false);
     }
   };
 
   // ✅ Logout
   const logout = async () => {
-    setLoading(true);
     await AsyncStorage.removeItem("verifyToken");
     setUser(null);
-    setLoading(false);
   };
 
   const authInfo: AuthContextType = {
