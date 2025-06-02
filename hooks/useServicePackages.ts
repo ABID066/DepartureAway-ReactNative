@@ -1,0 +1,225 @@
+import useAxiosSecure from "@/hooks/useAxiosSecure";
+
+export function useServicePackages() {
+  const axiosSecure = useAxiosSecure();
+
+  
+  // Add New Service Function
+  const createServicePackage = async (serviceData: ServiceData) => {
+    try {
+      const { data } = await axiosSecure.post(
+        `/service/create-service`,
+        serviceData
+      );
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+  
+  // Get All Services Function
+  const getAllServices = async (page = 1, limit = 10) => {
+    try {
+      const { data } = await axiosSecure.get(
+        `/service/-all-service?page=${page}&limit=${limit}`
+      );
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+  
+  // Get Service by ID Function (Replace with your actual API endpoint)
+  const getServiceById = async (serviceId: string) => {
+    try {
+      const { data } = await axiosSecure.get(`/service/${serviceId}`);
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+  
+  // Update Service Function (Replace with your actual API endpoint)
+  const updateService = async (
+    serviceId: string,
+    serviceData: ServiceData
+  ) => {
+    try {
+      const { data } = await axiosSecure.put(
+        `/service/update/${serviceId}`,
+        serviceData
+      );
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+  // Delete Service Function (Replace with your actual API endpoint)
+  const deleteService = async (serviceId: string) => {
+    try {
+      const { data } = await axiosSecure.delete(`/service/delete/${serviceId}`);
+      return data;
+    } catch (error) {
+      console.error("API Error:", error);
+      throw error;
+    }
+  };
+  
+  // ? Travel Packages Services Related Function
+  
+  // Add New Travel Service Function
+  const createTravelServicePackage = async (
+    serviceData: TravelServiceData
+  ) => {
+    try {
+      const { data } = await axiosSecure.post(`/Tour/create-tour`, serviceData);
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+  
+  // Get ALl Travel Packages Function
+  const getTravelPackages = async (page = 1, limit = 10, filter = "") => {
+    try {
+      const { data } = await axiosSecure.get(
+        `/Tour/all-tour?page=${page}&limit=${limit}&searchTerm=${filter}`
+      );
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+  
+  // Get Single Travel Package Function
+  const getSingleTravelPackage = async (id: string) => {
+    try {
+      const { data } = await axiosSecure.get(`/Tour/ById/${id}`);
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+  
+  // Update a Single Travel Package Function
+  const updateTravelPackage = async (
+    packageId: string,
+    packageData: TravelServiceData
+  ) => {
+    try {
+      const { data } = await axiosSecure.put(
+        `/Tour/update/${packageId}`,
+        packageData
+      );
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+  
+  // Delete a Single Travel Package Function
+  const deleteTravelPackage = async (id: string) => {
+    try {
+      const { data } = await axiosSecure.delete(`/Tour/delete/${id}`);
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+  
+  // ? Flight Service Related All Function
+  
+  // Add New Flight Service Function
+  const createFlightServicePackage = async (serviceData: any) => {
+    try {
+      const { data } = await axiosSecure.post(
+        `/flight/create-flight`,
+        serviceData
+      );
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+  
+  // Get ALl Travel Packages Function
+  const getFlightPackages = async (page = 1, limit = 10, filter = "") => {
+    try {
+      const { data } = await axiosSecure.get(
+        `/flight/all-flight?page=${page}&limit=${limit}&searchTerm=${filter}`
+      );
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+  
+  // Get ALl Travel Packages Function
+  const getSingleFlightPackage = async (id: string) => {
+    try {
+      const { data } = await axiosSecure.get(`/flight/ById/${id}`);
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+  
+  // Update a Single Travel Package Function
+  const updateFlightPackage = async (
+    packageId: string,
+    packageData: FlightServiceData
+  ) => {
+    try {
+      const { data } = await axiosSecure.put(
+        `/flight/update/${packageId}`,
+        packageData
+      );
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+  
+  // Delete a Single Flight Package Function
+  const deleteFlightPackage = async (id: string) => {
+    try {
+      const { data } = await axiosSecure.delete(`/flight/delete/${id}`);
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+  
+
+  return {
+    createServicePackage,
+    getAllServices,
+    getServiceById,
+    updateService,
+    deleteService,
+    createTravelServicePackage,
+    getTravelPackages,
+    getSingleTravelPackage,
+    updateTravelPackage,
+    deleteTravelPackage,
+    createFlightServicePackage,
+    getFlightPackages,
+    getSingleFlightPackage,
+    updateFlightPackage,
+    deleteFlightPackage,
+  };
+}

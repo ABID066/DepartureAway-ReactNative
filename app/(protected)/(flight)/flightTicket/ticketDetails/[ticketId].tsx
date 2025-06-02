@@ -5,15 +5,16 @@ import { images } from "@/constants/images";
 import Header1 from "@/components/Shared/(Headers)/Header1";
 import { Link, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
-import { getSingleFlightPackages } from "@/services/packagesServices";
+import { useServicePackages } from "@/hooks/useServicePackages";
 
 const AgencyDetailsPage = () => {
+  const {getSingleFlightPackage} = useServicePackages();
   const [ticketClass, setTicketClass] = useState("Economy");
   const { ticketId } = useLocalSearchParams();
 
   const { data } = useQuery({
     queryKey: ["ticketDetails", "services", ticketId],
-    queryFn: async () => await getSingleFlightPackages(ticketId as string),
+    queryFn: async () => await getSingleFlightPackage(ticketId as string),
   });
   const service: FlightServiceData = data?.data;
   return (

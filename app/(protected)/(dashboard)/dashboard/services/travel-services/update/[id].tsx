@@ -16,10 +16,7 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import useUploadImage from "@/hooks/useUploadImage";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
-import {
-  getSingleTravelPackage,
-  updateTravelPackage,
-} from "@/services/packagesServices";
+import { useServicePackages } from "@/hooks/useServicePackages";
 import { useAuth } from "@/hooks/useAuth";
 
 // Validation Schema (same as AddNewService)
@@ -73,6 +70,7 @@ type ServiceForm = z.infer<typeof serviceSchema>;
 const UpdateTravelService = () => {
   const { id } = useLocalSearchParams();
   const router = useRouter();
+  const { getSingleTravelPackage, updateTravelPackage } = useServicePackages();
   const { user } = useAuth();
   const { uploadImage, imageUploadError, imageUploading } = useUploadImage();
 

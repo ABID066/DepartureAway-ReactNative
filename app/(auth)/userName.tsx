@@ -12,12 +12,13 @@ import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
 import { useMutation } from "@tanstack/react-query";
-import { createUser } from "@/services/authServices";
 import useMultiStepForm from "@/hooks/useMultiStepForm";
 import { AxiosError } from "axios";
+import { useAuthServicePackages } from "@/hooks/useAuthServicePackages";
 
 const UserName = () => {
   const router = useRouter();
+  const {createUser} = useAuthServicePackages()
   const [isAccountCreating, setIsAccountCreating] = useState(false);
   const {
     formData,

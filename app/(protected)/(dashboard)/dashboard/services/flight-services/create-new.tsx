@@ -15,9 +15,9 @@ import { useRouter } from "expo-router";
 import useUploadImage from "@/hooks/useUploadImage";
 import { useMutation } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
-import { createFlightServicePackage } from "@/services/packagesServices";
 import { useAuth } from "@/hooks/useAuth";
 import { AxiosError } from "axios";
+import { useServicePackages } from "@/hooks/useServicePackages";
 
 // Validation Schema
 const flightServiceSchema = z.object({
@@ -43,11 +43,10 @@ const flightServiceSchema = z.object({
 
 type FlightServiceForm = z.infer<typeof flightServiceSchema>;
 
-
-
 const CreateNewFlightService = () => {
   const router = useRouter();
   const { user } = useAuth();
+  const { createFlightServicePackage } = useServicePackages();
   const { uploadImage, imageUploadError, imageUploading } = useUploadImage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isLoading = imageUploading || isSubmitting;

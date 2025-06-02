@@ -8,15 +8,13 @@ import {
 } from "react-native";
 import { Link, useRouter } from "expo-router";
 import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
-import {
-  deleteFlightPackage,
-  getFlightPackages,
-} from "@/services/packagesServices";
 import Toast from "react-native-toast-message";
 import { Modal } from "react-native";
+import { useServicePackages } from "@/hooks/useServicePackages";
 
 const FlightServices = () => {
   const router = useRouter();
+  const { deleteFlightPackage, getFlightPackages } = useServicePackages();
   const [currentPage, setCurrentPage] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -121,10 +119,14 @@ const FlightServices = () => {
           {/* Table Header */}
           <View className='flex-row bg-gray-50 border border-gray-200 rounded-t-md gap-1'>
             <View className='w-[26%] px-4 py-3'>
-              <Text className='font-medium text-gray-600 text-base uppercase'>Economic Title</Text>
+              <Text className='font-medium text-gray-600 text-base uppercase'>
+                Economic Title
+              </Text>
             </View>
             <View className='w-[26%] px-4 py-3'>
-              <Text className='font-medium text-gray-600 text-base uppercase'>Business Title</Text>
+              <Text className='font-medium text-gray-600 text-base uppercase'>
+                Business Title
+              </Text>
             </View>
             <View className='w-[12%] px-4 py-3'>
               <Text className='font-medium text-gray-600 text-base uppercase'>

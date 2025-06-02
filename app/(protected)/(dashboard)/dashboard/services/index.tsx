@@ -7,10 +7,11 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Link } from "expo-router";
-import { getAllServices } from "@/services/packagesServices";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useServicePackages } from "@/hooks/useServicePackages";
 
 const AllServices = () => {
+  const { getAllServices } = useServicePackages()
   const [currentPage, setCurrentPage] = React.useState(1);
   const itemsPerPage = 10;
 

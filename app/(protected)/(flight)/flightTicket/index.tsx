@@ -14,10 +14,11 @@ import { images } from "@/constants/images";
 import { icons } from "@/constants/icons";
 import { Link, useRouter } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getFlightPackages } from "@/services/packagesServices";
+import { useServicePackages } from "@/hooks/useServicePackages";
 
 const FlightTicket = () => {
   const router = useRouter();
+  const { getFlightPackages } = useServicePackages();
   const [activeTab, setActiveTab] = useState("All");
   const locations = [
     {
