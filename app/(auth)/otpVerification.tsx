@@ -9,11 +9,12 @@ import {
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useMutation } from "@tanstack/react-query";
-import { verifyOTP } from "@/services/authServices";
 import Toast from "react-native-toast-message";
+import { useAuthServicePackages } from "@/hooks/useAuthServicePackages";
 
 const OTPVerificationScreen = () => {
   const router = useRouter();
+  const {verifyOTP} = useAuthServicePackages()
   const [otp, setOtp] = useState(["", "", "", ""]);
   const inputRefs = useRef<(TextInput | null)[]>([]);
   const [resendActive, setResendActive] = useState(true);

@@ -5,17 +5,18 @@ import { images } from "@/constants/images";
 import Header1 from "@/components/Shared/(Headers)/Header1";
 import { Link, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
-import { getSingleFlightPackages } from "@/services/packagesServices";
+import { useServicePackages } from "@/hooks/useServicePackages";
 
 const AgencyDetailsPage = () => {
+  const {getSingleFlightPackage} = useServicePackages();
   const [ticketClass, setTicketClass] = useState("Economy");
   const { ticketId } = useLocalSearchParams();
 
   const { data } = useQuery({
     queryKey: ["ticketDetails", "services", ticketId],
-    queryFn: async () => await getSingleFlightPackages(ticketId as string),
+    queryFn: async () => await getSingleFlightPackage(ticketId as string),
   });
-  const service = data?.data;
+  const service: FlightServiceData = data?.data;
   return (
     <View className='w-full h-full bg-white overflow-y-auto overflow-x-hidden shadow-lg flex flex-col'>
       {<Header1 />}
@@ -72,7 +73,7 @@ const AgencyDetailsPage = () => {
               className={`text-base ${
                 ticketClass == "Economy" && "text-white font-semibold"
               }`}>
-              Economy (${service?.economicPrice || "30"})
+              Economy (${service?.economicPrice || "0"})
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -84,29 +85,37 @@ const AgencyDetailsPage = () => {
               className={`text-base ${
                 ticketClass == "Business" && "text-white font-semibold"
               }`}>
-              Business (${service?.businessPrice || "50"})
+              Business (${service?.businessPrice || "0"})
             </Text>
           </TouchableOpacity>
         </View>
         <View className='border-b border-[#F2F2F2]'>
           <Text className='font-semibold text-[#212121] text-2xl leading-tight'>
-            {service?.title ||
-              "Seamless Flight Booking Experience Package, Economy"}
+            {ticketClass === "Economy"
+              ? service?.title
+              : service?.title1 ||
+                "Seamless Flight Booking Experience Package, Economy"}
           </Text>
           <Text className='text-sm text-[#4F4F4F] leading-snug my-5'>
-            {service?.description ||
-              " Discover stress-free booking with our Economy Seamless Flight Booking Experience Package. Perfect for budget travelers, it combines value and convenience, offering personalized service and exclusive economy deals. Ensure a smooth start to your journey with the best deals, effortlessly."}
+            {ticketClass === "Economy"
+              ? service?.description
+              : service?.description1 ||
+                " Discover stress-free booking with our Economy Seamless Flight Booking Experience Package. Perfect for budget travelers, it combines value and convenience, offering personalized service and exclusive economy deals. Ensure a smooth start to your journey with the best deals, effortlessly."}
           </Text>
         </View>
         <View className='py-6 gap-2'>
           <View className='flex-row items-center gap-2'>
             <Image
-              source={images?.ellipse}
+              source={
+                service?.imageUrl && service.imageUrl[0]
+                  ? { uri: service.imageUrl[0] }
+                  : images?.rectangle
+              }
               className='w-8 h-8 rounded-full'
               accessibilityLabel='Skyward Bliss agency logo, circular icon with initials SB'
             />
             <Text className='font-medium text-lg text-[#4F4F4F]'>
-              Skyward Bliss
+              {service?.createdBy?.name || ""}
             </Text>
           </View>
           <View className='flex-row items-center gap-2'>

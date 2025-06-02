@@ -16,8 +16,8 @@ import { useRouter } from "expo-router";
 import useUploadImage from "@/hooks/useUploadImage";
 import { useMutation } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
-import { createTravelServicePackage } from "@/services/packagesServices";
 import { useAuth } from "@/hooks/useAuth";
+import { useServicePackages } from "@/hooks/useServicePackages";
 
 // Validation Schema
 const serviceSchema = z.object({
@@ -80,8 +80,9 @@ const serviceSchema = z.object({
 
 type ServiceForm = z.infer<typeof serviceSchema>;
 
-const AddNewService = () => {
+const CreateNewTravelService = () => {
   const router = useRouter();
+  const { createTravelServicePackage } = useServicePackages();
   const { user } = useAuth();
   const { uploadImage, imageUploadError, imageUploading } = useUploadImage();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -201,7 +202,7 @@ const AddNewService = () => {
     <ScrollView
       showsVerticalScrollIndicator={false}
       className='flex-1 bg-white p-4'>
-      <Text className='text-2xl font-bold mb-6'>Create New Service</Text>
+      <Text className='text-2xl font-bold mb-6'>Create New Travel Service</Text>
 
       {/* Title */}
       <Text className='text-gray-700 mb-1'>Title *</Text>
@@ -412,4 +413,4 @@ const AddNewService = () => {
   );
 };
 
-export default AddNewService;
+export default CreateNewTravelService;

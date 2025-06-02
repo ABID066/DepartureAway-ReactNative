@@ -13,13 +13,14 @@ import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
 import { useMutation } from "@tanstack/react-query";
-import { loginUser } from "@/services/authServices";
 import { useAuth } from "@/hooks/useAuth";
 import { AxiosError } from "axios";
+import { useAuthServicePackages } from "@/hooks/useAuthServicePackages";
 
 const SignIn = () => {
   const router = useRouter();
-  const { setToken, setUser } = useAuth();
+  const {loginUser} = useAuthServicePackages()
+  const { setUser, saveLoginInfo } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -63,7 +64,7 @@ const SignIn = () => {
         image: userData?.image,
       };
       setUser(userSaveData);
-      await setToken(accessToken);
+      saveLoginInfo(accessToken);
       router.push("/home");
       Toast.show({
         type: "success",

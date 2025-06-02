@@ -16,7 +16,7 @@ import { useRouter } from "expo-router";
 import useUploadImage from "@/hooks/useUploadImage";
 import { useMutation } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
-import { createServicePackage } from "@/services/packagesServices";
+import { useServicePackages } from "@/hooks/useServicePackages";
 
 // Validation Schema
 const serviceSchema = z.object({
@@ -65,7 +65,8 @@ const serviceSchema = z.object({
 type ServiceForm = z.infer<typeof serviceSchema>;
 
 const AddNewService = () => {
-  const router = useRouter()
+  const router = useRouter();
+  const {createServicePackage} = useServicePackages();
   const { uploadImage, imageUploadError, imageUploading } = useUploadImage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isLoading = imageUploading || isSubmitting;

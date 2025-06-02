@@ -10,8 +10,8 @@ import {
   ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { getTravelPackages } from "@/services/packagesServices";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useServicePackages } from "@/hooks/useServicePackages";
 
 // Package categories data
 const packageCategories = [
@@ -56,6 +56,7 @@ const TravelPackagesSection = ({
   // Calculate screen width to set card width dynamically
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = (screenWidth - 32 - 8) / 2; // Accounting for padding and gap
+  const { getTravelPackages } = useServicePackages();
   const [filterType, setFilterType] = useState("");
   useEffect(() => {
     if (activePackageTab === "Traveler Choose") {

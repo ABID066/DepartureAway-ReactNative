@@ -18,10 +18,11 @@ import GuidesSection from "@/components/Home/Guider";
 import TravelPackagesSection from "@/components/Home/TravelPackage";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
-import { getTopRatedGuider } from "@/services/authServices";
+import { useAuthServicePackages } from "@/hooks/useAuthServicePackages";
 
 // Import components
 const HomePage = () => {
+  const { getTopRatedGuider } = useAuthServicePackages();
   const { loading } = useAuth();
   const [activeTab, setActiveTab] = useState("For you");
   const [activePackageTab, setActivePackageTab] = useState("Traveler Choose");

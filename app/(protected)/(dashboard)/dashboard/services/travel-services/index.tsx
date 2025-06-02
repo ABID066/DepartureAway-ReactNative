@@ -8,15 +8,13 @@ import {
 } from "react-native";
 import { Link, useRouter } from "expo-router";
 import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
-import {
-  deleteTravelPackage,
-  getTravelPackages,
-} from "@/services/packagesServices";
+import { useServicePackages } from "@/hooks/useServicePackages";
 import Toast from "react-native-toast-message";
 import { Modal } from "react-native";
 
 const TravelServices = () => {
   const router = useRouter();
+  const {deleteTravelPackage, getTravelPackages} = useServicePackages();
   const [currentPage, setCurrentPage] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
