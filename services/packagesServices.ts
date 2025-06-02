@@ -164,9 +164,37 @@ export const getFlightPackages = async (page = 1, limit = 10, filter = "") => {
 };
 
 // Get ALl Travel Packages Function
-export const getSingleFlightPackages = async (id: string) => {
+export const getSingleFlightPackage = async (id: string) => {
   try {
     const { data } = await axiosCommon.get(`/flight/ById/${id}`);
+    return data;
+  } catch (error) {
+    // console.error("API Error:", error);
+    throw error;
+  }
+};
+
+// Update a Single Travel Package Function
+export const updateFlightPackage = async (
+  packageId: string,
+  packageData: FlightServiceData
+) => {
+  try {
+    const { data } = await axiosCommon.put(
+      `/flight/update/${packageId}`,
+      packageData
+    );
+    return data;
+  } catch (error) {
+    // console.error("API Error:", error);
+    throw error;
+  }
+};
+
+// Delete a Single Flight Package Function
+export const deleteFlightPackage = async (id: string) => {
+  try {
+    const { data } = await axiosCommon.delete(`/flight/delete/${id}`);
     return data;
   } catch (error) {
     // console.error("API Error:", error);

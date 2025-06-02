@@ -137,8 +137,8 @@ interface FlightServiceData {
   location: string;
   economicPrice: string;
   businessPrice: string;
-  creatorCategory: string;
-  createdBy: string | object | mongoose.Types.ObjectId;
+  creatorCategory?: string;
+  createdBy?: string | object | mongoose.Types.ObjectId;
   imageUrl: string[];
   rating?: number;
   totalReviews?: number;
