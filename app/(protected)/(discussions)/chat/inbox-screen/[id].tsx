@@ -1,253 +1,281 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   FlatList,
-  Image,
   KeyboardAvoidingView,
   Platform,
-  Modal,
+  ActivityIndicator,
 } from "react-native";
 import { useLocalSearchParams, router } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/hooks/useAuth";
+import { useServicePackages } from "@/hooks/useServicePackages";
+import { io } from "socket.io-client"; // <-- updated import
+import { Image } from "react-native";
+
+const SOCKET_URL = "https://depture-away-server-test.onrender.com";
 
 interface Message {
-  id: string;
-  text: string;
-  time: string;
-  isSent: boolean;
+  _id: string;
+  conversationId: string;
+  senderId: string;
+  reciverId: string;
+  messages: string;
+  is_read: boolean;
+  sent_at: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-
-const mockMessages: Message[] = [
-  {
-    id: "1",
-    text: "Hey, how are you?",
-    time: "2:30 PM",
-    isSent: false,
-  },
-  {
-    id: "2",
-    text: "I'm good, thanks! How about you?",
-    time: "2:31 PM",
-    isSent: true,
-  },
-  {
-    id: "3",
-    text: "Just finished my meeting",
-    time: "2:32 PM",
-    isSent: false,
-  },
-  {
-    id: "4",
-    text: "That's great! How did it go?",
-    time: "2:33 PM",
-    isSent: true,
-  },
-  {
-    id: "5",
-    text: "It went really well. We got approval for the new project!",
-    time: "2:34 PM",
-    isSent: false,
-  },
-];
-
-const mockUsers:ChatUser[] = [
-  {
-    id: "1",
-    name: "John Doe",
-    avatar: "https://i.pravatar.cc/150?img=1",
-    isOnline: true,
-  },
-  {
-    id: "2",
-    name: "Jane Smith",
-    avatar: "https://i.pravatar.cc/150?img=2",
-    isOnline: false,
-    lastActive: "2 hours ago",
-  },
-  {
-    id: "3",
-    name: "Mike Johnson",
-    avatar: "https://i.pravatar.cc/150?img=3",
-    isOnline: true,
-  },
-  {
-    id: "4",
-    name: "Sarah Wilson",
-    avatar: "https://i.pravatar.cc/150?img=4",
-    isOnline: false,
-    lastActive: "1 day ago",
-  },
-  {
-    id: "5",
-    name: "David Brown",
-    avatar: "https://i.pravatar.cc/150?img=5",
-    isOnline: true,
-  },
-];
-
-const ChatScreen = () => {
-  const { id } = useLocalSearchParams();
+const ChatDetailScreen = () => {
+  const { user } = useAuth();
+  const { getMessages, sendMessage } = useServicePackages();
+  const {
+    id: otherUserId,
+    name: otherUserName,
+    image: otherUserImage,
+  } = useLocalSearchParams<{
+    id: string;
+    name?: string;
+    image?: string;
+  }>();
   const [message, setMessage] = useState("");
-  const [showOptions, setShowOptions] = useState(false);
-  const user = mockUsers.find((user) => user.id === id) as ChatUser;
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const flatListRef = useRef<FlatList<any> | null>(null);
+  const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
+  const socketRef = useRef<ReturnType<typeof io> | null>(null);
 
-  const handleBackPress = () => {
-    if (router.canGoBack()) {
-      router.back();
-    } else {
-      router.push("/dashboard");
-    }
+  useEffect(() => {
+    if (user) setCurrentUserId(user.id);
+  }, [user]);
+
+  const { data, refetch, isLoading } = useQuery({
+    queryKey: ["messages", otherUserId],
+    queryFn: async () => await getMessages(otherUserId),
+    enabled: !!otherUserId,
+  });
+
+  // --- SOCKET.IO SETUP ---
+  useEffect(() => {
+    if (!currentUserId || !otherUserId) return;
+    // Always pass userId in query for backend mapping
+    const socket = io(process.env.EXPO_PUBLIC_SOCKET_URL as string, {
+      transports: ["websocket"],
+      query: { userId: currentUserId },
+    });
+    socketRef.current = socket;
+
+    socket.on("connect", () => {
+      console.log("✅ Socket connected!", socket.id);
+    });
+
+    socket.on(
+      "newMessage",
+      (payload: { senderId: string; reciverId: string }) => {
+        // Only refetch if the message is for this conversation
+        if (
+          (payload.senderId === otherUserId &&
+            payload.reciverId === currentUserId) ||
+          (payload.senderId === currentUserId &&
+            payload.reciverId === otherUserId)
+        ) {
+          refetch();
+        }
+      }
+    );
+    socketRef.current = socket;
+    socket.on("getOnlineUsers", (userIds: string[]) => {
+      setOnlineUsers(userIds);
+    });
+
+    socket.on("connect_error", (err) => {
+      console.log("❌ Socket connection error:", err);
+    });
+
+    socket.on("disconnect", (reason) => {
+      console.log("⚠️ Socket disconnected:", reason);
+    });
+
+    return () => {
+      socket.disconnect();
+      socketRef.current = null;
+    };
+  }, [currentUserId, otherUserId, refetch]);
+  // --- END SOCKET.IO ---
+
+  const { mutate } = useMutation({
+    mutationKey: ["sendMessage", otherUserId],
+    mutationFn: async ({
+      receiverId,
+      message,
+    }: {
+      receiverId: string;
+      message: string;
+    }) => await sendMessage(receiverId, message),
+    onSuccess: (_, variables) => {
+      setMessage("");
+      refetch();
+      // Scroll to bottom after sending message
+      if (flatListRef.current) {
+        flatListRef.current.scrollToOffset({ offset: 0, animated: true });
+      }
+      // Always emit socket event after sending message
+      socketRef.current?.emit("send_message", {
+        senderId: currentUserId,
+        reciverId: otherUserId,
+        message: variables.message,
+      });
+    },
+  });
+
+  // Optional: join event if you want to track online users
+  useEffect(() => {
+    if (!currentUserId) return;
+    socketRef.current?.emit("join", { userId: currentUserId });
+  }, [currentUserId]);
+
+  const handleSendMessages = () => {
+    if (!message.trim() || !otherUserId) return;
+    mutate({ receiverId: otherUserId, message });
   };
 
-  const renderMessage = ({ item }: { item: Message }) => (
+  // Map messages for UI (newest last, for FlatList inverted)
+  const messagesRaw: Message[] = (data as Message[]) || [];
+  const mappedMessages = [...messagesRaw]
+    .sort(
+      (a, b) => new Date(b.sent_at).getTime() - new Date(a.sent_at).getTime()
+    )
+    .map((msg) => ({
+      id: msg._id,
+      message: msg.messages,
+      time: new Date(msg.sent_at).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      isCurrentUser: msg.senderId === currentUserId,
+    }));
+
+  const isOtherUserOnline = onlineUsers.includes(otherUserId);
+
+  const renderItem = ({
+    item,
+  }: {
+    item: { id: string; message: string; time: string; isCurrentUser: boolean };
+  }) => (
     <View
-      className={`flex-row ${
-        item.isSent ? "justify-end" : "justify-start"
-      } mb-4`}>
-      <View
-        className={`rounded-2xl px-4 py-2 max-w-[80%] ${
-          item.isSent ? "bg-[#FF1A5A]" : "bg-gray-100"
-        }`}>
-        <Text
-          className={`text-base ${item.isSent ? "text-white" : "text-black"}`}>
-          {item.text}
-        </Text>
-        <Text
-          className={`text-xs mt-1 ${
-            item.isSent ? "text-white/70" : "text-gray-500"
-          }`}>
-          {item.time}
-        </Text>
-      </View>
+      style={{
+        maxWidth: "80%",
+        borderRadius: 12,
+        padding: 12,
+        marginBottom: 8,
+        alignSelf: item.isCurrentUser ? "flex-end" : "flex-start",
+        backgroundColor: item.isCurrentUser ? "#FFEDD5" : "#fff",
+        borderTopRightRadius: item.isCurrentUser ? 0 : 12,
+        borderTopLeftRadius: item.isCurrentUser ? 12 : 0,
+      }}>
+      <Text style={{ color: "#222" }}>{item.message}</Text>
+      <Text style={{ color: "#888", fontSize: 12, marginTop: 4 }}>
+        {item.time}
+      </Text>
     </View>
   );
 
-  const sendMessage = () => {
-    if (message.trim()) {
-      // Add message sending logic here
-      setMessage("");
-    }
-  };
-
   return (
     <KeyboardAvoidingView
-      className='flex-1 bg-white'
+      style={{ flex: 1, backgroundColor: "#fff" }}
       behavior={Platform.OS === "ios" ? "padding" : undefined}>
-      {/* Header */}
-      <View className='p-4 border-b border-gray-100'>
-        <View className='flex-row items-center justify-between'>
-          <View className='flex-row items-center flex-1'>
-            <TouchableOpacity onPress={handleBackPress}>
-              <MaterialIcons name='arrow-back' size={24} color='#000' />
-            </TouchableOpacity>
-            <View className='flex-row items-center ml-4'>
-              <View className='relative'>
-                <Image
-                  source={{ uri: user?.avatar }}
-                  className='w-10 h-10 rounded-full'
-                />
-                {user?.isOnline && (
-                  <View className='absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white' />
-                )}
-              </View>
-              <View className='ml-3'>
-                <Text className='text-lg font-semibold'>{user.name}</Text>
-                <Text className='text-sm text-gray-500'>
-                  {user.isOnline ? "Online" : `Last active ${user.lastActive}`}
-                </Text>
-              </View>
-            </View>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          padding: 16,
+          borderBottomWidth: 1,
+          borderColor: "#eee",
+        }}>
+        <TouchableOpacity onPress={() => router.back()}>
+          <MaterialIcons name='arrow-back' size={24} color='#000' />
+        </TouchableOpacity>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent:"space-between",
+            padding: 16,
+          }}>
+          <Image
+            source={{
+              uri:
+                otherUserImage ||
+                "https://ui-avatars.com/api/?name=" +
+                  encodeURIComponent(otherUserName || "User"),
+            }}
+            style={{ width: 40, height: 40, borderRadius: 20, marginRight: 12 }}
+          />
+          <View className="flex-row items-center justify-between gap-4 flex-1 pr-4">
+            <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+              {otherUserName || "User"}
+            </Text>
+            <Text
+              style={{
+                color: isOtherUserOnline ? "#22c55e" : "#888",
+                fontSize: 13,
+              }}>
+              {isOtherUserOnline ? "Active now" : "Offline"}
+            </Text>
           </View>
-          <TouchableOpacity onPress={() => setShowOptions(true)}>
-            <MaterialIcons name='more-vert' size={24} color='#000' />
-          </TouchableOpacity>
         </View>
       </View>
-
-      {/* Messages */}
-      <FlatList
-        data={mockMessages}
-        renderItem={renderMessage}
-        keyExtractor={(item) => item.id}
-        contentContainerClassName='p-4'
-        inverted
-      />
-
-      {/* Message Input */}
-      <View className='p-4 border-t border-gray-100 flex-row items-center'>
-        <TouchableOpacity className='mr-2'>
-          <MaterialIcons name='attach-file' size={24} color='#666' />
-        </TouchableOpacity>
+      {isLoading ? (
+        <ActivityIndicator style={{ marginTop: 32 }} />
+      ) : (
+        <FlatList
+          ref={flatListRef}
+          data={mappedMessages}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ padding: 16 }}
+          inverted // newest at bottom, scroll up for older
+        />
+      )}
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          padding: 16,
+          borderTopWidth: 1,
+          borderColor: "#eee",
+        }}>
         <TextInput
-          className='flex-1 bg-gray-50 rounded-full px-4 py-2 mr-2'
-          placeholder='Type a message'
+          style={{
+            flex: 1,
+            backgroundColor: "#f5f5f5",
+            borderRadius: 24,
+            paddingHorizontal: 16,
+            paddingVertical: 8,
+          }}
+          placeholder='Type a message...'
           value={message}
           onChangeText={setMessage}
-          multiline
         />
         <TouchableOpacity
-          onPress={sendMessage}
-          className='bg-[#FF1A5A] w-10 h-10 rounded-full items-center justify-center'>
-          <MaterialIcons name='send' size={20} color='white' />
+          style={{
+            marginLeft: 8,
+            backgroundColor: "#FB923C",
+            borderRadius: 24,
+            padding: 8,
+          }}
+          onPress={handleSendMessages}
+          disabled={!message.trim()}>
+          <MaterialIcons name='send' size={24} color='#fff' />
         </TouchableOpacity>
       </View>
-
-      {/* Options Modal */}
-      <Modal
-        visible={showOptions}
-        transparent
-        animationType='fade'
-        onRequestClose={() => setShowOptions(false)}>
-        <TouchableOpacity
-          className='flex-1 bg-black/20'
-          activeOpacity={1}
-          onPress={() => setShowOptions(false)}>
-          <View className='absolute right-4 top-16 bg-white rounded-xl shadow-lg w-48'>
-            <TouchableOpacity
-              className='flex-row items-center p-4 border-b border-gray-100'
-              onPress={() => {
-                setShowOptions(false);
-                // Add view profile logic
-              }}>
-              <MaterialIcons name='person' size={20} color='#666' />
-              <Text className='ml-3'>View Profile</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className='flex-row items-center p-4 border-b border-gray-100'
-              onPress={() => {
-                setShowOptions(false);
-                // Add mute notifications logic
-              }}>
-              <MaterialIcons name='notifications-off' size={20} color='#666' />
-              <Text className='ml-3'>Mute Notifications</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className='flex-row items-center p-4 border-b border-gray-100'
-              onPress={() => {
-                setShowOptions(false);
-                // Add block user logic
-              }}>
-              <MaterialIcons name='block' size={20} color='#666' />
-              <Text className='ml-3'>Block User</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className='flex-row items-center p-4'
-              onPress={() => {
-                setShowOptions(false);
-                // Add report user logic
-              }}>
-              <MaterialIcons name='report' size={20} color='#FF1A5A' />
-              <Text className='ml-3 text-[#FF1A5A]'>Report User</Text>
-            </TouchableOpacity>
-          </View>
-        </TouchableOpacity>
-      </Modal>
     </KeyboardAvoidingView>
   );
 };
 
-export default ChatScreen;
+export default ChatDetailScreen;

@@ -164,3 +164,15 @@ interface ChatUser {
   isOnline: boolean;
   lastActive?: string;
 }
+
+
+//? message related interfaces
+interface Message {
+  id?: string;
+  reciverId: mongoose.Types.ObjectId;
+  senderId: mongoose.Types.ObjectId;
+  messages: string;
+  conversationId?: mongoose.Types.ObjectId;
+  sent_at?: Date;
+  is_read?: boolean;
+};
