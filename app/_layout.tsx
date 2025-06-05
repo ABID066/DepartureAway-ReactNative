@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import * as Font from "expo-font";
 import { Slot } from "expo-router";
@@ -12,9 +12,23 @@ const loadFonts = () => {
 };
 
 const AppLayout = () => {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
   useEffect(() => {
-    loadFonts();
+    async function loadApp() {
+      try {
+        await loadFonts();
+        setFontsLoaded(true);
+      } catch (error) {
+        console.error('Error loading fonts:', error);
+      }
+    }
+    loadApp();
   }, []);
+
+  if (!fontsLoaded) {
+    return null; // or a loading spinner
+  }
 
   return (
     <AppProviders>
@@ -25,7 +39,6 @@ const AppLayout = () => {
     </AppProviders>
   );
 };
-
 const styles = StyleSheet.create({
   defaultText: {
     fontFamily: "Poppins-Regular",

@@ -3,7 +3,6 @@ import useAxiosSecure from "@/hooks/useAxiosSecure";
 export function useServicePackages() {
   const axiosSecure = useAxiosSecure();
 
-  
   // Add New Service Function
   const createServicePackage = async (serviceData: ServiceData) => {
     try {
@@ -17,7 +16,7 @@ export function useServicePackages() {
       throw error;
     }
   };
-  
+
   // Get All Services Function
   const getAllServices = async (page = 1, limit = 10) => {
     try {
@@ -30,7 +29,7 @@ export function useServicePackages() {
       throw error;
     }
   };
-  
+
   // Get Service by ID Function (Replace with your actual API endpoint)
   const getServiceById = async (serviceId: string) => {
     try {
@@ -41,12 +40,9 @@ export function useServicePackages() {
       throw error;
     }
   };
-  
+
   // Update Service Function (Replace with your actual API endpoint)
-  const updateService = async (
-    serviceId: string,
-    serviceData: ServiceData
-  ) => {
+  const updateService = async (serviceId: string, serviceData: ServiceData) => {
     try {
       const { data } = await axiosSecure.put(
         `/service/update/${serviceId}`,
@@ -68,13 +64,11 @@ export function useServicePackages() {
       throw error;
     }
   };
-  
+
   // ? Travel Packages Services Related Function
-  
+
   // Add New Travel Service Function
-  const createTravelServicePackage = async (
-    serviceData: TravelServiceData
-  ) => {
+  const createTravelServicePackage = async (serviceData: TravelServiceData) => {
     try {
       const { data } = await axiosSecure.post(`/Tour/create-tour`, serviceData);
       return data;
@@ -83,7 +77,7 @@ export function useServicePackages() {
       throw error;
     }
   };
-  
+
   // Get ALl Travel Packages Function
   const getTravelPackages = async (page = 1, limit = 10, filter = "") => {
     try {
@@ -96,7 +90,7 @@ export function useServicePackages() {
       throw error;
     }
   };
-  
+
   // Get Single Travel Package Function
   const getSingleTravelPackage = async (id: string) => {
     try {
@@ -107,7 +101,7 @@ export function useServicePackages() {
       throw error;
     }
   };
-  
+
   // Update a Single Travel Package Function
   const updateTravelPackage = async (
     packageId: string,
@@ -124,7 +118,7 @@ export function useServicePackages() {
       throw error;
     }
   };
-  
+
   // Delete a Single Travel Package Function
   const deleteTravelPackage = async (id: string) => {
     try {
@@ -135,9 +129,9 @@ export function useServicePackages() {
       throw error;
     }
   };
-  
+
   // ? Flight Service Related All Function
-  
+
   // Add New Flight Service Function
   const createFlightServicePackage = async (serviceData: any) => {
     try {
@@ -151,7 +145,7 @@ export function useServicePackages() {
       throw error;
     }
   };
-  
+
   // Get ALl Travel Packages Function
   const getFlightPackages = async (page = 1, limit = 10, filter = "") => {
     try {
@@ -164,7 +158,7 @@ export function useServicePackages() {
       throw error;
     }
   };
-  
+
   // Get ALl Travel Packages Function
   const getSingleFlightPackage = async (id: string) => {
     try {
@@ -175,7 +169,7 @@ export function useServicePackages() {
       throw error;
     }
   };
-  
+
   // Update a Single Travel Package Function
   const updateFlightPackage = async (
     packageId: string,
@@ -192,7 +186,7 @@ export function useServicePackages() {
       throw error;
     }
   };
-  
+
   // Delete a Single Flight Package Function
   const deleteFlightPackage = async (id: string) => {
     try {
@@ -203,7 +197,31 @@ export function useServicePackages() {
       throw error;
     }
   };
-  
+
+  // ? messages related services function
+
+  const sendMessage = async (receiverId: string, message: string) => {
+    try {
+      const { data } = await axiosSecure.post(`/message/send/${receiverId}`, {
+        messages: message,
+      });
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+  const getMessages = async (id: string) => {
+    if (!id) return [];
+    try {
+      const { data } = await axiosSecure.get(`/message/${id}`);
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
 
   return {
     createServicePackage,
@@ -221,5 +239,7 @@ export function useServicePackages() {
     getSingleFlightPackage,
     updateFlightPackage,
     deleteFlightPackage,
+    getMessages,
+    sendMessage,
   };
 }
