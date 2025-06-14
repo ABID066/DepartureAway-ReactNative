@@ -182,7 +182,7 @@ const TravelPackagesSection = ({
     data?.pages.flatMap((page: { data: PackageItem[] }) => page.data) || [];
   return (
     <View className='mt-5 px-4 mb-20'>
-      <Text className='text-xl font-bold text-gray-800'>Travel package</Text>
+      <Text className='text-xl font-bold text-gray-800'>Travel Packages</Text>
 
       <ScrollView
         horizontal

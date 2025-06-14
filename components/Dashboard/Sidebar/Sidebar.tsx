@@ -15,11 +15,14 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { images } from "@/constants/images";
 import MenuItem from "@/components/Dashboard/Sidebar/Menu/MenuItem";
 import { usePathname, useRouter } from "expo-router";
+import { useAuth } from "@/hooks/useAuth";
 
 const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
   const [openSubmenus, setOpenSubmenus] = useState<string[]>([]);
   const pathname = usePathname();
   const router = useRouter();
+  const { user } = useAuth();
+
   const menuItems: MenuItemProps[] = [
     {
       icon: <MaterialIcons name='dashboard' size={24} color='black' />,
@@ -129,7 +132,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
       icon: <FontAwesome name='user' size={24} color='black' />,
       activeIcon: <FontAwesome name='user' size={24} color='#FF1A5A' />,
       label: "Profile",
-      route: "/dashboard/profile",
+      route: "/dashboard/user-profile",
     },
     {
       icon: <Ionicons name='settings' size={24} color='black' />,
@@ -186,7 +189,13 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
             resizeMode='contain'
           />
         </Pressable>
-        <Text className='text-gray-500 mt-1 text-right'>Admin Dashboard</Text>
+        <Text className='text-gray-500 mt-1 text-right'>
+          {user?.role
+            ? user.role.charAt(0).toUpperCase() +
+              user.role.slice(1).toLowerCase()
+            : ""}{" "}
+          Dashboard
+        </Text>
       </View>
 
       {isOpen && <Text className='text-gray-400 text-xs mb-4'>MENU</Text>}
@@ -210,6 +219,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
             key={index}
             {...item}
             isOpen={isOpen}
+            toggleSidebar={toggleSidebar}
             isSubmenuOpen={openSubmenus.includes(item.label)}
             onSubmenuToggle={handleSubmenuToggle}
           />

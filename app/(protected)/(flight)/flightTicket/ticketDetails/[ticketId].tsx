@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServicePackages } from "@/hooks/useServicePackages";
 
 const AgencyDetailsPage = () => {
-  const {getSingleFlightPackage} = useServicePackages();
+  const { getSingleFlightPackage } = useServicePackages();
   const [ticketClass, setTicketClass] = useState("Economy");
   const { ticketId } = useLocalSearchParams();
 
@@ -142,7 +142,16 @@ const AgencyDetailsPage = () => {
               </Text>
             </TouchableOpacity>
           </Link>
-          <Link href={"/liveChat"} asChild>
+          <Link
+            href={{
+              pathname: "/chat/inbox-screen/[id]",
+              params: {
+                id: service?.createdBy?.id,
+                name: service?.createdBy?.name,
+                image: service?.createdBy?.image,
+              },
+            }}
+            asChild>
             <TouchableOpacity className='bg-[#FF1A5A] rounded-full flex-grow px-4 py-[18px] shadow-lg'>
               <Text className='text-center text-white text-base font-semibold'>
                 Chat
