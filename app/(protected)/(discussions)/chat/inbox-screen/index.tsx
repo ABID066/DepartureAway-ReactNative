@@ -74,7 +74,12 @@ const InboxScreen = () => {
     // Listen for new message notification
     socket.on(
       "newMessage",
-      (payload: { senderId: string; reciverId: string; messages: string; message?: string }) => {
+      (payload: {
+        senderId: string;
+        reciverId: string;
+        messages: string;
+        message?: string;
+      }) => {
         if (payload.reciverId === currentUserId) {
           setUnreadMap((prev) => ({
             ...prev,
@@ -130,7 +135,7 @@ const InboxScreen = () => {
   // Render each user as a conversation item
   const renderUserItem = ({ item }: { item: User }) => {
     const isOnline = onlineUsers.includes(item.id);
-    if (item.id === currentUserId) return null; // নিজের আইডি দেখাবেন না
+    if (item.id === currentUserId) return null;
     const unreadCount = unreadMap[item.id] || 0;
 
     return (
@@ -142,8 +147,7 @@ const InboxScreen = () => {
           borderBottomWidth: 1,
           borderColor: "#eee",
         }}
-        onPress={() => handleConversationPress(item)}
-      >
+        onPress={() => handleConversationPress(item)}>
         <View style={{ position: "relative", marginRight: 12 }}>
           <Image
             source={{
@@ -183,8 +187,7 @@ const InboxScreen = () => {
                 justifyContent: "center",
                 paddingHorizontal: 5,
                 zIndex: 2,
-              }}
-            >
+              }}>
               <Text style={{ color: "#fff", fontSize: 12, fontWeight: "bold" }}>
                 {unreadCount}
               </Text>
@@ -216,10 +219,12 @@ const InboxScreen = () => {
             flexDirection: "row",
             alignItems: "center",
             marginBottom: 16,
-          }}
-        >
-          <TouchableOpacity onPress={() => router.push("/dashboard")}>
-            <MaterialIcons name="arrow-back" size={24} color="#000" />
+          }}>
+          <TouchableOpacity
+            onPress={() =>
+              router.canGoBack() ? router.back() : router.push("/home")
+            }>
+            <MaterialIcons name='arrow-back' size={24} color='#000' />
           </TouchableOpacity>
           <Text style={{ fontSize: 20, fontWeight: "bold", marginLeft: 16 }}>
             Messages
@@ -233,12 +238,11 @@ const InboxScreen = () => {
             borderRadius: 24,
             paddingHorizontal: 16,
             paddingVertical: 8,
-          }}
-        >
-          <MaterialIcons name="search" size={24} color="#666" />
+          }}>
+          <MaterialIcons name='search' size={24} color='#666' />
           <TextInput
             style={{ flex: 1, marginLeft: 8, fontSize: 16 }}
-            placeholder="Search users"
+            placeholder='Search users'
             value={searchQuery}
             onChangeText={setSearchQuery}
           />

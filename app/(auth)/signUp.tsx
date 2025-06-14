@@ -28,8 +28,8 @@ const SignUp = () => {
   const [showCountryModal, setShowCountryModal] = useState(false);
 
   // Gender options
-  const genderOptions = ["Male", "Female", "Other", "Prefer not to say"];
-  const roleOptions = ["User", "Freelancer", "Agency", "Guider", "Other"];
+  const genderOptions = ["Male", "Female", "Prefer not to say"];
+  const roleOptions = ["User", "Freelancer", "Agency", "Guider", "Admin"];
 
   // Example country codes
   const countryCodes = [

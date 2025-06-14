@@ -36,6 +36,40 @@ export function useAuthServicePackages() {
     }
   };
 
+  const getUserDataByEmail = async (email: string) => {
+    try {
+      const { data } = await axiosSecure.get(`/user/userByEmail/${email}`);
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+  const getUserDataByToken = async () => {
+    try {
+      const { data } = await axiosSecure.get(`/user/userByToken`);
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  // update user profile
+
+  const updateUserProfile = async (
+    userId: string,
+    updateUserData: UserData1
+  ) => {
+    try {
+      const { data } = await axiosSecure.patch(
+        `/user/updateUSerProfile/${userId}`,
+        updateUserData
+      );
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   // ? Guider Related Function
   const getTopRatedGuider = async () => {
     try {
@@ -51,6 +85,9 @@ export function useAuthServicePackages() {
     createUser,
     verifyOTP,
     loginUser,
+    getUserDataByEmail,
+    getUserDataByToken,
+    updateUserProfile,
     getTopRatedGuider,
   };
 }

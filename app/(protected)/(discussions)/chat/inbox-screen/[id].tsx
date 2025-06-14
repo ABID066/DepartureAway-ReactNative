@@ -17,8 +17,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useServicePackages } from "@/hooks/useServicePackages";
 import { io } from "socket.io-client"; // <-- updated import
 import { Image } from "react-native";
-
-const SOCKET_URL = "https://depture-away-server-test.onrender.com";
+import { icons } from "@/constants/icons";
+import LiveChatHeader from "@/components/Shared/(Headers)/LiveChatHeader";
 
 interface Message {
   _id: string;
@@ -162,26 +162,63 @@ const ChatDetailScreen = () => {
 
   const isOtherUserOnline = onlineUsers.includes(otherUserId);
 
+  const item = {
+    agency: otherUserName || "User",
+    personImg: otherUserImage,
+    personOnline: isOtherUserOnline,
+  }
+
   const renderItem = ({
     item,
   }: {
     item: { id: string; message: string; time: string; isCurrentUser: boolean };
   }) => (
     <View
-      style={{
-        maxWidth: "80%",
-        borderRadius: 12,
-        padding: 12,
-        marginBottom: 8,
-        alignSelf: item.isCurrentUser ? "flex-end" : "flex-start",
-        backgroundColor: item.isCurrentUser ? "#FFEDD5" : "#fff",
-        borderTopRightRadius: item.isCurrentUser ? 0 : 12,
-        borderTopLeftRadius: item.isCurrentUser ? 12 : 0,
-      }}>
-      <Text style={{ color: "#222" }}>{item.message}</Text>
-      <Text style={{ color: "#888", fontSize: 12, marginTop: 4 }}>
-        {item.time}
+      className={`py-3 px-5 max-w-[80%]  mt-5 ${
+        item.isCurrentUser
+          ? "bg-[#FF1A5A] ml-auto rounded-[20px_20px_8px_20px]"
+          : "bg-[#F5F5F5] mr-auto rounded-[8px_20px_20px_20px]"
+      }`}
+      // style={{
+      //   maxWidth: "80%",
+      //   borderRadius: 12,
+      //   padding: 12,
+      //   marginBottom: 8,
+      //   alignSelf: item.isCurrentUser ? "flex-end" : "flex-start",
+      //   backgroundColor: item.isCurrentUser ? "#FF1A5A" : "#F5F5F5",
+      //   borderTopRightRadius: item.isCurrentUser ? 0 : 12,
+      //   borderTopLeftRadius: item.isCurrentUser ? 12 : 0,
+      // }}
+      >
+      {/* <Text className={`${item.isCurrentUser ? "text-white" : ""}`}>
+        {item.message}
       </Text>
+      <Text
+        className={`${
+          item?.isCurrentUser ? "text-white" : "text-[#9E9E9E]"
+        } text-xs mt-4 text-end`}>
+        {item.time}
+      </Text> */}
+
+      <View>
+        <Text
+          className={`text-sm font-normal ${
+            item?.isCurrentUser ? "text-white" : ""
+          }`}>
+          {item?.message}
+        </Text>
+      </View>
+      <View className='flex-row items-end justify-end gap-1'>
+        <Text
+          className={`text-xs font-medium ${
+            item?.isCurrentUser ? "text-white" : "text-[#9E9E9E]"
+          }`}>
+          {item?.time}
+        </Text>
+        {item?.isCurrentUser && (
+          <Image className='size-4' source={icons?.readIcon} />
+        )}
+      </View>
     </View>
   );
 
@@ -189,7 +226,7 @@ const ChatDetailScreen = () => {
     <KeyboardAvoidingView
       style={{ flex: 1, backgroundColor: "#fff" }}
       behavior={Platform.OS === "ios" ? "padding" : undefined}>
-      <View
+      {/* <View
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -204,7 +241,7 @@ const ChatDetailScreen = () => {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            justifyContent:"space-between",
+            justifyContent: "space-between",
             padding: 16,
           }}>
           <Image
@@ -216,7 +253,7 @@ const ChatDetailScreen = () => {
             }}
             style={{ width: 40, height: 40, borderRadius: 20, marginRight: 12 }}
           />
-          <View className="flex-row items-center justify-between gap-4 flex-1 pr-4">
+          <View className='flex-row items-center justify-between gap-4 flex-1 pr-4'>
             <Text style={{ fontWeight: "bold", fontSize: 16 }}>
               {otherUserName || "User"}
             </Text>
@@ -229,7 +266,8 @@ const ChatDetailScreen = () => {
             </Text>
           </View>
         </View>
-      </View>
+      </View> */}
+      <LiveChatHeader item={item} />
       {isLoading ? (
         <ActivityIndicator style={{ marginTop: 32 }} />
       ) : (
@@ -265,7 +303,7 @@ const ChatDetailScreen = () => {
         <TouchableOpacity
           style={{
             marginLeft: 8,
-            backgroundColor: "#FB923C",
+            backgroundColor: "#FF1A5A",
             borderRadius: 24,
             padding: 8,
           }}

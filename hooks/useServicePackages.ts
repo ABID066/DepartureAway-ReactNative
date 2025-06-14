@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 
 export function useServicePackages() {
@@ -91,6 +92,16 @@ export function useServicePackages() {
     }
   };
 
+  //Get Travel Packages for a single user
+  const getTravelPackagesForUser = async (userId = "") => {
+    try {
+      const { data } = await axiosSecure.get(`/Tour/user/tour/${userId}`);
+      return data;
+    } catch (error) {
+      // console.error("from line 176 API Error:", error);
+      throw error;
+    }
+  };
   // Get Single Travel Package Function
   const getSingleTravelPackage = async (id: string) => {
     try {
@@ -155,6 +166,17 @@ export function useServicePackages() {
       return data;
     } catch (error) {
       // console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+  // Get Flight Packages for a single user
+  const getFlightPackagesForUser = async (userId = "") => {
+    try {
+      const { data } = await axiosSecure.get(`/flight/user/flight/${userId}`);
+      return data;
+    } catch (error) {
+      // console.error("from line 176 API Error:", error);
       throw error;
     }
   };
@@ -231,11 +253,13 @@ export function useServicePackages() {
     deleteService,
     createTravelServicePackage,
     getTravelPackages,
+    getTravelPackagesForUser,
     getSingleTravelPackage,
     updateTravelPackage,
     deleteTravelPackage,
     createFlightServicePackage,
     getFlightPackages,
+    getFlightPackagesForUser,
     getSingleFlightPackage,
     updateFlightPackage,
     deleteFlightPackage,

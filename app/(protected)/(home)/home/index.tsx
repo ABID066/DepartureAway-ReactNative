@@ -211,13 +211,15 @@ const BottomNavigation = () => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => router.push("/liveChat")}
+        onPress={() => router.push("/chat/inbox-screen")}
         className='items-center'>
         <Ionicons name='chatbubble-ellipses' size={24} color='#ccc' />
         <Text className='text-xs text-gray-500 mt-0.5'>Chat</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity className='items-center'>
+      <TouchableOpacity
+        onPress={() => router.push("/dashboard/user-profile")}
+         className='items-center'>
         <Ionicons name='person' size={24} color='#ccc' />
         <Text className='text-xs text-gray-500 mt-0.5'>Profile</Text>
       </TouchableOpacity>

@@ -10,6 +10,21 @@ interface UserData {
   username?: string;
 }
 
+// ? UserData1
+interface UserData1 {
+  name?: string;
+  image?: string;
+  userName?: string;
+  email?: string;
+  isVerified?: boolean;
+  role?: string;
+  phone?: string;
+  createdAt?: string | Date | number;
+  updatedAt?: string | Date | number;
+  id?: string;
+  slug?: string;
+}
+
 // ? payment related interfaces
 interface PaymentMethod {
   id?: string;
@@ -126,7 +141,6 @@ type TravelServiceData = {
   totalReviews?: number;
 };
 
-
 // ? flight service related interface
 interface FlightServiceData {
   _id?: string;
@@ -165,7 +179,6 @@ interface ChatUser {
   lastActive?: string;
 }
 
-
 //? message related interfaces
 interface Message {
   id?: string;
@@ -175,4 +188,4 @@ interface Message {
   conversationId?: mongoose.Types.ObjectId;
   sent_at?: Date;
   is_read?: boolean;
-};
+}

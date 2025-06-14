@@ -122,7 +122,7 @@ const UpdateTravelService = () => {
 
   // Update mutation
   const { mutateAsync } = useMutation({
-    mutationFn: async (serviceData: any) => {
+    mutationFn: async (serviceData: TravelServiceData) => {
       const { data } = await updateTravelPackage(id as string, serviceData);
       return data;
     },
