@@ -137,7 +137,7 @@ const UserProfile = () => {
 
   // Gender and role options
   const genderOptions = ["Male", "Female", "Prefer not to say"];
-  const roleOptions = ["User", "Freelancer", "Agency", "Guider", "Admin"];
+  const roleOptions = ["User", "Freelancer", "Agency", "Admin"];
 
   // Initialize with fetched data
   useEffect(() => {
@@ -290,7 +290,7 @@ const UserProfile = () => {
     | "countryCode";
 
   // Handle field changes
-  const handleChange = (field: UserField, value: any) => {
+  const handleChange = (field: UserField, value: string | number | object) => {
     setUserData((prev) => ({
       ...prev,
       [field]: value,
@@ -356,7 +356,7 @@ const UserProfile = () => {
         <TouchableOpacity onPress={() => router.back()} className='p-2'>
           <Ionicons name='arrow-back' size={24} color='#333' />
         </TouchableOpacity>
-        <Text className='text-xl font-bold ml-4'>User Profile</Text>
+        <Text className='text-xl font-bold ml-4'>Your Profile</Text>
       </View>
 
       <ScrollView className='flex-1'>

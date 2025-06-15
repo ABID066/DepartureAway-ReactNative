@@ -21,7 +21,11 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
   const [openSubmenus, setOpenSubmenus] = useState<string[]>([]);
   const pathname = usePathname();
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const isAdmin = user?.role?.toLowerCase() === "admin";
+  const isPermitted =
+    user?.role?.toLowerCase() === "admin" ||
+    user?.role?.toLowerCase() === "agency";
 
   const menuItems: MenuItemProps[] = [
     {
@@ -30,101 +34,132 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
       label: "Dashboard",
       route: "/dashboard",
     },
-    {
-      icon: (
-        <MaterialIcons name='miscellaneous-services' size={24} color='black' />
-      ),
-      activeIcon: (
-        <MaterialIcons
-          name='miscellaneous-services'
-          size={24}
-          color='#FF1A5A'
-        />
-      ),
-      label: "Services",
-      route: "/dashboard/services",
-      hasSubmenu: true,
-      isActive: pathname.startsWith("/dashboard/services"),
-      submenuItems: [
-        {
-          label: "Travel Services",
-          route: "/dashboard/services/travel-services",
-          isActive: pathname.startsWith("/dashboard/services/travel-services"),
-          hasSubmenu: true,
-          submenuItems: [
-            {
-              label: "All Travel Service",
-              route: "/dashboard/services/travel-services",
-              isActive: pathname === "/dashboard/services/travel-services",
-            },
-            {
-              label: "Create New Travel Service",
-              route: "/dashboard/services/travel-services/create-new",
-              isActive:
-                pathname === "/dashboard/services/travel-services/create-new",
-            },
-          ],
-        },
-        {
-          label: "Flight Services",
-          route: "/dashboard/services/flight-services",
-          isActive: pathname.startsWith("/dashboard/services/flight-services"),
-          hasSubmenu: true,
-          submenuItems: [
-            {
-              label: "All Flight Service",
-              route: "/dashboard/services/flight-services",
-              isActive: pathname === "/dashboard/services/flight-services",
-            },
-            {
-              label: "Create New Flight Service",
-              route: "/dashboard/services/flight-services/create-new",
-              isActive:
-                pathname === "/dashboard/services/flight-services/create-new",
-            },
-          ],
-        },
-        {
-          label: "Hotel Services",
-          route: "/dashboard/services/hotel-services",
-          isActive: pathname.startsWith("/dashboard/services/hotel-services"),
-          hasSubmenu: true,
-          submenuItems: [
-            {
-              label: "All Hotel Service",
-              route: "/dashboard/services/hotel-services",
-              isActive: pathname === "/dashboard/services/hotel-services",
-            },
-            {
-              label: "Create New Hotel Service",
-              route: "/dashboard/services/hotel-services/create-new",
-              isActive:
-                pathname === "/dashboard/services/hotel-services/create-new",
-            },
-          ],
-        },
-      ],
-    },
+    ...(isPermitted
+      ? [
+          {
+            icon: (
+              <MaterialIcons
+                name='miscellaneous-services'
+                size={24}
+                color='black'
+              />
+            ),
+            activeIcon: (
+              <MaterialIcons
+                name='miscellaneous-services'
+                size={24}
+                color='#FF1A5A'
+              />
+            ),
+            label: "Services",
+            route: "/dashboard/services",
+            hasSubmenu: true,
+            isActive: pathname.startsWith("/dashboard/services"),
+            submenuItems: [
+              {
+                label: "Travel Services",
+                route: "/dashboard/services/travel-services",
+                isActive: pathname.startsWith(
+                  "/dashboard/services/travel-services"
+                ),
+                hasSubmenu: true,
+                submenuItems: [
+                  {
+                    label: isAdmin
+                      ? "All Travel Service"
+                      : "Your Travel Services",
+                    route: "/dashboard/services/travel-services",
+                    isActive:
+                      pathname === "/dashboard/services/travel-services",
+                  },
+                  {
+                    label: "Create New Travel Service",
+                    route: "/dashboard/services/travel-services/create-new",
+                    isActive:
+                      pathname ===
+                      "/dashboard/services/travel-services/create-new",
+                  },
+                ],
+              },
+              {
+                label: "Flight Services",
+                route: "/dashboard/services/flight-services",
+                isActive: pathname.startsWith(
+                  "/dashboard/services/flight-services"
+                ),
+                hasSubmenu: true,
+                submenuItems: [
+                  {
+                    label: isAdmin
+                      ? "All Flight Service"
+                      : "Your Flight Services",
+                    route: "/dashboard/services/flight-services",
+                    isActive:
+                      pathname === "/dashboard/services/flight-services",
+                  },
+                  {
+                    label: "Create New Flight Service",
+                    route: "/dashboard/services/flight-services/create-new",
+                    isActive:
+                      pathname ===
+                      "/dashboard/services/flight-services/create-new",
+                  },
+                ],
+              },
+              {
+                label: "Hotel Services",
+                route: "/dashboard/services/hotel-services",
+                isActive: pathname.startsWith(
+                  "/dashboard/services/hotel-services"
+                ),
+                hasSubmenu: true,
+                submenuItems: [
+                  {
+                    label: isAdmin
+                      ? "All Hotel Service"
+                      : "Your Hotel Services",
+                    route: "/dashboard/services/hotel-services",
+                    isActive: pathname === "/dashboard/services/hotel-services",
+                  },
+                  {
+                    label: "Create New Hotel Service",
+                    route: "/dashboard/services/hotel-services/create-new",
+                    isActive:
+                      pathname ===
+                      "/dashboard/services/hotel-services/create-new",
+                  },
+                ],
+              },
+            ],
+          },
+        ]
+      : []),
     {
       icon: <MaterialIcons name='shopping-cart' size={24} color='black' />,
       activeIcon: (
         <MaterialIcons name='shopping-cart' size={24} color='#FF1A5A' />
       ),
-      label: "Orders",
+      label: isAdmin ? "Orders" : "Your Orders",
       route: "/dashboard/orders",
     },
-    {
-      icon: <MaterialIcons name='inventory' size={24} color='black' />,
-      activeIcon: <MaterialIcons name='inventory' size={24} color='#FF1A5A' />,
-      label: "Products",
-      route: "/dashboard/products",
-    },
-    {
-      icon: <FontAwesome5 name='users' size={24} color='black' />,
-      activeIcon: <FontAwesome5 name='users' size={24} color='#FF1A5A' />,
-      label: "Customers",
-      route: "/dashboard/customers",
-    },
+    ...(isAdmin
+      ? [
+          {
+            icon: <MaterialIcons name='inventory' size={24} color='black' />,
+            activeIcon: (
+              <MaterialIcons name='inventory' size={24} color='#FF1A5A' />
+            ),
+            label: "Products",
+            route: "/dashboard/products",
+          },
+          {
+            icon: <FontAwesome5 name='users' size={24} color='black' />,
+            activeIcon: <FontAwesome5 name='users' size={24} color='#FF1A5A' />,
+            label: "Customers",
+            route: "/dashboard/customers",
+          },
+        ]
+      : []),
   ];
 
   const settingsItems: MenuItem[] = [
@@ -224,6 +259,12 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
             onSubmenuToggle={handleSubmenuToggle}
           />
         ))}
+        <TouchableOpacity
+          className='flex flex-row items-center gap-2 ml-4 my-2'
+          onPress={() => logout()}>
+          <MaterialIcons name='logout' size={24} color='black' />
+          <Text className='text-base font-semibold'>Logout</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { useAuth } from "@/hooks/useAuth";
 
 const StatCard = ({
   title,
@@ -24,6 +25,9 @@ const StatCard = ({
 
 export default function Dashboard(): JSX.Element {
   const router = useRouter();
+  const { user } = useAuth();
+  const isAdmin = user?.role?.toLowerCase() === "admin";
+  const isAgency = user?.role?.toLowerCase() === "agency";
   const stats: StatCardProps[] = [
     {
       title: "Total Services",
@@ -79,14 +83,26 @@ export default function Dashboard(): JSX.Element {
             <Text className='text-black'> + View Shop</Text>
           </TouchableOpacity>
           <TouchableOpacity>
-            <MaterialIcons name='account-circle' size={24} color='black' />
+            {/* <MaterialIcons name='account-circle' size={24} color='black' /> */}
+            <Image
+              className='size-8 rounded-full'
+              source={
+                user?.image
+                  ? { uri: user.image }
+                  : require("@/assets/images/profile.jpg")
+              }
+            />
           </TouchableOpacity>
         </View>
       </View>
 
       <View className='bg-black mx-4 p-4 rounded-xl my-6'>
         <Text className='text-white text-lg font-bold mb-2'>
-          Welcome to the Dashboard
+          Welcome to the{" "}
+          {user?.role
+            ? user.role.charAt(0).toUpperCase() + user.role.slice(1)
+            : "User"}{" "}
+          Dashboard
         </Text>
         <Text className='text-white opacity-70 mb-4'>
           Monitor your business statistics and manage your services from here.
@@ -105,12 +121,13 @@ export default function Dashboard(): JSX.Element {
           <Text className='text-black font-bold'>Get Started</Text>
         </TouchableOpacity>
       </View> */}
-
-      <View className='flex-row flex-wrap '>
-        {stats.map((stat, index) => (
-          <StatCard key={index} {...stat} />
-        ))}
-      </View>
+      {isAdmin && (
+        <View className='flex-row flex-wrap '>
+          {stats.map((stat, index) => (
+            <StatCard key={index} {...stat} />
+          ))}
+        </View>
+      )}
 
       {/* Placeholder for Charts */}
       <View className='m-4 p-4 bg-white rounded-xl'>
@@ -118,22 +135,24 @@ export default function Dashboard(): JSX.Element {
         {/* Add chart components here */}
       </View>
 
-      <View className='flex-row justify-between p-2 flex-wrap'>
-        <TouchableOpacity
-          onPress={() => router.push("/dashboard/services/add-new-service")}
-          className='bg-white flex-1 m-2 p-4 rounded-xl'>
-          <Text className='text-center'>Add Service</Text>
-        </TouchableOpacity>
-        <TouchableOpacity className='bg-white flex-1 m-2 p-4 rounded-xl'>
-          <Text className='text-center'>View Orders</Text>
-        </TouchableOpacity>
-        <TouchableOpacity className='bg-white flex-1 m-2 p-4 rounded-xl'>
-          <Text className='text-center'>Support</Text>
-        </TouchableOpacity>
-        <TouchableOpacity className='bg-white flex-1 m-2 p-4 rounded-xl'>
-          <Text className='text-center'>Settings</Text>
-        </TouchableOpacity>
-      </View>
+      {isAgency && (
+        <View className='flex-row justify-between p-2 flex-wrap'>
+          <TouchableOpacity
+            onPress={() => router.push("/dashboard/services/add-new-service")}
+            className='bg-white flex-1 m-2 p-4 rounded-xl'>
+            <Text className='text-center'>Add Service</Text>
+          </TouchableOpacity>
+          <TouchableOpacity className='bg-white flex-1 m-2 p-4 rounded-xl'>
+            <Text className='text-center'>View Orders</Text>
+          </TouchableOpacity>
+          <TouchableOpacity className='bg-white flex-1 m-2 p-4 rounded-xl'>
+            <Text className='text-center'>Support</Text>
+          </TouchableOpacity>
+          <TouchableOpacity className='bg-white flex-1 m-2 p-4 rounded-xl'>
+            <Text className='text-center'>Settings</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </ScrollView>
   );
 }

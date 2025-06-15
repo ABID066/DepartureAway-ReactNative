@@ -29,7 +29,7 @@ const SignUp = () => {
 
   // Gender options
   const genderOptions = ["Male", "Female", "Prefer not to say"];
-  const roleOptions = ["User", "Freelancer", "Agency", "Guider", "Admin"];
+  const roleOptions = ["User", "Freelancer", "Agency", "Admin"];
 
   // Example country codes
   const countryCodes = [

@@ -53,7 +53,7 @@ const TravelServices = () => {
     error: userError,
   } = useQuery({
     queryKey: ["userTravelPackages", user?.id],
-    queryFn: () => getTravelPackagesForUser("682cbd6e86c154b10b5155a8"),
+    queryFn: () => getTravelPackagesForUser(user?.id),
     enabled: !isAdmin,
   });
 
