@@ -85,7 +85,7 @@ const CreateNewHotelService = () => {
       }
       Toast.show({
         type: "error",
-        text1: "Failed to Login!",
+        text1: "Failed to Create Hotel Service!",
         text2: errorMessage,
       });
       console.error("Service creation failed", errorMessage);
@@ -146,8 +146,6 @@ const CreateNewHotelService = () => {
       createdBy: user?.id || "",
       imageUrl: images,
     };
-
-    console.log(serviceData);
     await mutateAsync(serviceData);
   };
 

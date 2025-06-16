@@ -86,7 +86,7 @@ const CreateNewFlightService = () => {
       // setError(errorMessage);
       Toast.show({
         type: "error",
-        text1: "Failed to Login!",
+        text1: "Failed to Create Service!",
         text2: errorMessage,
       });
       console.error("Service creation failed", errorMessage);

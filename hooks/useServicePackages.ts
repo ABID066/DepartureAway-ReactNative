@@ -226,7 +226,7 @@ export function useServicePackages() {
   const createHotelServicePackage = async (serviceData: HotelServiceData) => {
     try {
       const { data } = await axiosSecure.post(
-        `/hotel/create-flight`,
+        `/hotel/create-hotel`,
         serviceData
       );
       return data;
