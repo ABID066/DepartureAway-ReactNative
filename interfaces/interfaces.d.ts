@@ -158,6 +158,23 @@ interface FlightServiceData {
   totalReviews?: number;
 }
 
+// ? Hotel Services related interfaces
+interface HotelServiceData {
+  _id?: string;
+  title: string;
+  title1: string;
+  description: string;
+  description1: string;
+  location: string;
+  basicPrice: string;
+  standardPrice: string;
+  creatorCategory?: string;
+  createdBy?: string | object | mongoose.Types.ObjectId;
+  imageUrl: string[];
+  rating?: number;
+  totalReviews?: number;
+}
+
 // ? chat related interfaces
 
 interface ChatItem {

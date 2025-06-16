@@ -144,7 +144,7 @@ export function useServicePackages() {
   // ? Flight Service Related All Function
 
   // Add New Flight Service Function
-  const createFlightServicePackage = async (serviceData: any) => {
+  const createFlightServicePackage = async (serviceData: FlightServiceData) => {
     try {
       const { data } = await axiosSecure.post(
         `/flight/create-flight`,
@@ -181,7 +181,7 @@ export function useServicePackages() {
     }
   };
 
-  // Get ALl Travel Packages Function
+  // Get Single Flight Packages Function
   const getSingleFlightPackage = async (id: string) => {
     try {
       const { data } = await axiosSecure.get(`/flight/ById/${id}`);
@@ -213,6 +213,22 @@ export function useServicePackages() {
   const deleteFlightPackage = async (id: string) => {
     try {
       const { data } = await axiosSecure.delete(`/flight/delete/${id}`);
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+
+  // ? Hotel Service Related All Function
+  // Add New Hotel Service Function
+  const createHotelServicePackage = async (serviceData: HotelServiceData) => {
+    try {
+      const { data } = await axiosSecure.post(
+        `/hotel/create-flight`,
+        serviceData
+      );
       return data;
     } catch (error) {
       // console.error("API Error:", error);
@@ -263,6 +279,7 @@ export function useServicePackages() {
     getSingleFlightPackage,
     updateFlightPackage,
     deleteFlightPackage,
+    createHotelServicePackage,
     getMessages,
     sendMessage,
   };
