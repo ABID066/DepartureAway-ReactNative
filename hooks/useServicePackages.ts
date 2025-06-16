@@ -157,7 +157,7 @@ export function useServicePackages() {
     }
   };
 
-  // Get ALl Travel Packages Function
+  // Get ALl Flight Packages Function
   const getFlightPackages = async (page = 1, limit = 10, filter = "") => {
     try {
       const { data } = await axiosSecure.get(
@@ -192,7 +192,7 @@ export function useServicePackages() {
     }
   };
 
-  // Update a Single Travel Package Function
+  // Update a Single Flight Package Function
   const updateFlightPackage = async (
     packageId: string,
     packageData: FlightServiceData
@@ -235,6 +235,71 @@ export function useServicePackages() {
       throw error;
     }
   };
+
+  
+  // Get ALl Hotel Packages Function
+  const getHotelPackages = async (page = 1, limit = 10, filter = "") => {
+    try {
+      const { data } = await axiosSecure.get(
+        `/hotel/all-hotel?page=${page}&limit=${limit}&searchTerm=${filter}`
+      );
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+  // Get Hotel Packages for a single user
+  const getHotelPackagesForUser = async (userId = "") => {
+    try {
+      const { data } = await axiosSecure.get(`/hotel/user/hotel/${userId}`);
+      return data;
+    } catch (error) {
+      // console.error("from line 176 API Error:", error);
+      throw error;
+    }
+  };
+
+  // Get Single Hotel Packages Function
+  const getSingleHotelPackage = async (id: string) => {
+    try {
+      const { data } = await axiosSecure.get(`/hotel/ById/${id}`);
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+  // Update a Single Travel Package Function
+  const updateHotelPackage = async (
+    packageId: string,
+    packageData: HotelServiceData
+  ) => {
+    try {
+      const { data } = await axiosSecure.put(
+        `/hotel/update/${packageId}`,
+        packageData
+      );
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+  // Delete a Single Hotel Package Function
+  const deleteHotelPackage = async (id: string) => {
+    try {
+      const { data } = await axiosSecure.delete(`/hotel/delete/${id}`);
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+
 
   // ? messages related services function
 
@@ -280,6 +345,11 @@ export function useServicePackages() {
     updateFlightPackage,
     deleteFlightPackage,
     createHotelServicePackage,
+    getHotelPackages,
+    getHotelPackagesForUser,
+    getSingleHotelPackage,
+    updateHotelPackage,
+    deleteHotelPackage,
     getMessages,
     sendMessage,
   };
