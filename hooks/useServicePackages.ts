@@ -266,7 +266,7 @@ export function useServicePackages() {
       const { data } = await axiosSecure.get(`/hotel/ById/${id}`);
       return data;
     } catch (error) {
-      // console.error("API Error:", error);
+      console.error("API Error:", error);
       throw error;
     }
   };

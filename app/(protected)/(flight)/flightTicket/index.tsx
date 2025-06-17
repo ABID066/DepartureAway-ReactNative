@@ -135,7 +135,7 @@ const FlightTicket = () => {
     if (!hasNextPage) {
       return (
         <View className='py-6 justify-center items-center'>
-          <Text className='text-gray-500'>No Travel Packages Available.</Text>
+          <Text className='text-gray-500'>No More Packages Available.</Text>
         </View>
       );
     }
@@ -163,7 +163,7 @@ const FlightTicket = () => {
         />
         <View className='flex-col'>
           <Text className='text-[#FF1A5A] font-medium'>
-            From {item?.economicPrice}$
+            From ${item?.economicPrice}
           </Text>
           <Text className='font-medium leading-tight my-1.5 w-[85%] text-[#000000]'>
             {item?.title}
@@ -181,7 +181,9 @@ const FlightTicket = () => {
             <FontAwesome name='star' size={18} color='#fbbf24' />
             <Text className='text-[#000000] ml-1 font-medium text-xs'>
               {item?.rating}/5{" "}
-              <Text className='text-[#828282] ml-1'> {item?.totalReviews}</Text>
+              <Text className='text-[#828282] ml-1'>
+                ({item?.totalReviews})
+              </Text>
             </Text>
           </View>
         </View>
