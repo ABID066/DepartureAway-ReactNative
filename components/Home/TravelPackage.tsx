@@ -49,9 +49,11 @@ interface PackageItem {
 const TravelPackagesSection = ({
   activePackageTab,
   setActivePackageTab,
+  title,
 }: {
   activePackageTab: string;
   setActivePackageTab: (tab: string) => void;
+  title?: string;
 }) => {
   // Calculate screen width to set card width dynamically
   const screenWidth = Dimensions.get("window").width;
@@ -182,17 +184,25 @@ const TravelPackagesSection = ({
     data?.pages.flatMap((page: { data: PackageItem[] }) => page.data) || [];
   return (
     <View className='mt-5 px-4 mb-20'>
-      <Text className='text-xl font-bold text-gray-800'>Travel Packages</Text>
+      {title ? (
+        <Text className='text-xl font-bold text-gray-800 text-center my-6'>
+          {title}
+        </Text>
+      ) : (
+        <Text className='text-xl font-bold text-gray-800 my-4'>
+          Travel Packages
+        </Text>
+      )}
 
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        className='py-4'>
+        className='mb-8 h-12'>
         {data &&
           packageCategories.map((category, i) => (
             <TouchableOpacity
               key={i + 0}
-              className={`mr-4 py-1 ${
+              className={`mr-4  py-1 h-10 flex justify-center items-center ${
                 activePackageTab === category.value
                   ? "bg-[#F13F5F] px-4 rounded-full"
                   : ""

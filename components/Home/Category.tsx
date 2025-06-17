@@ -12,16 +12,15 @@ const categories: {
 }[] = [
   { id: 1, name: "Flight", icon: "airplane", path: "/flightTicket" },
   { id: 2, name: "Hotel", icon: "business", path: "/hotel" },
-  { id: 3, name: "Tour", icon: "map" },
-  { id: 4, name: "Car", icon: "car" },
-  { id: 5, name: "Visa", icon: "card" },
-  { id: 6, name: "Guider", icon: "people" },
+  { id: 3, name: "Tour", icon: "map", path: "/tour" },
+  { id: 4, name: "Car", icon: "car", path: "/car" },
+  { id: 5, name: "Visa", icon: "card", path: "/visa" },
+  { id: 6, name: "Guider", icon: "people", path: "/guider" },
   { id: 7, name: "Lost bag", icon: "briefcase" },
 ];
 
 // Category Section Component
 const CategorySection = () => {
-  
   const topCategories = categories.slice(0, 4);
   const bottomCategories = categories.slice(4, 7);
 
