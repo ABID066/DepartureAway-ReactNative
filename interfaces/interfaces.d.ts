@@ -175,6 +175,33 @@ interface HotelServiceData {
   totalReviews?: number;
 }
 
+// ? Guider Services related interfaces
+interface GuiderServiceData {
+  _id?: string;
+  name: string;
+  bio: string;
+  languages: string[];
+  location: string;
+  experience: string;
+  specialty: string;
+  hourlyRate: number;
+  dailyRate: number;
+  isVerified: boolean;
+  imageUrl: string[];
+  available: boolean;
+  contactInfo:
+    | string
+    | {
+        phone?: string;
+        email?: string;
+        [key: string]: any;
+      };
+  creatorType?: string;
+  createdBy?: string | object | mongoose.Types.ObjectId;
+  rating?: number;
+  totalReviews?: number;
+}
+
 // ? chat related interfaces
 
 interface ChatItem {

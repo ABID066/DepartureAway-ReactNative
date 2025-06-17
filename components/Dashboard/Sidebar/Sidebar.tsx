@@ -130,6 +130,30 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
                   },
                 ],
               },
+              {
+                label: "Guider Services",
+                route: "/dashboard/services/guider-services",
+                isActive: pathname.startsWith(
+                  "/dashboard/services/guider-services"
+                ),
+                hasSubmenu: true,
+                submenuItems: [
+                  {
+                    label: isAdmin
+                      ? "All Guider Service"
+                      : "Your Guider Services",
+                    route: "/dashboard/services/guider-services",
+                    isActive: pathname === "/dashboard/services/guider-services",
+                  },
+                  {
+                    label: "Create New Guider Service",
+                    route: "/dashboard/services/guider-services/create-new",
+                    isActive:
+                      pathname ===
+                      "/dashboard/services/guider-services/create-new",
+                  },
+                ],
+              },
             ],
           },
         ]

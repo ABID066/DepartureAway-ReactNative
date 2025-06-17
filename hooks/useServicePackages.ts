@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 
 export function useServicePackages() {
@@ -300,6 +299,85 @@ export function useServicePackages() {
     }
   };
 
+  // ? Guider Service Related All Function
+  // Add New Guider Service Function
+  const createGuiderServicePackage = async (serviceData: GuiderServiceData) => {
+    try {
+      const { data } = await axiosSecure.post(
+        `/guider/create-guider`,
+        serviceData
+      );
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+  
+  // Get ALl Guider Packages Function
+  const getGuiderServices = async (page = 1, limit = 10, filter = "") => {
+    try {
+      const { data } = await axiosSecure.get(
+        `/guider/all-guider?page=${page}&limit=${limit}&searchTerm=${filter}`
+      );
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+  // Get Guider Packages for a single user
+  const getGuiderServicesForUser = async (userId = "") => {
+    try {
+      const { data } = await axiosSecure.get(`/guider/user/guider/${userId}`);
+      return data;
+    } catch (error) {
+      // console.error("from line 176 API Error:", error);
+      throw error;
+    }
+  };
+
+  // Get Single Guider Packages Function
+  const getSingleGuiderService = async (id: string) => {
+    try {
+      const { data } = await axiosSecure.get(`/guider/ById/${id}`);
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+  // Update a Single Guider Package Function
+  const updateGuiderService = async (
+    packageId: string,
+    packageData: GuiderServiceData
+  ) => {
+    try {
+      const { data } = await axiosSecure.put(
+        `/guider/update/${packageId}`,
+        packageData
+      );
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+  // Delete a Single Guider Package Function
+  const deleteGuiderService = async (id: string) => {
+    try {
+      const { data } = await axiosSecure.delete(`/guider/delete/${id}`);
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+
 
   // ? messages related services function
 
@@ -350,6 +428,12 @@ export function useServicePackages() {
     getSingleHotelPackage,
     updateHotelPackage,
     deleteHotelPackage,
+    createGuiderServicePackage,
+    getGuiderServices,
+    getGuiderServicesForUser,
+    getSingleGuiderService,
+    updateGuiderService,
+    deleteGuiderService,
     getMessages,
     sendMessage,
   };
