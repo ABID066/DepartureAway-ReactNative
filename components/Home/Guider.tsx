@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 // Guides data
 const guides = [
@@ -50,7 +51,7 @@ const GuidesSection = ({ guiders }: GuiderProps) => {
         <Text className='text-2xl font-bold text-gray-800'>
           Top Rated Guider
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push("/guider")}>
           <Text className='text-md border-[#F13F5F] border rounded-full px-4 py-1 text-[#F13F5F] font-semibold'>
             Explore
           </Text>
