@@ -143,7 +143,8 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
                       ? "All Guider Service"
                       : "Your Guider Services",
                     route: "/dashboard/services/guider-services",
-                    isActive: pathname === "/dashboard/services/guider-services",
+                    isActive:
+                      pathname === "/dashboard/services/guider-services",
                   },
                   {
                     label: "Create New Guider Service",
@@ -159,6 +160,12 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
         ]
       : []),
     {
+      icon: <Ionicons name='heart' size={24} color='black' />,
+      activeIcon: <Ionicons name='heart' size={24} color='#FF1A5A' />,
+      label: "Favorites",
+      route: "/dashboard/favorites",
+    },
+    {
       icon: <MaterialIcons name='shopping-cart' size={24} color='black' />,
       activeIcon: (
         <MaterialIcons name='shopping-cart' size={24} color='#FF1A5A' />
@@ -168,6 +175,26 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
     },
     ...(isAdmin
       ? [
+          {
+            icon: <Ionicons name='flag' size={24} color='black' />,
+            activeIcon: <Ionicons name='flag' size={24} color='#FF1A5A' />,
+            label: "Country Data",
+            route: "/dashboard/country-data",
+            hasSubmenu: true,
+            isActive: pathname.startsWith("/dashboard/country-data"),
+            submenuItems: [
+              {
+                label: "All Country Data",
+                route: "/dashboard/country-data",
+                isActive: pathname === "/dashboard/country-data",
+              },
+              {
+                label: "Add New Country Data",
+                route: "/dashboard/country-data/add-new",
+                isActive: pathname === "/dashboard/country-data/add-new",
+              },
+            ],
+          },
           {
             icon: <MaterialIcons name='inventory' size={24} color='black' />,
             activeIcon: (
@@ -179,8 +206,8 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
           {
             icon: <FontAwesome5 name='users' size={24} color='black' />,
             activeIcon: <FontAwesome5 name='users' size={24} color='#FF1A5A' />,
-            label: "Customers",
-            route: "/dashboard/customers",
+            label: "Users",
+            route: "/dashboard/users",
           },
         ]
       : []),

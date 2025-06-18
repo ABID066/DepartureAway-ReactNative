@@ -378,6 +378,74 @@ export function useServicePackages() {
     }
   };
 
+  // ? Country related api 
+
+// Add New Country Service Function
+  const addNewCountryData = async (countryData: CountryData) => {
+    try {
+      const { data } = await axiosSecure.post(
+        `/country/create-country`,
+        countryData
+      );
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+  
+  // Get ALl Country Packages Function
+  const getCountryData = async (page = 1, limit = 10, filter = "") => {
+    try {
+      const { data } = await axiosSecure.get(
+        `/country/all-country?page=${page}&limit=${limit}&searchTerm=${filter}`
+      );
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+  // Get Single Country Packages Function
+  const getSingleCountryData = async (id: string) => {
+    try {
+      const { data } = await axiosSecure.get(`/country/ById/${id}`);
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+  // Update a Single Country Package Function
+  const updateCountryData = async (
+    countryDataId: string,
+    countryData: CountryData
+  ) => {
+    try {
+      const { data } = await axiosSecure.put(
+        `/country/update/${countryDataId}`,
+        countryData
+      );
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
+
+  // Delete a Single Country Package Function
+  const deleteCountryData = async (id: string) => {
+    try {
+      const { data } = await axiosSecure.delete(`/country/delete/${id}`);
+      return data;
+    } catch (error) {
+      // console.error("API Error:", error);
+      throw error;
+    }
+  };
 
   // ? messages related services function
 
@@ -434,6 +502,11 @@ export function useServicePackages() {
     getSingleGuiderService,
     updateGuiderService,
     deleteGuiderService,
+    addNewCountryData,
+    getCountryData,
+    getSingleCountryData,
+    updateCountryData,
+    deleteCountryData,
     getMessages,
     sendMessage,
   };

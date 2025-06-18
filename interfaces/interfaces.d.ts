@@ -233,3 +233,12 @@ interface Message {
   sent_at?: Date;
   is_read?: boolean;
 }
+
+//? Country Data Related Interfaces
+
+interface CountryData {
+  _id?: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+}

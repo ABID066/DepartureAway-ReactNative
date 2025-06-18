@@ -3,7 +3,6 @@ import TravelPackagesSection from "@/components/Home/TravelPackage";
 import {
   Image,
   SafeAreaView,
-  ScrollView,
   SectionList,
   Text,
   TextInput,
@@ -16,7 +15,6 @@ import { images } from "@/constants/images";
 
 const TourServices = () => {
   const [activePackageTab, setActivePackageTab] = useState("Traveler Choose");
-  const router = useRouter();
 
   const sections = [
     {
