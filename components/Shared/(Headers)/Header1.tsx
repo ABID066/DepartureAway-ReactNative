@@ -4,7 +4,7 @@ import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 import { useRouter } from "expo-router";
 
-const Header1 = () => {
+const Header1 = ({ img }: { img?: string }) => {
   const router = useRouter();
   return (
     <View className='bg-[#fbb040] p-4 flex-row justify-center relative w-full rounded-bl-[50px] min-h-[180px] md:min-h-[200px]'>
@@ -22,10 +22,10 @@ const Header1 = () => {
       />
 
       <Image
-        source={images?.rectangle4}
+        source={img && img ? { uri: img } : images?.rectangle4}
         className='rounded-xl absolute -bottom-[80%] w-[94%] max-w-[94%] h-[200px] md:h-[210px] mx-auto z-10'
-        accessibilityLabel='Eiffel Tower under cloudy sky with dramatic clouds, travel destination'
-        resizeMode='cover'
+        accessibilityLabel='Flight destination image'
+        resizeMode='stretch'
       />
     </View>
   );

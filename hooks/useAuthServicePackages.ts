@@ -36,6 +36,25 @@ export function useAuthServicePackages() {
     }
   };
 
+  const getAllUserData = async () => {
+    try {
+      const { data } = await axiosSecure.get(`/user/all-users`);
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getServiceCreatorInfo = async (creatorId: string) => {
+    try {
+      const {data} = await getAllUserData();
+      const creatorData = data.find((user: UserData1) => user?.id === creatorId);
+      console.log(creatorData); 
+    } catch (error) {
+      
+    }
+  } 
+
   const getUserDataByEmail = async (email: string) => {
     try {
       const { data } = await axiosSecure.get(`/user/userByEmail/${email}`);
@@ -89,5 +108,6 @@ export function useAuthServicePackages() {
     getUserDataByToken,
     updateUserProfile,
     getTopRatedGuider,
+    getServiceCreatorInfo
   };
 }

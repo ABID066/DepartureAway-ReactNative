@@ -10,6 +10,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useServicePackages } from "@/hooks/useServicePackages";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "expo-router";
 
 interface TravelServiceData {
   _id: string;
@@ -38,6 +39,7 @@ const DiscoverPlacesSection = ({
   currentIndex: number;
   setCurrentIndex: (index: number) => void;
 }) => {
+  const router = useRouter();
   const tabs = ["For you", "Popular", "Country"];
   const { getCountryData, getTravelPackages } = useServicePackages();
   const queryClient = useQueryClient();
@@ -122,7 +124,8 @@ const DiscoverPlacesSection = ({
   });
 
   // Flatten the data
-  const countryData = fetchCountryData?.pages.flatMap((page) => page.data).reverse() || [];
+  const countryData =
+    fetchCountryData?.pages.flatMap((page) => page.data).reverse() || [];
   const forYouPlaces = tourData?.pages.flatMap((page) => page.data) || [];
   const popularPlaces = popularData?.pages.flatMap((page) => page.data) || [];
 
@@ -217,8 +220,7 @@ const DiscoverPlacesSection = ({
             else if (activeTab === "Popular") refetchPopular();
             else refetchTours();
           }}
-          className='mt-2 px-4 py-2 bg-[#F13F5F] rounded-lg'
-        >
+          className='mt-2 px-4 py-2 bg-[#F13F5F] rounded-lg'>
           <Text className='text-white'>Retry</Text>
         </TouchableOpacity>
       </View>
@@ -256,7 +258,12 @@ const DiscoverPlacesSection = ({
     <TouchableOpacity
       key={`place-${item?._id}-${index}`}
       className='w-48 h-72 mr-5 rounded-xl overflow-hidden relative'
-    >
+      onPress={() =>
+        router.push({
+          pathname: "/tour/details/[id]",
+          params: { id: item?._id, img: item.imageUrl[0] },
+        })
+      }>
       <Image
         source={{ uri: item.imageUrl[0] }}
         className='w-full h-full'
@@ -289,8 +296,7 @@ const DiscoverPlacesSection = ({
   const renderCountryCard = (item: CountryData, index: number) => (
     <TouchableOpacity
       key={`country-${item._id}-${index}`}
-      className='w-64 mb-2 mr-5 bg-white rounded-xl overflow-hidden shadow p-4'
-    >
+      className='w-64 mb-2 mr-5 bg-white rounded-xl overflow-hidden shadow p-4'>
       <View className='flex-row items-center mb-2'>
         <Image
           source={{ uri: item.imageUrl }}
@@ -325,13 +331,11 @@ const DiscoverPlacesSection = ({
             className={`mr-5 py-1 ${
               activeTab === tab ? "bg-[#F13F5F] px-4 rounded-full" : ""
             }`}
-            onPress={() => setActiveTab(tab)}
-          >
+            onPress={() => setActiveTab(tab)}>
             <Text
               className={`text-base ${
                 activeTab === tab ? "text-white font-semibold" : "text-gray-500"
-              }`}
-            >
+              }`}>
               {tab}
             </Text>
           </TouchableOpacity>

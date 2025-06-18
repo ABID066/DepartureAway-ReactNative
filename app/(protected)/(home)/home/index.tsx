@@ -122,7 +122,7 @@ const Header = () => {
     setIsModalVisible(!isModalVisible);
   };
   return (
-    <View className='bg-amber-300 pb-6 pt-6 px-4 rounded-bl-[50px]'>
+    <View className='bg-[#fbb040] pb-6 pt-6 px-4 rounded-bl-[50px]'>
       <View className='flex-row justify-between items-center mb-2'>
         {user && (
           <Pressable

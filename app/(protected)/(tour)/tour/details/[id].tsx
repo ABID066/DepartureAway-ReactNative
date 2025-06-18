@@ -14,21 +14,21 @@ import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import { useServicePackages } from "@/hooks/useServicePackages";
 import { useQuery } from "@tanstack/react-query";
 
-const HotelDetails = () => {
+const TourDetails = () => {
   const router = useRouter();
-  const { hotelPackageId } = useLocalSearchParams();
-  const { getSingleHotelPackage } = useServicePackages();
-  const [hotelClass, setHotelClass] = useState("Basic Hotel");
+  const { id } = useLocalSearchParams();
+  const { getSingleTravelPackage } = useServicePackages();
+  const [tourPackageClass, setTourPackageClass] = useState("Basic Package");
 
-  const isBasic = hotelClass === "Basic Hotel";
-  const isStandard = hotelClass === "Standard Hotel";
+  const isBasic = tourPackageClass === "Basic Package";
+  const isStandard = tourPackageClass === "Standard Package";
 
   const { data, status } = useQuery({
-    queryKey: ["hotelDetails", "services", hotelPackageId],
-    queryFn: async () => await getSingleHotelPackage(hotelPackageId as string),
-    enabled: !!hotelPackageId,
+    queryKey: ["tourDetails", "services", id],
+    queryFn: async () => await getSingleTravelPackage(id as string),
+    enabled: !!id,
   });
-  const service: HotelServiceData = data?.data;
+  const service: TravelServiceData = data?.data;
 
   if (status === "pending") {
     return (
@@ -40,45 +40,46 @@ const HotelDetails = () => {
 
   return (
     <View className="w-full h-full bg-white">
-      {/* Header with back button and logo */}
       <View className="bg-[#fbb040] p-4 flex-row justify-center relative w-full rounded-bl-[50px] min-h-[158px]">
         <TouchableOpacity
           onPress={() => {
             if (router.canGoBack()) {
               router.back();
             } else {
-              router.push("/hotel");
+              router.push("/tour");
             }
           }}
           className="absolute left-[4%] top-11"
         >
-          <Image 
-            source={icons?.arrowLeft} 
-            className="w-6 h-6"
-            accessibilityLabel="Back button"
-          />
+          <Image source={icons?.arrowLeft} className="w-6 h-6" />
         </TouchableOpacity>
         <Image
           source={images?.logo}
           className="w-[162px] h-[46px] mt-3"
           accessibilityLabel="Departure Away logo"
         />
-        {/* Hotel main image */}
+      </View>
+
+      {/* Main Image */}
+      <View className="px-4 -mt-20 mb-4">
         <Image
-          source={service?.imageUrl?.[0] ? { uri: service.imageUrl[0] } : images?.hotel4}
-          className="rounded-xl absolute -bottom-[150px] w-[94%] h-[210px] mx-auto"
-          resizeMode="cover"
-          accessibilityLabel="Hotel image"
+          source={
+            service?.imageUrl?.[0]
+              ? { uri: service.imageUrl[0] }
+              : images?.rectangle4
+          }
+          className="w-[94%] h-48 rounded-xl mx-auto"
+          resizeMode="stretch"
+          accessibilityLabel="Tour destination image"
         />
       </View>
 
-      {/* Main content */}
       <ScrollView
         showsVerticalScrollIndicator={false}
-        className="px-6 flex-1 mt-[130px]"
-        contentContainerStyle={{ paddingBottom: 100 }}
+        className="px-4 flex-1"
+        contentContainerStyle={{ paddingBottom: 80 }}
       >
-        <View className="flex-row justify-between items-center mb-4 mt-12">
+        <View className="flex-row justify-between items-center mb-4 mt-6">
           <Text className="text-base text-[#4F4F4F]">
             Customer Satisfaction
           </Text>
@@ -88,7 +89,6 @@ const HotelDetails = () => {
           </View>
         </View>
 
-        {/* Testimonials */}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -118,10 +118,9 @@ const HotelDetails = () => {
 
         {status === "success" && (
           <>
-            {/* Package selection */}
-            <View className="flex-row gap-3 items-center pt-6 my-3 border-t border-[#F2F2F2]">
+            <View className="flex-row gap-1 items-center my-4 border-t border-[#F2F2F2] pt-4">
               <TouchableOpacity
-                onPress={() => setHotelClass("Basic Hotel")}
+                onPress={() => setTourPackageClass("Basic Package")}
                 className={`${
                   isBasic ? "bg-[#FF1A5A]" : "bg-gray-100"
                 } rounded-full px-4 py-2`}
@@ -131,11 +130,11 @@ const HotelDetails = () => {
                     isBasic ? "text-white" : "text-gray-800"
                   } font-semibold`}
                 >
-                  Basic Hotel (${service?.basicPrice})
+                  Basic Package (${service?.price1})
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => setHotelClass("Standard Hotel")}
+                onPress={() => setTourPackageClass("Standard Package")}
                 className={`${
                   isStandard ? "bg-[#FF1A5A]" : "bg-gray-100"
                 } rounded-full px-4 py-2`}
@@ -145,25 +144,23 @@ const HotelDetails = () => {
                     isStandard ? "text-white" : "text-gray-800"
                   } font-semibold`}
                 >
-                  Standard Hotel (${service?.standardPrice})
+                  Standard Package (${service?.price2})
                 </Text>
               </TouchableOpacity>
             </View>
 
-            {/* Hotel description */}
-            <View className="border-b border-[#F2F2F2] pb-4">
-              <Text className="font-semibold text-[#212121] text-2xl mb-3">
-                {isBasic ? service?.title : service?.title1}
+            <View className="mb-6">
+              <Text className="font-semibold text-[#212121] text-2xl mb-2">
+                {service?.title}
               </Text>
               <Text className="text-sm text-[#4F4F4F]">
-                {isBasic ? service?.description : service?.description1}
+                {service?.description}
                 <Text className="text-[#FF1A5A]"> See More</Text>
               </Text>
             </View>
 
-            {/* Provider info */}
-            <View className="py-6 gap-2">
-              <View className="flex-row items-center gap-2">
+            <View className="py-4 gap-2 mb-6">
+              <View className="flex-row items-center gap-2 mb-2">
                 <Image
                   source={
                     service?.createdBy?.image
@@ -171,7 +168,6 @@ const HotelDetails = () => {
                       : images?.ellipse
                   }
                   className="w-8 h-8 rounded-full"
-                  accessibilityLabel="Provider logo"
                 />
                 <Text className="font-medium text-lg text-[#4F4F4F]">
                   {service?.createdBy?.name || "Skyward Bliss"}
@@ -192,17 +188,15 @@ const HotelDetails = () => {
       </ScrollView>
 
       {/* Fixed bottom buttons */}
-      <View className="absolute bottom-0 left-0 right-0 bg-white px-6 py-4 border-t border-gray-100">
+      <View className="absolute bottom-0 left-0 right-0 bg-white px-4 py-3 border-t border-gray-100">
         <View className="flex-row gap-3">
           <Link
             href={{
               pathname: "/hotel/order/[id]",
               params: {
-                id: hotelPackageId as string,
-                hotelClass: hotelClass,
-                hotelPackagePrice: isBasic
-                  ? service?.basicPrice
-                  : service?.standardPrice,
+                id: id as string,
+                tourPackageClass: tourPackageClass,
+                tourPackagePrice: isBasic ? service?.price1 : service?.price2,
               },
             }}
             asChild
@@ -236,4 +230,4 @@ const HotelDetails = () => {
   );
 };
 
-export default HotelDetails;
+export default TourDetails;
