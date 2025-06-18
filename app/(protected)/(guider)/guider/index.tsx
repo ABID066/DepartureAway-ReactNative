@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -6,7 +6,6 @@ import {
   Image,
   FlatList,
   ActivityIndicator,
-  TextInput,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -88,6 +87,12 @@ const GuiderServices = () => {
   const renderPackageCard = ({ item }: { item: GuiderServiceData }) => (
     <TouchableOpacity
       key={item._id}
+      onPress={() =>
+        router.push({
+          pathname: "/guider/details/[id]",
+          params: { guiderId: item?._id },
+        })
+      }
       className='border border-gray-100 bg-white rounded-lg overflow-hidden shadow-sm flex-1 mb-6 max-w-[48%]'>
       <View className='p-3'>
         <View className='flex-row items-center'>
