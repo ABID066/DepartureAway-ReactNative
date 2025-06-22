@@ -86,11 +86,11 @@ interface Service {
 }
 
 type ServiceData = {
-  id?: string | number;
+  _id?: string;
   provider_id: string;
   title: string;
   description: string;
-  category: "flight" | "hotel" | "tour" | "guider" | "lost-bag" | "others";
+  category: "flight" | "hotel" | "tour" | "car" | "guider" | "lost-bag";
   price_basic: string;
   price_standard: string;
   price_premium: string;

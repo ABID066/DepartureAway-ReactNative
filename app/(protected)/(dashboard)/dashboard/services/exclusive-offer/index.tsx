@@ -8,35 +8,34 @@ import {
   Modal,
 } from "react-native";
 import { Link, useRouter } from "expo-router";
-import { useInfiniteQuery, useQuery, useMutation } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
-
 import { useServicePackages } from "@/hooks/useServicePackages";
 import { useAuth } from "@/hooks/useAuth";
 
 const itemsPerPage = 10;
 
-const TravelServices = () => {
+const AllExclusiveOffer = () => {
   const router = useRouter();
   const { user } = useAuth();
-  const { getTravelPackages, getTravelPackagesForUser, deleteTravelPackage } =
+  const { getAllServices, deleteServicePackage, getServicePackagesForUser } =
     useServicePackages();
-
-  const isAdmin = user?.role === "admin";
   const [currentPage, setCurrentPage] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  // ✨ Admin: InfiniteQuery
+  const isAdmin = user?.role?.toLowerCase() === "admin";
+
   const {
     data: infiniteData,
     fetchNextPage,
     hasNextPage,
     status: adminStatus,
     error: adminError,
+    isFetching: adminInfiniteDataFetching,
   } = useInfiniteQuery({
-    queryKey: ["travelPackages", "all"],
-    queryFn: ({ pageParam = 1 }) => getTravelPackages(pageParam, itemsPerPage),
+    queryKey: ["services", "all"],
+    queryFn: ({ pageParam = 1 }) => getAllServices(pageParam, itemsPerPage),
     initialPageParam: 1,
     enabled: isAdmin,
     getNextPageParam: (lastPage) => {
@@ -46,28 +45,28 @@ const TravelServices = () => {
     },
   });
 
-  // 👤 User: Simple Query
   const {
     data: userData,
     status: userStatus,
     error: userError,
+    isFetching: agencyInfiniteDataFetching,
   } = useQuery({
-    queryKey: ["userTravelPackages", user?.id],
-    queryFn: () => getTravelPackagesForUser(user?.id),
+    queryKey: ["userServices", user?.id],
+    queryFn: () => getServicePackagesForUser(user?.id),
     enabled: !isAdmin,
   });
 
-  const { mutateAsync: deleteTravelMutation, reset } = useMutation({
-    mutationKey: ["travelPackages", "delete"],
-    mutationFn: async (id: string) => await deleteTravelPackage(id),
+  const { mutateAsync: deleteServiceMutation, reset } = useMutation({
+    mutationKey: ["services", "delete"],
+    mutationFn: async (id: string) => await deleteServicePackage(id),
     onSuccess: () => {
       Toast.show({
         type: "success",
-        text1: "Travel Service Deleted Successfully",
+        text1: "Service Deleted Successfully",
         position: "top",
       });
       reset();
-      router.replace("/dashboard/services/travel-services");
+      router.replace("/dashboard/services/exclusive-offer");
     },
   });
 
@@ -79,11 +78,11 @@ const TravelServices = () => {
   const handleDelete = async () => {
     if (!selectedId) return;
     try {
-      await deleteTravelMutation(selectedId);
+      await deleteServiceMutation(selectedId);
     } catch {
       Toast.show({
         type: "error",
-        text1: "Failed to delete travel service",
+        text1: "Failed to delete service",
         position: "top",
       });
     } finally {
@@ -91,6 +90,8 @@ const TravelServices = () => {
       setSelectedId(null);
     }
   };
+
+  const isFetching = adminInfiniteDataFetching || agencyInfiniteDataFetching;
 
   const loading = isAdmin
     ? adminStatus === "pending"
@@ -108,7 +109,7 @@ const TravelServices = () => {
   if (error) {
     return (
       <View className='flex-1 justify-center items-center'>
-        <Text className='text-red-500'>Error loading packages</Text>
+        <Text className='text-red-500'>Error loading services</Text>
       </View>
     );
   }
@@ -145,17 +146,21 @@ const TravelServices = () => {
   return (
     <View className='flex-1 bg-white p-4'>
       <View className='flex-row justify-between items-center my-6'>
-        <Text className='text-2xl font-bold'>Travel Services</Text>
-          <Link href='/dashboard/services/travel-services/create-new' asChild>
-            <TouchableOpacity className='bg-[#FF1A5A] px-4 py-2 rounded-lg'>
-              <Text className='text-white font-medium'>
-                + Create New Travel Service
-              </Text>
-            </TouchableOpacity>
-          </Link>
+        <Text className='text-2xl font-bold'>All Services</Text>
+        <Link href='/dashboard/services/exclusive-offer/create-new' asChild>
+          <TouchableOpacity className='bg-[#FF1A5A] px-4 py-2 rounded-lg'>
+            <Text className='text-white font-medium'>+ Create New Service</Text>
+          </TouchableOpacity>
+        </Link>
       </View>
 
-      {currentPageData.length ? (
+      {isFetching ? (
+        <>
+          <View className='flex-1 justify-center items-center'>
+            <ActivityIndicator size='large' color='#E11D48' />
+          </View>
+        </>
+      ) : currentPageData.length ? (
         <>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View className='min-w-[1000px] mt-16'>
@@ -172,18 +177,23 @@ const TravelServices = () => {
                 <Text className='w-[15%] px-4 py-3 font-medium text-base uppercase'>
                   Standard Price
                 </Text>
-
                 <Text className='w-[20%] px-4 py-3 font-medium text-base uppercase'>
                   Actions
                 </Text>
               </View>
 
-              {currentPageData.map((service: TravelServiceData, i: number) => (
+              {currentPageData.map((service: ServiceData, i: number) => (
                 <View key={i} className='flex-row border-t border-gray-100'>
                   <Text className='w-[35%] px-4 py-3'>{service.title}</Text>
-                  <Text className='w-[15%] px-4 py-3'>{service.category}</Text>
-                  <Text className='w-[15%] px-4 py-3'>${service.price1}</Text>
-                  <Text className='w-[15%] px-4 py-3'>${service.price2}</Text>
+                  <Text className='w-[15%] px-4 py-3 capitalize'>
+                    {service.category}
+                  </Text>
+                  <Text className='w-[15%] px-4 py-3'>
+                    ${service.price_basic}
+                  </Text>
+                  <Text className='w-[15%] px-4 py-3'>
+                    ${service.price_standard}
+                  </Text>
                   <View className='w-[20%] px-4 py-3 flex-row gap-4'>
                     <Link
                       href={`/dashboard/services/exclusive-offer/update/${service._id}`}
@@ -254,19 +264,13 @@ const TravelServices = () => {
           <Text className='text-lg text-gray-600 font-medium text-center'>
             {isAdmin ? (
               <>
-                No{" "}
-                <Text className='text-[#FF1A5A] font-bold'>
-                  Travel Services
-                </Text>{" "}
+                No <Text className='text-[#FF1A5A] font-bold'>Services</Text>{" "}
                 found.
               </>
             ) : (
               <>
-                You haven’t created any{" "}
-                <Text className='text-[#FF1A5A] font-bold'>
-                  Travel Services
-                </Text>{" "}
-                yet.
+                You haven't created any{" "}
+                <Text className='text-[#FF1A5A] font-bold'>Services</Text> yet.
               </>
             )}
           </Text>
@@ -274,7 +278,7 @@ const TravelServices = () => {
             <Text className='text-sm text-gray-500 mt-2 text-center'>
               Tap on{" "}
               <Text className='text-[#FF1A5A] font-semibold'>
-                “+ Create New Travel Service”
+                "+ Create New Service"
               </Text>{" "}
               to add one.
             </Text>
@@ -312,4 +316,4 @@ const TravelServices = () => {
   );
 };
 
-export default TravelServices;
+export default AllExclusiveOffer;

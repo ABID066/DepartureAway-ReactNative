@@ -16,18 +16,15 @@ import { useRouter } from "expo-router";
 import useUploadImage from "@/hooks/useUploadImage";
 import { useMutation } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
+import { useAuth } from "@/hooks/useAuth";
 import { useServicePackages } from "@/hooks/useServicePackages";
 
-// Validation Schema
 const serviceSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
-  category: z.enum(
-    ["flight", "hotel", "tour", "guider", "lost-bag", "others"],
-    {
-      errorMap: () => ({ message: "Please select a category" }),
-    }
-  ),
+  category: z.enum(["flight", "hotel", "tour", "car", "guider", "lost-bag"], {
+    errorMap: () => ({ message: "Please select a category" }),
+  }),
   location: z.string().min(1, "Location is required"),
   basicPrice: z
     .string()
@@ -43,33 +40,24 @@ const serviceSchema = z.object({
     }),
   premiumPrice: z
     .string()
-    .min(1, "Premium price is required")
+    .min(1, "Standard price is required")
     .refine((val) => !isNaN(Number(val)), {
       message: "Enter a valid price",
     }),
-  duration: z
-    .string()
-    .min(1, "Duration is required")
-    .refine((val) => !isNaN(Number(val)), {
-      message: "Enter a valid duration in days",
-    }),
-  mediaUrls: z.string().optional(),
-  //   mediaUrls: z
-  //   .string()
-  //   .min(1, "Media URL is required")
-  //   .url("Media URL must be a valid URL"),
+  duration: z.string().min(1, "Duration is required"),
   images: z.array(z.string().min(1)).min(1, "At least one image is required"),
-  //   images: z.array(z.string()).optional(),
 });
 
 type ServiceForm = z.infer<typeof serviceSchema>;
 
-const AddNewService = () => {
+const CreateNewExclusiveOffer = () => {
   const router = useRouter();
-  const {createServicePackage} = useServicePackages();
+  const { createServicePackage } = useServicePackages();
+  const { user } = useAuth();
   const { uploadImage, imageUploadError, imageUploading } = useUploadImage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isLoading = imageUploading || isSubmitting;
+
   const {
     control,
     handleSubmit,
@@ -81,19 +69,12 @@ const AddNewService = () => {
     defaultValues: {
       title: "",
       description: "",
-      category: "" as
-        | "flight"
-        | "hotel"
-        | "tour"
-        | "guider"
-        | "lost-bag"
-        | "others",
+      category: "flight",
       location: "",
       basicPrice: "",
       standardPrice: "",
       premiumPrice: "",
       duration: "",
-      mediaUrls: "",
       images: [],
     },
   });
@@ -118,7 +99,7 @@ const AddNewService = () => {
         text1: "Service created successfully",
       });
       reset();
-      router.push("/dashboard/services");
+      router.push("/dashboard/services/exclusive-offer");
       setIsSubmitting(false);
     },
   });
@@ -137,7 +118,6 @@ const AddNewService = () => {
         const imageUrl = await uploadImage(imageUri);
         setValue("images", [imageUrl]);
       } catch (err) {
-        // Handle image upload error
         console.log("Image upload failed error: ", imageUploadError);
         console.error("Image upload failed", err);
       }
@@ -158,15 +138,16 @@ const AddNewService = () => {
       images,
     } = data;
     const serviceData = {
-      provider_id: "683069aa6427eb088fdd9e78",
       title: title,
       description: description,
-      category: category,
+      location: location,
+      duration_days: duration,
       price_basic: basicPrice,
       price_standard: standardPrice,
       price_premium: premiumPrice,
-      location: location,
-      duration_days: duration,
+      category: category,
+      creatorType: user?.role || "",
+      provider_id: user?.id || "",
       media_urls: images[0],
     };
     await mutateAsync(serviceData);
@@ -230,34 +211,15 @@ const AddNewService = () => {
               <Picker.Item label='Flight' value='flight' />
               <Picker.Item label='Hotel' value='hotel' />
               <Picker.Item label='Tour' value='tour' />
+              <Picker.Item label='Car' value='car' />
               <Picker.Item label='Guider' value='guider' />
               <Picker.Item label='Lost Bag' value='lost-bag' />
-              <Picker.Item label='Others' value='others' />
             </Picker>
           </View>
         )}
       />
       {errors.category && (
         <Text className='text-red-500 mb-2'>{errors.category.message}</Text>
-      )}
-
-      {/* Location */}
-      <Text className='text-gray-700 mb-1'>Location *</Text>
-      <Controller
-        control={control}
-        name='location'
-        render={({ field: { value, onChange, onBlur } }) => (
-          <TextInput
-            className='border border-gray-300 rounded-md p-3 mb-1'
-            placeholder='Enter location'
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
-        )}
-      />
-      {errors.location && (
-        <Text className='text-red-500 mb-2'>{errors.location.message}</Text>
       )}
 
       {/* Prices */}
@@ -306,7 +268,7 @@ const AddNewService = () => {
 
       <View className='flex-row gap-4 mb-4'>
         <View className='flex-1'>
-          <Text className='text-gray-700 mb-1'>Premium Price *</Text>
+          <Text className='text-gray-700 mb-1'>Premium Price</Text>
           <Controller
             control={control}
             name='premiumPrice'
@@ -347,19 +309,26 @@ const AddNewService = () => {
         </View>
       </View>
 
-      {/* Media URLs */}
-      {/* <Text className='text-gray-700 mb-1'>Media URLs (optional)</Text>
-      <Controller
-        control={control}
-        name='mediaUrls'
-        render={({ field }) => (
-          <TextInput
-            className='border border-gray-300 rounded-md p-3 mb-4'
-            placeholder='Enter comma for separating URLs'
-            {...field}
-          />
+      {/* Location */}
+      <View className='mb-4'>
+        <Text className='text-gray-700 mb-1'>Location *</Text>
+        <Controller
+          control={control}
+          name='location'
+          render={({ field: { value, onChange, onBlur } }) => (
+            <TextInput
+              className='border border-gray-300 rounded-md p-3 mb-1'
+              placeholder='Enter location'
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+            />
+          )}
+        />
+        {errors.location && (
+          <Text className='text-red-500 mb-2'>{errors.location.message}</Text>
         )}
-      /> */}
+      </View>
 
       {/* Upload Images */}
       <View>
@@ -371,7 +340,6 @@ const AddNewService = () => {
           <Text className={imageUploading ? "text-gray-600" : "text-[#FF1A5A]"}>
             {imageUploading ? "Image Uploading" : "Upload files"}
           </Text>
-          {/* <Text className='text-gray-500 text-sm mt-1'>or drag and drop</Text> */}
           {imageUploading ? (
             <ActivityIndicator size='small' color='#ffffff' />
           ) : (
@@ -385,23 +353,6 @@ const AddNewService = () => {
         )}
       </View>
 
-      {/* Image Picker */}
-      {/* <TouchableOpacity
-        onPress={handleImagePick}
-        className='bg-blue-600 py-3 px-4 rounded-md mb-6'>
-        <Text className='text-white text-center font-medium'>
-          Upload Images
-        </Text>
-      </TouchableOpacity> */}
-
-      {/* Submit Button */}
-      {/* <TouchableOpacity
-        onPress={handleSubmit(onSubmit)}
-        className='bg-green-600 py-3 px-4 rounded-md'>
-        <Text className='text-white text-center font-medium'>
-          Submit Service
-        </Text>
-      </TouchableOpacity> */}
       {/* Buttons */}
       <View className='flex-row justify-end gap-4 mt-6 pb-24'>
         <TouchableOpacity
@@ -427,4 +378,4 @@ const AddNewService = () => {
   );
 };
 
-export default AddNewService;
+export default CreateNewExclusiveOffer;

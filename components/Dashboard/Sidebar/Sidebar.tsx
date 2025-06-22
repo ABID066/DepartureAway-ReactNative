@@ -57,6 +57,31 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
             isActive: pathname.startsWith("/dashboard/services"),
             submenuItems: [
               {
+                label: "Exclusive Offer",
+                route: "/dashboard/services",
+                isActive: pathname.startsWith(
+                  "/dashboard/services/exclusive-offer"
+                ),
+                hasSubmenu: true,
+                submenuItems: [
+                  {
+                    label: isAdmin
+                      ? "All Exclusive Offer"
+                      : "Your Exclusive Offers",
+                    route: "/dashboard/services/exclusive-offer",
+                    isActive:
+                      pathname === "/dashboard/services/exclusive-offer",
+                  },
+                  {
+                    label: "Create New Travel Service",
+                    route: "/dashboard/services/exclusive-offer/create-new",
+                    isActive:
+                      pathname ===
+                      "/dashboard/services/exclusive-offer/create-new",
+                  },
+                ],
+              },
+              {
                 label: "Travel Services",
                 route: "/dashboard/services/travel-services",
                 isActive: pathname.startsWith(

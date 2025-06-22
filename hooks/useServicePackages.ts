@@ -30,10 +30,21 @@ export function useServicePackages() {
     }
   };
 
+  //Get Service Packages for a single user
+  const getServicePackagesForUser = async (userId = "") => {
+    try {
+      const { data } = await axiosSecure.get(`/service/user/service/${userId}`);
+      return data;
+    } catch (error) {
+      // console.error("from line 176 API Error:", error);
+      throw error;
+    }
+  };
+
   // Get Service by ID Function (Replace with your actual API endpoint)
   const getServiceById = async (serviceId: string) => {
     try {
-      const { data } = await axiosSecure.get(`/service/${serviceId}`);
+      const { data } = await axiosSecure.get(`/service/ById/${serviceId}`);
       return data;
     } catch (error) {
       // console.error("API Error:", error);
@@ -55,7 +66,7 @@ export function useServicePackages() {
     }
   };
   // Delete Service Function (Replace with your actual API endpoint)
-  const deleteService = async (serviceId: string) => {
+  const deleteServicePackage = async (serviceId: string) => {
     try {
       const { data } = await axiosSecure.delete(`/service/delete/${serviceId}`);
       return data;
@@ -219,7 +230,6 @@ export function useServicePackages() {
     }
   };
 
-
   // ? Hotel Service Related All Function
   // Add New Hotel Service Function
   const createHotelServicePackage = async (serviceData: HotelServiceData) => {
@@ -235,7 +245,6 @@ export function useServicePackages() {
     }
   };
 
-  
   // Get ALl Hotel Packages Function
   const getHotelPackages = async (page = 1, limit = 10, filter = "") => {
     try {
@@ -314,7 +323,6 @@ export function useServicePackages() {
     }
   };
 
-  
   // Get ALl Guider Packages Function
   const getGuiderServices = async (page = 1, limit = 10, filter = "") => {
     try {
@@ -378,9 +386,9 @@ export function useServicePackages() {
     }
   };
 
-  // ? Country related api 
+  // ? Country related api
 
-// Add New Country Service Function
+  // Add New Country Service Function
   const addNewCountryData = async (countryData: CountryData) => {
     try {
       const { data } = await axiosSecure.post(
@@ -394,7 +402,6 @@ export function useServicePackages() {
     }
   };
 
-  
   // Get ALl Country Packages Function
   const getCountryData = async (page = 1, limit = 10, filter = "") => {
     try {
@@ -475,9 +482,10 @@ export function useServicePackages() {
   return {
     createServicePackage,
     getAllServices,
+    getServicePackagesForUser,
     getServiceById,
     updateService,
-    deleteService,
+    deleteServicePackage,
     createTravelServicePackage,
     getTravelPackages,
     getTravelPackagesForUser,
