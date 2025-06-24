@@ -9,7 +9,7 @@ import {
   SectionList,
   ActivityIndicator,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import CategorySection from "@/components/Home/Category";
 import SearchBar from "@/components/Home/Search";
@@ -207,9 +207,10 @@ const BottomNavigation = () => {
         <Text className='text-xs text-gray-500 mt-0.5'>Explore</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity className='items-center'>
-        <Ionicons name='heart' size={24} color='#ccc' />
-        <Text className='text-xs text-gray-500 mt-0.5'>Favorites</Text>
+      <TouchableOpacity
+        onPress={() => router.push("/ai")} className='items-center'>
+        <FontAwesome5 name="robot" size={24} color="#ccc" />
+        <Text className='text-xs text-gray-500 mt-0.5'>Ai</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
