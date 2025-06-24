@@ -200,7 +200,9 @@ const BottomNavigation = () => {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity className='items-center'>
+      <TouchableOpacity
+        onPress={() => router.push("/exclusive-offer")}
+         className='items-center'>
         <Ionicons name='search' size={24} color='#ccc' />
         <Text className='text-xs text-gray-500 mt-0.5'>Explore</Text>
       </TouchableOpacity>

@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   ScrollView,
 } from "react-native";
+import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useServicePackages } from "@/hooks/useServicePackages";
@@ -35,16 +36,6 @@ const packageCategories = [
   { label: "Desert", value: "desert" },
 ];
 
-// Interface for package data
-interface PackageItem {
-  id: number;
-  title: string;
-  location: string;
-  price1: string;
-  duration?: string;
-  imageUrl: string[];
-}
-
 // Travel Packages Section Component
 const TravelPackagesSection = ({
   activePackageTab,
@@ -55,6 +46,7 @@ const TravelPackagesSection = ({
   setActivePackageTab: (tab: string) => void;
   title?: string;
 }) => {
+  const router = useRouter();
   // Calculate screen width to set card width dynamically
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = (screenWidth - 32 - 8) / 2; // Accounting for padding and gap
@@ -136,8 +128,14 @@ const TravelPackagesSection = ({
   };
 
   // Render individual package card
-  const renderPackageCard = ({ item }: { item: PackageItem }) => (
+  const renderPackageCard = ({ item }: { item: TravelServiceData }) => (
     <TouchableOpacity
+      onPress={() =>
+        router.push({
+          pathname: "/tour/details/[id]",
+          params: { id: item?._id || "" },
+        })
+      }
       className='rounded-xl overflow-hidden mb-4 mx-1'
       activeOpacity={0.8}
       style={{ width: cardWidth }}>
@@ -155,7 +153,7 @@ const TravelPackagesSection = ({
       {/* Duration Tag */}
       <View className='absolute top-2 right-2 px-2 py-1 bg-yellow-400 rounded-lg'>
         <Text className='text-xs font-bold text-gray-800'>
-          {item?.duration}
+          {item?.duration} days
         </Text>
       </View>
 
@@ -181,7 +179,8 @@ const TravelPackagesSection = ({
   );
 
   const packagesData =
-    data?.pages.flatMap((page: { data: PackageItem[] }) => page.data) || [];
+    data?.pages.flatMap((page: { data: TravelServiceData[] }) => page.data) ||
+    [];
   return (
     <View className='mt-5 px-4 mb-20'>
       {title ? (

@@ -16,7 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const GuiderDetails = () => {
   const router = useRouter();
-  const { guiderId } = useLocalSearchParams();
+  const { id } = useLocalSearchParams();
   const { getSingleGuiderService } = useServicePackages();
   const [rateType, setRateType] = useState("Hourly");
 
@@ -24,9 +24,9 @@ const GuiderDetails = () => {
   const isDaily = rateType === "Daily";
 
   const { data, status } = useQuery({
-    queryKey: ["guiderDetails", guiderId],
-    queryFn: async () => await getSingleGuiderService(guiderId as string),
-    enabled: !!guiderId,
+    queryKey: ["guiderDetails", id],
+    queryFn: async () => await getSingleGuiderService(id as string),
+    enabled: !!id,
   });
   const guider: GuiderServiceData = data?.data;
 
@@ -263,7 +263,7 @@ const GuiderDetails = () => {
             href={{
               pathname: "/",
               params: {
-                id: guiderId as string,
+                id: id as string,
                 rateType: rateType,
                 rate: isHourly ? guider?.hourlyRate : guider?.dailyRate,
                 guiderName: guider?.name,

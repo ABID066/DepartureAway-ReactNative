@@ -65,7 +65,7 @@ const GuidesSection = ({ guiders }: GuiderProps) => {
         {guiders?.map((guider) => (
           <TouchableOpacity
             key={guider._id}
-            onPress={() => router.push({pathname: "/guider/details/[id]", params:{guiderId: guider?._id}})}
+            onPress={() => router.push({pathname: "/guider/details/[id]", params:{id: guider?._id}})}
             className='w-50 border border-gray-100 mr-2 bg-white rounded-lg overflow-hidden shadow-sm'>
             <View className='p-3'>
               <View className='flex-row items-center'>

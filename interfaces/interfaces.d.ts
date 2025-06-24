@@ -85,19 +85,38 @@ interface Service {
   premiumPrice: number;
 }
 
-type ServiceData = {
+interface ProviderId {
+  createdAt?: string;
+  email: string;
+  id?: string;
+  isVerified?: string;
+  name: string;
+  phone: string;
+  provider?: string;
+  role: string;
+  slug: string;
+  updatedAt?: string;
+  image?: string; // Added optional image property
+  _id?: string; // Added optional _id property
+}
+
+interface ServiceData {
   _id?: string;
-  provider_id: string;
-  title: string;
+  category: string;
+  createdAt: string;
   description: string;
-  category: "flight" | "hotel" | "tour" | "car" | "guider" | "lost-bag";
-  price_basic: string;
-  price_standard: string;
-  price_premium: string;
+  duration_days: number;
   location: string;
-  duration_days: string;
-  media_urls: string;
-};
+  media_urls: string[];
+  price_basic: number;
+  price_premium?: number;
+  price_standard: number;
+  provider_id: ProviderId;
+  title: string;
+  updatedAt: string;
+  rating?: number; // Added optional rating property
+  totalReviews?: number; // Added optional totalReviews property
+}
 
 interface ServiceForm {
   title: string;
