@@ -20,7 +20,7 @@ import useMultiStepForm from "@/hooks/useMultiStepForm";
 const SignUp = () => {
   const router = useRouter();
   const { uploadImage, imageUploadError, imageUploading } = useUploadImage();
-  const { formData, setFormData, errors, validateStep, setStep } =
+  const { formData, setFormData, errors, validateStep, setStep, setErrors } =
     useMultiStepForm();
   const [showPassword, setShowPassword] = useState(false);
   const [showGenderModal, setShowGenderModal] = useState(false);
@@ -89,6 +89,10 @@ const SignUp = () => {
   ];
 
   const handleImagePick = async () => {
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      image: undefined,
+    }));
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: "images",
       quality: 1,

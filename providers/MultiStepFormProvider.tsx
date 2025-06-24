@@ -1,4 +1,5 @@
-import { createContext, useState, ReactNode } from "react";
+import { createContext, useState, ReactNode, useContext } from "react"; // Added useContext
+import Toast from "react-native-toast-message";
 import { z } from "zod";
 
 type CountryCode = {
@@ -16,28 +17,31 @@ export const countryCodeSchema = z.object({
 });
 
 export const signUpSchema = z.object({
-  image: z.string().min(1, "Image is required"),
+  image: z.string().min(1, "Profile image is required"), // More descriptive message
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   phone: z.string().min(1, "Phone number is required"),
-  email: z.string().email("Invalid email address"),
+  email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email format"),
   role: z.string().min(1, "Role is required"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   gender: z.string().min(1, "Gender is required"),
   countryCode: countryCodeSchema,
-  username: z.string().min(1, "Username is required"),
+  username: z.string().min(3, "Username must be at least 3 characters").max(20, "Username must not exceed 20 characters"), // Added length validation
 });
 
 type FormData = z.infer<typeof signUpSchema>;
+
+// Allow errors to be undefined when cleared
+type ErrorsType = Record<keyof FormData, string | undefined>;
 
 type MultiStepFormContextType = {
   step: number;
   setStep: (step: number) => void;
   formData: FormData;
   setFormData: (data: Partial<FormData>) => void;
-  errors: Record<string, string>;
-  setErrors: (errors: Record<string, string>) => void;
-  validateStep: (step: number) => boolean;
+  errors: ErrorsType; // Use the new ErrorsType
+  setErrors: React.Dispatch<React.SetStateAction<ErrorsType>>; // Use the new ErrorsType
+  validateStep: (step: number, options?: { existingUsernames?: string[] }) => boolean; // Added options
   resetMultiStepForm: () => void;
 };
 
@@ -51,9 +55,8 @@ export const MultiStepFormProvider = ({
   children: ReactNode;
 }) => {
   const [step, setStep] = useState(1);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<ErrorsType>({} as ErrorsType); // Initialize as ErrorsType
 
-  // Define initial form data
   const initialFormData: FormData = {
     image: "",
     firstName: "",
@@ -71,16 +74,16 @@ export const MultiStepFormProvider = ({
     },
     username: "",
   };
+
   const [formData, setFormData] = useState<FormData>(initialFormData);
 
-  // Add resetForm function
   const resetMultiStepForm = () => {
     setStep(1);
     setFormData(initialFormData);
-    setErrors({});
+    setErrors({} as ErrorsType); // Reset errors to empty object typed as ErrorsType
   };
 
-  const validateStep = (currentStep: number) => {
+  const validateStep = (currentStep: number, options?: { existingUsernames?: string[] }) => {
     let fieldsToValidate: (keyof FormData)[] = [];
 
     switch (currentStep) {
@@ -100,48 +103,100 @@ export const MultiStepFormProvider = ({
       case 2:
         fieldsToValidate = ["username"];
         break;
+      default:
+        return false;
     }
 
-    const stepSchema = z.object(
+    const currentStepSchema = z.object(
       Object.fromEntries(
         fieldsToValidate.map((field) => [field, signUpSchema.shape[field]])
       )
     );
 
     try {
-      stepSchema.parse(formData);
-      setErrors({});
+      currentStepSchema.parse(formData);
+
+      // --- Custom Username Existence Validation for Step 2 ---
+      if (currentStep === 2 && options?.existingUsernames) {
+        const usernameInput = formData.username.toLowerCase();
+        if (options.existingUsernames.includes(usernameInput)) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            username: "This username is already taken. Please choose another.",
+          }));
+          Toast.show({
+            type: "error",
+            text1: "Username Not Available!",
+            text2: "This username is already taken. Please choose another.",
+          });
+          return false; // Validation failed
+        }
+      }
+      // --- End Custom Validation ---
+
+      // Clear all errors relevant to the current step after successful validation
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        fieldsToValidate.forEach(field => {
+            newErrors[field] = undefined; // Clear the error for this field
+        });
+        return newErrors;
+      });
       return true;
     } catch (error) {
       if (error instanceof z.ZodError) {
-        const newErrors: Record<string, string> = {};
+        const newErrors: ErrorsType = { ...errors }; // Start with existing errors
+
+        // Clear errors for fields NOT in the current step to avoid stale errors
+        Object.keys(newErrors).forEach(key => {
+            if (!fieldsToValidate.includes(key as keyof FormData)) {
+                newErrors[key as keyof FormData] = undefined;
+            }
+        });
+
+        // Set new errors for current step's invalid fields
         error.errors.forEach((err) => {
-          if (err.path) {
-            newErrors[err.path[0]] = err.message;
+          if (err.path.length) {
+            const key = err.path[0] as keyof FormData;
+            newErrors[key] = err.message;
           }
         });
         setErrors(newErrors);
+        Toast.show({
+          type: "error",
+          text1: "Validation Error",
+          text2: error.errors[0]?.message || "Please check your inputs.",
+        });
       }
       return false;
     }
   };
 
-  const formInfo = {
-    step,
-    setStep,
-    formData,
-    setFormData: (newData: Partial<FormData>) =>
-      setFormData({ ...formData, ...newData }),
-    errors,
-    setErrors,
-    validateStep,
-    resetMultiStepForm,
-  };
-
   return (
-    <MultiStepFormContext.Provider value={formInfo}>
+    <MultiStepFormContext.Provider
+      value={{
+        step,
+        setStep,
+        formData,
+        setFormData: (newData: Partial<FormData>) =>
+          setFormData({ ...formData, ...newData }),
+        errors,
+        setErrors,
+        validateStep,
+        resetMultiStepForm,
+      }}>
       {children}
     </MultiStepFormContext.Provider>
   );
 };
 
+// Custom hook to use the context
+const useMultiStepForm = () => {
+  const context = useContext(MultiStepFormContext);
+  if (context === undefined) {
+    throw new Error("useMultiStepForm must be used within a MultiStepFormProvider");
+  }
+  return context;
+};
+
+export default useMultiStepForm;

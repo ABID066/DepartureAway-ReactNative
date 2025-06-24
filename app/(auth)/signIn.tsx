@@ -46,6 +46,9 @@ const SignIn = () => {
         text1: "Failed to Login!",
         text2: errorMessage,
       });
+      if(errorMessage === "Please Verify Your Account!"){
+        router.push("/otpVerification")
+      }
       // console.error("Login failed", errorMessage);
       setIsLoading(false);
     },

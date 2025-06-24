@@ -47,13 +47,13 @@ export function useAuthServicePackages() {
 
   const getServiceCreatorInfo = async (creatorId: string) => {
     try {
-      const {data} = await getAllUserData();
-      const creatorData = data.find((user: UserData1) => user?.id === creatorId);
-      console.log(creatorData); 
-    } catch (error) {
-      
-    }
-  } 
+      const { data } = await getAllUserData();
+      const creatorData = data.find(
+        (user: UserData1) => user?.id === creatorId
+      );
+      console.log(creatorData);
+    } catch (error) {}
+  };
 
   const getUserDataByEmail = async (email: string) => {
     try {
@@ -100,14 +100,39 @@ export function useAuthServicePackages() {
     }
   };
 
+  //
+  const getAllUserName = async () => {
+    try {
+      const { data } = await axiosSecure.get(`/user/all-userName`);
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const resendVerificationCode = async (email: string) => {
+    try {
+      const { data } = await axiosCommon.post(
+        "/auth/resendVerificationCode",
+        {email}
+      );
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   return {
     createUser,
     verifyOTP,
     loginUser,
+    getAllUserData,
+    getAllUserName,
     getUserDataByEmail,
     getUserDataByToken,
     updateUserProfile,
     getTopRatedGuider,
-    getServiceCreatorInfo
+    getServiceCreatorInfo,
+    resendVerificationCode
   };
 }

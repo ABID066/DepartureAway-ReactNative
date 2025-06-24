@@ -76,30 +76,83 @@ const countryCodes = [
   { code: "ZA", dial_code: "+27", flag: "🇿🇦", name: "South Africa" },
 ];
 
+// Define types for better type safety
+type CountryCodeType = {
+  code: string;
+  dial_code: string;
+  flag: string;
+  name: string;
+};
+
+// Type for the full user data object fetched from DB
+interface UserProfileData {
+  id: string; // Add id to the type for dbUserData
+  name: string;
+  image: string;
+  userName: string;
+  email: string;
+  isVerified: boolean;
+  role: string;
+  phone: string;
+  gender: string;
+  createdAt: string;
+  updatedAt: string;
+  // Add other fields as they exist in your DB user object
+}
+
+// Type for the data sent to updateUserProfile mutation
+interface UserUpdatePayload {
+  name: string;
+  image: string;
+  userName: string;
+  email: string;
+  role: string;
+  phone: string; // This will be the combined string like "+880 123456789"
+  gender: string;
+  // Add other fields that can be updated
+}
+
+// Type for the local state `userData`
+interface LocalUserState {
+  name: string;
+  image: string;
+  userName: string;
+  email: string;
+  isVerified: boolean;
+  role: string;
+  phone: string; // This will be just the number part (e.g., "123456789")
+  gender: string;
+  countryCode: CountryCodeType;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Type for validation errors state
+type ErrorsType = Record<string, string | undefined>; // Allow undefined for cleared errors
+
 const UserProfile = () => {
-  const { user } = useAuth();
-  const { getUserDataByToken } = useAuthServicePackages();
+  const { user } = useAuth(); // Assuming useAuth provides the current user's ID or similar unique identifier
+  const { getUserDataByToken, getAllUserName, updateUserProfile } = useAuthServicePackages();
   const { uploadImage } = useUploadImage();
-  const { updateUserProfile } = useAuthServicePackages();
   const router = useRouter();
 
-  const { data, isLoading } = useQuery({
+  const { data: dbUserDataResponse, isLoading } = useQuery<any, Error, { data: UserProfileData }>({ // Typed response
     queryKey: ["users", "user", user],
     queryFn: async () => await getUserDataByToken(),
     enabled: !!user,
   });
 
-  const dbUserData = data?.data;
+  const dbUserData = dbUserDataResponse?.data;
 
   const phone = dbUserData?.phone || "";
-  const [countryCode = "", phoneNumber = ""] = phone.split(" ");
+  const [countryCodePart = "", phoneNumberPart = ""] = phone.split(" ");
 
   const currentCountryCode = countryCodes.find(
-    (c) => c.dial_code == countryCode
+    (c) => c.dial_code == countryCodePart
   );
 
   // State for user data and editing
-  const [userData, setUserData] = useState({
+  const [userData, setUserData] = useState<LocalUserState>({
     name: "",
     image: "",
     userName: "",
@@ -119,13 +172,13 @@ const UserProfile = () => {
   });
 
   // Form validation errors
-  const [errors, setErrors] = useState({
-    name: "",
-    userName: "",
-    email: "",
-    phone: "",
-    gender: "",
-    role: "",
+  const [errors, setErrors] = useState<ErrorsType>({
+    name: undefined,
+    userName: undefined,
+    email: undefined,
+    phone: undefined,
+    gender: undefined,
+    role: undefined,
   });
 
   // Modal states
@@ -134,10 +187,19 @@ const UserProfile = () => {
   const [showRoleModal, setShowRoleModal] = useState(false);
   const [showCountryModal, setShowCountryModal] = useState(false);
   const [imageUploading, setImageUploading] = useState(false);
+  const [isUpdatingProfile, setIsUpdatingProfile] = useState(false); // New state for update button loading
 
   // Gender and role options
   const genderOptions = ["Male", "Female", "Prefer not to say"];
   const roleOptions = ["User", "Freelancer", "Agency", "Admin"];
+
+  // Fetch all usernames for validation
+  const { data: allUserNamesResponse } = useQuery<any, Error, { data: { userName: string }[] }>({
+    queryKey: ["allUserNames"],
+    queryFn: async () => await getAllUserName(),
+  });
+
+  const allExistingUserNames = allUserNamesResponse?.data?.map(u => u.userName) || [];
 
   // Initialize with fetched data
   useEffect(() => {
@@ -150,7 +212,7 @@ const UserProfile = () => {
           flag: "🇺🇸",
           name: "United States",
         },
-        phone: phoneNumber,
+        phone: phoneNumberPart, // Use phoneNumberPart here
       });
     }
   }, [dbUserData]);
@@ -159,27 +221,42 @@ const UserProfile = () => {
   const toggleEditModal = () => {
     setEditModalVisible(!isEditModalVisible);
     if (!isEditModalVisible) {
+      // Reset errors when opening modal
       setErrors({
-        name: "",
-        userName: "",
-        email: "",
-        phone: "",
-        gender: "",
-        role: "",
+        name: undefined,
+        userName: undefined,
+        email: undefined,
+        phone: undefined,
+        gender: undefined,
+        role: undefined,
       });
+    } else {
+      // When closing modal, re-initialize userData from dbUserData to discard changes
+      if (dbUserData) {
+        setUserData({
+          ...dbUserData,
+          countryCode: currentCountryCode || {
+            code: "US",
+            dial_code: "+1",
+            flag: "🇺🇸",
+            name: "United States",
+          },
+          phone: phoneNumberPart,
+        });
+      }
     }
   };
 
   // Validate form
   const validateForm = () => {
     let valid = true;
-    const newErrors = {
-      name: "",
-      userName: "",
-      email: "",
-      phone: "",
-      gender: "",
-      role: "",
+    const newErrors: ErrorsType = {
+      name: undefined,
+      userName: undefined,
+      email: undefined,
+      phone: undefined,
+      gender: undefined,
+      role: undefined,
     };
 
     if (!userData.name) {
@@ -206,8 +283,8 @@ const UserProfile = () => {
     if (!userData.phone) {
       newErrors.phone = "Phone is required";
       valid = false;
-    } else if (!/^\+?\d{8,15}$/.test(userData.phone.replace(/\s/g, ""))) {
-      newErrors.phone = "Phone is invalid";
+    } else if (!/^\d{8,15}$/.test(userData.phone)) { // Validate only number part
+      newErrors.phone = "Phone is invalid (8-15 digits)";
       valid = false;
     }
 
@@ -227,55 +304,100 @@ const UserProfile = () => {
 
   // Update mutation
   const { mutateAsync } = useMutation({
-    mutationFn: async (userUpdateData: UserData1) => {
+    mutationFn: async (userUpdateData: UserUpdatePayload) => {
+      // Ensure dbUserData.id exists before calling API
+      if (!dbUserData?.id) {
+        throw new Error("Current user ID is not available.");
+      }
       const { data } = await updateUserProfile(
-        dbUserData?.id as string,
+        dbUserData.id,
         userUpdateData
       );
       return data;
     },
     onError: (err) => {
+      console.error("Update failed:", err); // Log the full error for debugging
+      let errorMessage = "Failed to update user profile.";
+      // You can add more specific error handling based on err instanceof AxiosError
+      // similar to what you had in UserName.tsx if your backend sends specific messages.
+
       Toast.show({
         type: "error",
-        text1: "Failed to update user",
+        text1: "Update Failed!",
+        text2: errorMessage,
       });
+      setIsUpdatingProfile(false);
     },
     mutationKey: ["update-user", "users", "user", user],
     onSuccess: () => {
       Toast.show({
         type: "success",
-        text1: "User Data updated successfully",
+        text1: "Profile Updated!",
+        text2: "Your profile has been updated successfully.",
       });
-      router.push("/dashboard/user-profile");
+      setIsUpdatingProfile(false);
+      toggleEditModal(); // Close modal on success
+      // Invalidate queries to refetch user data
+      // queryClient.invalidateQueries(["users", "user", user]); // If you have queryClient access
     },
   });
 
   // Handle profile update
-  const handleUpdateProfile = () => {
-    if (validateForm()) {
-      const updateUserData = {
-        ...userData,
-        phone: `${userData.countryCode.dial_code} ${userData.phone}`,
+  const handleUpdateProfile = async () => {
+    setIsUpdatingProfile(true); // Start loading
+
+    // First, run local form validation
+    const formIsValid = validateForm();
+    if (!formIsValid) {
+      setIsUpdatingProfile(false);
+      return; // Stop if local validation fails
+    }
+
+    // --- Username Uniqueness Check (excluding current user) ---
+    // Only check if the username has actually changed AND if it's taken by someone ELSE
+    if (userData.userName !== dbUserData?.userName) { // Check only if username has changed
+      const isUsernameTakenByOther = allExistingUserNames.some(
+        (existingUsername) =>
+          existingUsername === userData.userName && existingUsername !== dbUserData?.userName
+      );
+
+      if (isUsernameTakenByOther) {
+        setErrors((prevErrors: ErrorsType) => ({
+          ...prevErrors,
+          userName: "This username is already taken by another user.",
+        }));
+        Toast.show({
+          type: "error",
+          text1: "Username Not Available!",
+          text2: "This username is already taken by another user. Please choose another.",
+        });
+        setIsUpdatingProfile(false);
+        return; // Stop if username is taken by another user
+      }
+    }
+    // --- End Username Uniqueness Check ---
+
+    // If validations pass, proceed with mutation
+    try {
+      const updatePayload: UserUpdatePayload = {
+        name: userData.name,
+        image: userData.image,
+        userName: userData.userName, // Send the new username
+        email: userData.email,
+        role: userData.role,
+        gender: userData.gender,
+        phone: `${userData.countryCode.dial_code} ${userData.phone}`, // Combine for backend
       };
-      mutateAsync(updateUserData);
-      toggleEditModal();
+      await mutateAsync(updatePayload);
+    } catch (error) {
+      // Error handled by onError in useMutation, but good to catch here too
+      console.error("Error during profile update mutation:", error);
+      setIsUpdatingProfile(false);
     }
   };
 
   const handleCancel = () => {
-    toggleEditModal();
-    if (dbUserData) {
-      setUserData({
-        ...dbUserData,
-        countryCode: currentCountryCode || {
-          code: "US",
-          dial_code: "+1",
-          flag: "🇺🇸",
-          name: "United States",
-        },
-        phone: phoneNumber,
-      });
-    }
+    toggleEditModal(); // This already resets the form data to dbUserData
   };
 
   // Define allowed field names for type safety
@@ -290,23 +412,19 @@ const UserProfile = () => {
     | "countryCode";
 
   // Handle field changes
-  const handleChange = (field: UserField, value: string | number | object) => {
+  const handleChange = (field: UserField, value: string | CountryCodeType) => {
     setUserData((prev) => ({
       ...prev,
       [field]: value,
     }));
 
-    // Only clear error if field is one of the error fields
-    if (
-      ["name", "userName", "email", "phone", "gender", "role"].includes(field)
-    ) {
-      const errorField = field as keyof typeof errors;
-      if (errors[errorField]) {
-        setErrors((prev) => ({
-          ...prev,
-          [errorField]: "",
-        }));
-      }
+    // Clear error for the specific field when it changes
+    // Cast to keyof ErrorsType to satisfy TypeScript
+    if (errors[field as keyof ErrorsType] !== undefined) {
+      setErrors((prev) => ({
+        ...prev,
+        [field as keyof ErrorsType]: undefined, // Set to undefined to clear
+      }));
     }
   };
 
@@ -328,6 +446,11 @@ const UserProfile = () => {
         handleChange("image", imageUrl);
       } catch (err) {
         console.error("Image upload failed", err);
+        Toast.show({
+          type: "error",
+          text1: "Image Upload Failed!",
+          text2: "Could not upload image. Please try again.",
+        });
       } finally {
         setImageUploading(false);
       }
@@ -335,9 +458,10 @@ const UserProfile = () => {
   };
 
   // Format date for display
-  const formatDate = (dateString: string | number | Date) => {
+  const formatDate = (dateString: string | number | Date | undefined) => {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "Invalid Date"; // Handle invalid date strings
     return date.toLocaleDateString() + " " + date.toLocaleTimeString();
   };
 
@@ -345,6 +469,15 @@ const UserProfile = () => {
     return (
       <View className='flex-1 justify-center items-center'>
         <ActivityIndicator size='large' color='#FF1A5A' />
+      </View>
+    );
+  }
+
+  // Handle case where dbUserData might still be null/undefined after loading
+  if (!dbUserData) {
+    return (
+      <View className='flex-1 justify-center items-center'>
+        <Text>Error loading user data or user not found.</Text>
       </View>
     );
   }
@@ -502,6 +635,8 @@ const UserProfile = () => {
                 value={userData.userName}
                 onChangeText={(text) => handleChange("userName", text)}
                 className='border border-gray-200 rounded-lg p-3 mt-1'
+                autoCapitalize='none' // Usernames are typically lowercase/no spaces
+                autoCorrect={false}
                 placeholder='Enter username'
               />
               {errors.userName && (
@@ -519,6 +654,8 @@ const UserProfile = () => {
                 onChangeText={(text) => handleChange("email", text)}
                 className='border border-gray-200 rounded-lg p-3 mt-1'
                 keyboardType='email-address'
+                autoCapitalize='none'
+                autoCorrect={false}
                 placeholder='Enter email'
               />
               {errors.email && (
@@ -597,15 +734,15 @@ const UserProfile = () => {
 
               <TouchableOpacity
                 onPress={handleUpdateProfile}
-                disabled={imageUploading}
+                disabled={imageUploading || isUpdatingProfile} // Disable while image is uploading or profile is updating
                 className={`py-3 px-6 rounded-lg flex-1 ml-2 items-center ${
-                  imageUploading ? "bg-gray-200" : " bg-[#FF1A5A]"
+                  imageUploading || isUpdatingProfile ? "bg-gray-200" : " bg-[#FF1A5A]"
                 }`}>
-                {imageUploading ? (
+                {imageUploading || isUpdatingProfile ? (
                   <View className='flex-row gap-2 items-center justify-center'>
-                    <ActivityIndicator size='small' color='#FF1A5A' />
+                    <ActivityIndicator size='small' color='#FFF' /> {/* Changed color to white for better visibility on gray background */}
                     <Text className='text-white font-bold'>
-                      Image Uploading
+                      {imageUploading ? "Image Uploading" : "Updating Profile"}
                     </Text>
                   </View>
                 ) : (

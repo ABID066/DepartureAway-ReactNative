@@ -202,14 +202,15 @@ const BottomNavigation = () => {
 
       <TouchableOpacity
         onPress={() => router.push("/exclusive-offer")}
-         className='items-center'>
+        className='items-center'>
         <Ionicons name='search' size={24} color='#ccc' />
         <Text className='text-xs text-gray-500 mt-0.5'>Explore</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => router.push("/ai")} className='items-center'>
-        <FontAwesome5 name="robot" size={24} color="#ccc" />
+        onPress={() => router.push("/ai")}
+        className='items-center'>
+        <FontAwesome5 name='robot' size={24} color='#ccc' />
         <Text className='text-xs text-gray-500 mt-0.5'>Ai</Text>
       </TouchableOpacity>
 
@@ -222,7 +223,7 @@ const BottomNavigation = () => {
 
       <TouchableOpacity
         onPress={() => router.push("/dashboard/user-profile")}
-         className='items-center'>
+        className='items-center'>
         <Ionicons name='person' size={24} color='#ccc' />
         <Text className='text-xs text-gray-500 mt-0.5'>Profile</Text>
       </TouchableOpacity>

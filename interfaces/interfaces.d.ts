@@ -17,6 +17,7 @@ interface UserData1 {
   userName?: string;
   email?: string;
   isVerified?: boolean;
+  location?: string;
   role?: string;
   phone?: string;
   createdAt?: string | Date | number;
